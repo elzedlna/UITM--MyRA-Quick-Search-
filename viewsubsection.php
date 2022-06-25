@@ -1,11 +1,20 @@
 <?php
 session_start();
-include('connection.php');
-$sql = "SELECT * FROM section";
-$all_sections = mysqli_query($conn,$sql);
-$sql1 = "SELECT sb.subsection_order FROM subsection sb JOIN section s ON sb.section_no = s.section_no";
-$result = mysqli_query($conn,$sql1);
-$all_sub = mysqli_num_rows($result);
+$conn = mysqli_connect("localhost", "root", "", "myra");
+if($conn-> connect_error){
+    die("Connection failed::". $conn-> connect_error);
+}
+
+$sbtoken = $_GET['id'];
+$sql = "SELECT * FROM subsection sb JOIN section s ON sb.section_no = s.section_no WHERE sb.sbtoken = '".$sbtoken."'";
+$result = $conn->query($sql);
+$row = mysqli_fetch_assoc($result);
+$section_no = $row['section_order'] . " - " . $row['section_malay'];
+$subsection_order = $row['subsection_order'];
+$subsection_malay = $row['subsection_malay'];
+$subsection_english = $row['subsection_english'];
+$subsection_desc = $row['subsection_desc'];
+
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -78,8 +87,9 @@ $all_sub = mysqli_num_rows($result);
     <div class="sidebar">
       <!-- Sidebar user panel (optional) -->
       <div class="user-panel mt-3 pb-3 mb-3 d-flex">
-      <div class="info">
+        <div class="info">
           <a href="" class="d-block">Hi, <?php if(isset($_SESSION['USER_NAME'])) { echo $_SESSION['USER_NAME']; } ?></a>
+          <a href="" class="d-block">ROLE: <?php if(isset($_SESSION['USER_ROLENAME'])) { echo $_SESSION['USER_ROLENAME']; } ?></a>
         </div>
       </div>
       <!-- SidebarSearch Form -->
@@ -123,7 +133,7 @@ $all_sub = mysqli_num_rows($result);
             <!-- general form elements -->
             <div class="card card-primary">
               <div class="card-header">
-                <h3 class="card-title">Add Sub-Section</h3>
+                <h3 class="card-title">Sub-Section Details</h3>
               </div>
               <!-- /.card-header -->
               <!-- form start -->
@@ -131,38 +141,30 @@ $all_sub = mysqli_num_rows($result);
                 <div class="card-body">
                   <div class="form-group">
                     <label for="section_no">Section</label>
-                    <select class="form-control select2" id="section_no" style="width:20em" name="section_no">
-                      <?php
-                      while($section = mysqli_fetch_array($all_sections,MYSQLI_ASSOC)):;
-                      ?>
-                      <option value="<?php echo $section["section_no"];?>"><?php echo $section["section_order"] , " - " , $section["section_malay"];?></option>
-                      <?php endwhile; ?>
-                    </select>
+                    <output class="form-control" id="section_no" style="width:20em" name="section_no"><?php echo $section_no; ?></output>
                   </div>
                   <div class="form-group">
-                    <!-- <input type="number" class="form-control" id="subsection_order" name="subsection_order" style="width:4em" min="<?php echo $all_sub?>" max="<?php echo $all_sub?>"> -->
                     <label for="subsection_order">Sub-Section Order</label>
-                    <input type="number" class="form-control" id="subsection_order" name="subsection_order" style="width:4em" min="1">
+                    <output class="form-control" id="subsection_order" name="subsection_order" style="width:4em"><?php echo $subsection_order; ?></output>
                   </div>
                   <div class="form-group">
                     <label for="subsection_malay">Sub-Section (Malay)</label>
-                    <input type="text" class="form-control" id="subsection_malay" name="subsection_malay">
+                    <output class="form-control" id="subsection_malay" name="subsection_malay"><?php echo $subsection_malay; ?></output>
                   </div>
                   <div class="form-group">
                     <label for="subsection_english">Sub-Section (English)</label>
-                    <input type="text" class="form-control" id="subsection_english" name="subsection_english">
+                    <output class="form-control" id="subsection_english" name="subsection_english"><?php echo $subsection_english; ?></output>
                   </div>
                   <div class="form-group">
-                        <label for="subsection_desc">Sub-Section Description</label>
-                        <textarea class="form-control" rows="5" id="subsection_desc" name="subsection_desc" style="resize:none"></textarea>
+                    <label for="subsection_desc">Sub-Section Description</label>
+                    <textarea class="form-control" rows="5" id="subsection_desc" name="subsection_desc" style="resize:none" disabled><?php echo $subsection_desc; ?></textarea>
                   </div>
                 </div>
                 <!-- /.card-body -->
 
                 <div class="card-footer">
-                  <button type="submit" class="btn btn-primary">Submit</button>
-                  <button  id="cancel" class="btn btn-secondary">Cancel</button>
-                  <script type="text/javascript">document.getElementById("cancel").onclick = function(){location.href = "sections.php";};</script>
+                  <button  id="back" class="btn btn-default">Back</button>
+                  <script type="text/javascript">document.getElementById("back").onclick = function(){location.href = "subsections.php";};</script>
                 </div>
               </form>
             </div>

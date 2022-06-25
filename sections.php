@@ -71,8 +71,9 @@ session_start();
     <div class="sidebar">
       <!-- Sidebar user panel (optional) -->
       <div class="user-panel mt-3 pb-3 mb-3 d-flex">
-      <div class="info">
+        <div class="info">
           <a href="" class="d-block">Hi, <?php if(isset($_SESSION['USER_NAME'])) { echo $_SESSION['USER_NAME']; } ?></a>
+          <a href="" class="d-block">ROLE: <?php if(isset($_SESSION['USER_ROLENAME'])) { echo $_SESSION['USER_ROLENAME']; } ?></a>
         </div>
       </div>
       <!-- SidebarSearch Form -->
@@ -138,7 +139,7 @@ session_start();
                         die("Connection failed::". $conn-> connect_error);
                     }
 
-                    $sql = "SELECT section_no, section_order, section_malay, section_english, date_created from section";
+                    $sql = "SELECT * FROM section";
                     $result = $conn->query($sql);
 
                     if($result-> num_rows > 0){
@@ -152,8 +153,8 @@ session_start();
                             <td><?php echo $row['date_created']; ?></td>
                             <td>
                               <div class="btn-group">
-                                <a href="viewsection.php" class="btn btn-primary btnn-block btn-sm fas fa-eye"></a>
-                                <a href="editsection.php" class="btn btn-primary btnn-block btn-sm fas fa-edit"></a>
+                                <a href="viewsection.php?id=<?php echo $row['stoken']; ?>" class="btn btn-primary btnn-block btn-sm fas fa-eye"></a>
+                                <a href="editsection.php?id=<?php echo $row['stoken']; ?>" class="btn btn-primary btnn-block btn-sm fas fa-edit"></a>
                                 <a href="#" class="btn btn-danger btnn-block btn-sm fas fa-trash-can"></a>
                               </div>
                             </td>

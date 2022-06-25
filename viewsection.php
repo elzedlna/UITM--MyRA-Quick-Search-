@@ -1,5 +1,19 @@
 <?php
 session_start();
+$conn = mysqli_connect("localhost", "root", "", "myra");
+if($conn-> connect_error){
+    die("Connection failed::". $conn-> connect_error);
+}
+
+$token = $_GET['id'];
+$sql = "SELECT * FROM section WHERE stoken = '".$token."'";
+$result = $conn->query($sql);
+$row = mysqli_fetch_assoc($result);
+$section_order = $row['section_order'];
+$section_malay = $row['section_malay'];
+$section_desc = $row['section_desc'];
+$section_english = $row['section_english'];
+$date_created = $row['date_created'];
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -72,8 +86,9 @@ session_start();
     <div class="sidebar">
       <!-- Sidebar user panel (optional) -->
       <div class="user-panel mt-3 pb-3 mb-3 d-flex">
-      <div class="info">
+        <div class="info">
           <a href="" class="d-block">Hi, <?php if(isset($_SESSION['USER_NAME'])) { echo $_SESSION['USER_NAME']; } ?></a>
+          <a href="" class="d-block">ROLE: <?php if(isset($_SESSION['USER_ROLENAME'])) { echo $_SESSION['USER_ROLENAME']; } ?></a>
         </div>
       </div>
       <!-- SidebarSearch Form -->
@@ -125,45 +140,26 @@ session_start();
                 <div class="card-body">
                   <div class="form-group">
                     <label for="section_order">Section Order</label>
-                    <select class="form-control select2" id="section_order" style="width:4em" name="section_order">
-                      <?php
-                      include('connection.php');
-                      $letters = range('A','Z');
-                      $letters_used = array();
-                      $index = 0;
-                      $sql = "SELECT section_order FROM section ORDER BY section_order ASC";
-                      $sections = mysqli_query($conn,$sql);
-                      while($d = mysqli_fetch_assoc($sections)) {
-                        $letters_used[$index] = $d['section_order'];
-                        $index++; 
-                      }
-                      $result = array_diff($letters,$letters_used);
-
-                      foreach( $result as $s_order) {
-                        echo "<option value='".$s_order."'>$s_order</option>";
-                      }
-                      ?>
-                    </select>
+                    <output class="form-control" id="section_order" style="width:4em" name="section_order"><?php echo $section_order; ?></output>
                   </div>
                   <div class="form-group">
                     <label for="section_malay">Section (Malay)</label>
-                    <input type="text" class="form-control" id="section_malay" name="section_malay">
+                    <output type="text" class="form-control" id="section_malay" name="section_malay"><?php echo $section_malay; ?></output>
                   </div>
                   <div class="form-group">
                     <label for="section_english">Section (English)</label>
-                    <input type="text" class="form-control" id="section_english" name="section_english">
+                    <output type="text" class="form-control" id="section_english" name="section_english"><?php echo $section_english; ?></output>
                   </div>
                   <div class="form-group">
                     <label for="section_desc">Section Description</label>
-                    <textarea class="form-control" rows="5" id="section_desc" name="section_desc" style="resize:none"></textarea>
+                    <textarea class="form-control" rows="5" id="section_desc" name="section_desc" style="resize:none" disabled><?php echo $section_desc; ?></textarea>
                   </div>
                 </div>
                 <!-- /.card-body -->
 
                 <div class="card-footer">
-                  <button type="submit" class="btn btn-primary" data-toggle="modal" data-target="#modal-success">Submit</button>
-                  <button  id="cancel" class="btn btn-secondary">Cancel</button>
-                  <script type="text/javascript">document.getElementById("cancel").onclick = function(){location.href = "sections.php";};</script>
+                  <button  id="back" class="btn btn-default">Back</button>
+                  <script type="text/javascript">document.getElementById("back").onclick = function(){location.href = "sections.php";};</script>
                 </div>
               </form>
             </div>

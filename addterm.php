@@ -76,8 +76,9 @@ $all_sections = mysqli_query($conn,$sql);
     <div class="sidebar">
       <!-- Sidebar user panel (optional) -->
       <div class="user-panel mt-3 pb-3 mb-3 d-flex">
-      <div class="info">
+        <div class="info">
           <a href="" class="d-block">Hi, <?php if(isset($_SESSION['USER_NAME'])) { echo $_SESSION['USER_NAME']; } ?></a>
+          <a href="" class="d-block">ROLE: <?php if(isset($_SESSION['USER_ROLENAME'])) { echo $_SESSION['USER_ROLENAME']; } ?></a>
         </div>
       </div>
       <!-- SidebarSearch Form -->
@@ -146,18 +147,7 @@ $all_sections = mysqli_query($conn,$sql);
                     <select class="form-control select2" id="term_order" style="width:4em" name="term_order">
                       <?php
                       include('connection.php');
-                      $letters = range('a','z');
-                      $letters_used = array();
-                      $index = 0;
-                      $sql = "SELECT term_order FROM term ORDER BY term_order ASC";
-                      $terms = mysqli_query($conn,$sql);
-                      while($d = mysqli_fetch_assoc($terms)) {
-                        $letters_used[$index] = $d['term_order'];
-                        $index++; 
-                      }
-                      $result = array_diff($letters,$letters_used);
-
-                      foreach( $result as $t_order) {
+                      foreach( range('a','z') as $t_order) {
                         echo "<option value='".$t_order."'>$t_order</option>";
                       }
                       ?>
@@ -179,9 +169,8 @@ $all_sections = mysqli_query($conn,$sql);
                 <!-- /.card-body -->
 
                 <div class="card-footer">
-                  <button type="submit" class="btn btn-primary" data-toggle="modal" data-target="#modal-success">Submit</button>
+                  <button type="submit" id="submit" name="submit" class="btn btn-primary" data-toggle="modal" data-target="#modal-success">Submit</button>
                   <button  id="cancel" class="btn btn-default">Cancel</button>
-                  <script type="text/javascript">document.getElementById("cancel").onclick = function(){location.href = "terms.php";};</script>
                 </div>
               </form>
             </div>

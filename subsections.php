@@ -72,8 +72,9 @@ session_start();
     <div class="sidebar">
       <!-- Sidebar user panel (optional) -->
       <div class="user-panel mt-3 pb-3 mb-3 d-flex">
-      <div class="info">
+        <div class="info">
           <a href="" class="d-block">Hi, <?php if(isset($_SESSION['USER_NAME'])) { echo $_SESSION['USER_NAME']; } ?></a>
+          <a href="" class="d-block">ROLE: <?php if(isset($_SESSION['USER_ROLENAME'])) { echo $_SESSION['USER_ROLENAME']; } ?></a>
         </div>
       </div>
       <!-- SidebarSearch Form -->
@@ -140,7 +141,7 @@ session_start();
                         die("Connection failed::". $conn-> connect_error);
                     }
 
-                    $sql = "SELECT s.section_order, sb.subsection_no, sb.subsection_order ,sb.subsection_malay, sb.subsection_english, sb.date_created FROM subsection sb JOIN section s ON s.section_no = sb.section_no";
+                    $sql = "SELECT * FROM subsection sb JOIN section s ON s.section_no = sb.section_no";
                     $result = $conn->query($sql);
                     // $sql1 = "SELECT count(section_no) FROM subsection WHERE section_no =
                     if($result-> num_rows > 0){
@@ -156,8 +157,8 @@ session_start();
                             <td><?php echo $row['date_created']; ?></td>
                             <td>
                             <div class="btn-group">
-                                <a href="viewsubsection.php" class="btn btn-primary btnn-block btn-sm fas fa-eye"></a>
-                                <a href="editsubsection.php" class="btn btn-primary btnn-block btn-sm fas fa-edit"></a>
+                                <a href="viewsubsection.php?id=<?php echo $row['sbtoken']; ?>" class="btn btn-primary btnn-block btn-sm fas fa-eye"></a>
+                                <a href="editsubsection.php?id=<?php echo $row['sbtoken']; ?>" class="btn btn-primary btnn-block btn-sm fas fa-edit"></a>
                                 <a href="#" class="btn btn-danger btnn-block btn-sm fas fa-trash-can"></a>
                               </div>
                             </td>

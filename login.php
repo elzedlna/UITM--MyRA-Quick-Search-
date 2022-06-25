@@ -38,7 +38,7 @@ if(isset($_POST['login'])) {
   
   if($json['status'] == "true")
   {
-       $sql3 = "SELECT * FROM user_assigned ua JOIN user u ON ua.USER_ID = u.USER_ID WHERE u.USER_ID = '".$USER_ID."' AND ua.access_no=1";
+       $sql3 = "SELECT * FROM user_assigned ua JOIN user u ON ua.USER_ID = u.USER_ID JOIN user_role ur ON ua.role_no = ur.role_no WHERE u.USER_ID = '".$USER_ID."' AND ua.access_no=1";
       echo $sql3;
       $qry3 = mysqli_query($conn,$sql3);
       $row3 = mysqli_num_rows($qry3);
@@ -49,6 +49,7 @@ if(isset($_POST['login'])) {
           $_SESSION['USER_ID'] = $USER_ID;
           $_SESSION['USER_NAME'] = $re2['USER_NAME'];
           $_SESSION['USER_ROLE'] = $re2['role_no'];
+          $_SESSION['USER_ROLENAME'] = $re2['role_name'];
           header("Location: home.php");
       } 
   } else if($json['status'] == "false") {

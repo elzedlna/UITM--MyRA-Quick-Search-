@@ -78,8 +78,9 @@ $all_sub = mysqli_num_rows($result);
     <div class="sidebar">
       <!-- Sidebar user panel (optional) -->
       <div class="user-panel mt-3 pb-3 mb-3 d-flex">
-      <div class="info">
+        <div class="info">
           <a href="" class="d-block">Hi, <?php if(isset($_SESSION['USER_NAME'])) { echo $_SESSION['USER_NAME']; } ?></a>
+          <a href="" class="d-block">ROLE: <?php if(isset($_SESSION['USER_ROLENAME'])) { echo $_SESSION['USER_ROLENAME']; } ?></a>
         </div>
       </div>
       <!-- SidebarSearch Form -->
@@ -160,9 +161,8 @@ $all_sub = mysqli_num_rows($result);
                 <!-- /.card-body -->
 
                 <div class="card-footer">
-                  <button type="submit" class="btn btn-primary">Submit</button>
+                  <button type="submit" id="submit" name="submit" class="btn btn-primary" data-toggle="modal" data-target="#modal-success">Submit</button>
                   <button  id="cancel" class="btn btn-default">Cancel</button>
-                  <script type="text/javascript">document.getElementById("cancel").onclick = function(){location.href = "sections.php";};</script>
                 </div>
               </form>
             </div>
