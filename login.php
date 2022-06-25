@@ -51,16 +51,6 @@ if(isset($_POST['login'])) {
           $_SESSION['USER_ROLE'] = $re2['role_no'];
           header("Location: home.php");
       } 
-      /*(checkStaffLogin($conn,$USER_ID) == true) {
-        if($role_no == 1 && $access_no == 1)
-          header("Location: home.php");
-        else if($role_no == 2 && $access_no == 1)
-          header("Location: home.php");
-      } else {
-        header("Location: login.php?warning");
-      }
-      echo "bole link staff portal";
-      header("Location: home.php");*/
   } else if($json['status'] == "false") {
     //header("Location: login.php?error");
     echo "tak ok";
@@ -77,12 +67,12 @@ if(isset($_POST['login'])) {
   <!-- Google Font: Source Sans Pro -->
   <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
   <!-- Font Awesome -->
-  <link rel="stylesheet" href="../../plugins/fontawesome-free/css/all.min.css">
+  <link rel="stylesheet" href="../../plugins/fontawesome-free/css/all.css">
   <!-- icheck bootstrap -->
   <link rel="stylesheet" href="../../plugins/icheck-bootstrap/icheck-bootstrap.min.css">
   <!-- Theme style -->
   <!--<link rel="stylesheet" type="text/css" href="style.css">-->
-  <script src="https://kit.fontawesome.com/e138785ca7.js" crossorigin="anonymous"></script>
+  <!-- <script src="https://kit.fontawesome.com/e138785ca7.js" crossorigin="anonymous"></script> -->
   <link rel="stylesheet" href="dist/css/adminlte.min.css">
 </head>
 <body class="hold-transition login-page">

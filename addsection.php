@@ -11,7 +11,7 @@ session_start();
   <!-- Google Font: Source Sans Pro -->
   <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
   <!-- Font Awesome -->
-  <link rel="stylesheet" href="plugins/fontawesome-free/css/all.min.css">
+  <link rel="stylesheet" href="plugins/fontawesome-free/css/all.css">
   <!-- Ionicons -->
   <link rel="stylesheet" href="https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css">
   <!-- Tempusdominus Bootstrap 4 -->
@@ -33,6 +33,8 @@ session_start();
   <link rel="stylesheet" href="plugins/datatables-responsive/css/responsive.bootstrap4.min.css">
   <link rel="stylesheet" href="plugins/datatables-buttons/css/buttons.bootstrap4.min.css">
   <!-- Theme style -->
+  <!-- <script src="https://kit.fontawesome.com/e138785ca7.js" crossorigin="anonymous"></script> -->
+
 </head>
 <body class="hold-transition sidebar-mini layout-fixed">
 <div class="wrapper">
@@ -123,33 +125,24 @@ session_start();
                 <div class="card-body">
                   <div class="form-group">
                     <label for="section_order">Section Order</label>
-                    <select class="form-control select2" id="section_order" style="width:15%" name="section_order">
-                        <option value="A">A</option>
-                        <option value="B">B</option>
-                        <option value="C">C</option>
-                        <option value="D">D</option>
-                        <option value="E">E</option>
-                        <option value="F">F</option>
-                        <option value="G">G</option>
-                        <option value="H">H</option>
-                        <option value="I">I</option>
-                        <option value="J">J</option>
-                        <option value="K">K</option>
-                        <option value="L">L</option>
-                        <option value="M">M</option>
-                        <option value="N">N</option>
-                        <option value="O">O</option>
-                        <option value="P">P</option>
-                        <option value="Q">Q</option>
-                        <option value="R">R</option>
-                        <option value="S">S</option>
-                        <option value="T">T</option>
-                        <option value="U">U</option>
-                        <option value="V">V</option>
-                        <option value="W">W</option>
-                        <option value="X">X</option>
-                        <option value="Y">Y</option>
-                        <option value="Z">Z</option>
+                    <select class="form-control select2" id="section_order" style="width:4em" name="section_order">
+                      <?php
+                      include('connection.php');
+                      $letters = range('A','Z');
+                      $letters_used = array();
+                      $index = 0;
+                      $sql = "SELECT section_order FROM section ORDER BY section_order ASC";
+                      $sections = mysqli_query($conn,$sql);
+                      while($d = mysqli_fetch_assoc($sections)) {
+                        $letters_used[$index] = $d['section_order'];
+                        $index++; 
+                      }
+                      $result = array_diff($letters,$letters_used);
+
+                      foreach( $result as $s_order) {
+                        echo "<option value='".$s_order."'>$s_order</option>";
+                      }
+                      ?>
                     </select>
                   </div>
                   <div class="form-group">
@@ -161,14 +154,16 @@ session_start();
                     <input type="text" class="form-control" id="section_english" name="section_english">
                   </div>
                   <div class="form-group">
-                        <label for="section_desc">Section Description</label>
-                        <textarea class="form-control" rows="3" id="section_desc" name="section_desc"></textarea>
+                    <label for="section_desc">Section Description</label>
+                    <textarea class="form-control" rows="5" id="section_desc" name="section_desc" style="resize:none"></textarea>
                   </div>
                 </div>
                 <!-- /.card-body -->
 
                 <div class="card-footer">
                   <button type="submit" class="btn btn-primary" data-toggle="modal" data-target="#modal-success">Submit</button>
+                  <button  id="cancel" class="btn btn-default">Cancel</button>
+                  <script type="text/javascript">document.getElementById("cancel").onclick = function(){location.href = "sections.php";};</script>
                 </div>
               </form>
             </div>

@@ -1,5 +1,11 @@
 <?php
 session_start();
+include('connection.php');
+$sql = "SELECT * FROM section";
+$all_sections = mysqli_query($conn,$sql);
+$sql1 = "SELECT sb.subsection_order FROM subsection sb JOIN section s ON sb.section_no = s.section_no";
+$result = mysqli_query($conn,$sql1);
+$all_sub = mysqli_num_rows($result);
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -11,7 +17,7 @@ session_start();
   <!-- Google Font: Source Sans Pro -->
   <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
   <!-- Font Awesome -->
-  <link rel="stylesheet" href="plugins/fontawesome-free/css/all.min.css">
+  <link rel="stylesheet" href="plugins/fontawesome-free/css/all.css">
   <!-- Ionicons -->
   <link rel="stylesheet" href="https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css">
   <!-- Tempusdominus Bootstrap 4 -->
@@ -33,6 +39,8 @@ session_start();
   <link rel="stylesheet" href="plugins/datatables-responsive/css/responsive.bootstrap4.min.css">
   <link rel="stylesheet" href="plugins/datatables-buttons/css/buttons.bootstrap4.min.css">
   <!-- Theme style -->
+  <!-- <script src="https://kit.fontawesome.com/e138785ca7.js" crossorigin="anonymous"></script> -->
+
 </head>
 <body class="hold-transition sidebar-mini layout-fixed">
 <div class="wrapper">
@@ -122,40 +130,19 @@ session_start();
               <form action="paddsubsection.php" method="post">
                 <div class="card-body">
                   <div class="form-group">
-                    <label for="section_order">Section Number</label>
-                    <select class="form-control select2" id="section_order" name="section_order" style="width:15%">
-                        <option>A</option>
-                        <option>B</option>
-                        <option>C</option>
-                        <option>D</option>
-                        <option>E</option>
-                        <option>F</option>
-                        <option>G</option>
-                        <option>H</option>
-                        <option>I</option>
-                        <option>J</option>
-                        <option>K</option>
-                        <option>L</option>
-                        <option>M</option>
-                        <option>N</option>
-                        <option>O</option>
-                        <option>P</option>
-                        <option>Q</option>
-                        <option>R</option>
-                        <option>S</option>
-                        <option>T</option>
-                        <option>U</option>
-                        <option>V</option>
-                        <option>W</option>
-                        <option>X</option>
-                        <option>Y</option>
-                        <option>Z</option>
+                    <label for="section_no">Section</label>
+                    <select class="form-control select2" id="section_no" style="width:20em" name="section_no">
+                      <?php
+                      while($section = mysqli_fetch_array($all_sections,MYSQLI_ASSOC)):;
+                      ?>
+                      <option value="<?php echo $section["section_no"];?>"><?php echo $section["section_order"] , " - " , $section["section_malay"];?></option>
+                      <?php endwhile; ?>
                     </select>
                   </div>
                   <div class="form-group">
-                    <label for="subsection_no">Sub-Section Number</label>
-                    <input type="number" class="form-control" id="subsection_no" name="subsection_no" style="width:15%" min="0">
-                    </select>
+                    <!-- <input type="number" class="form-control" id="subsection_order" name="subsection_order" style="width:4em" min="<?php echo $all_sub?>" max="<?php echo $all_sub?>"> -->
+                    <label for="subsection_order">Sub-Section Order</label>
+                    <input type="number" class="form-control" id="subsection_order" name="subsection_order" style="width:4em" min="1">
                   </div>
                   <div class="form-group">
                     <label for="subsection_malay">Sub-Section (Malay)</label>
@@ -167,13 +154,15 @@ session_start();
                   </div>
                   <div class="form-group">
                         <label for="subsection_desc">Sub-Section Description</label>
-                        <textarea class="form-control" rows="3" id="subsection_desc" name="subsection_desc"></textarea>
+                        <textarea class="form-control" rows="5" id="subsection_desc" name="subsection_desc" style="resize:none"></textarea>
                   </div>
                 </div>
                 <!-- /.card-body -->
 
                 <div class="card-footer">
                   <button type="submit" class="btn btn-primary">Submit</button>
+                  <button  id="cancel" class="btn btn-default">Cancel</button>
+                  <script type="text/javascript">document.getElementById("cancel").onclick = function(){location.href = "sections.php";};</script>
                 </div>
               </form>
             </div>

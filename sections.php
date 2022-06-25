@@ -11,7 +11,7 @@ session_start();
   <!-- Google Font: Source Sans Pro -->
   <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
   <!-- Font Awesome -->
-  <link rel="stylesheet" href="plugins/fontawesome-free/css/all.min.css">
+  <link rel="stylesheet" href="plugins/fontawesome-free/css/all.css">
   <!-- Ionicons -->
   <link rel="stylesheet" href="https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css">
   <!-- Tempusdominus Bootstrap 4 -->
@@ -33,6 +33,7 @@ session_start();
   <link rel="stylesheet" href="plugins/datatables-responsive/css/responsive.bootstrap4.min.css">
   <link rel="stylesheet" href="plugins/datatables-buttons/css/buttons.bootstrap4.min.css">
   <!-- Theme style -->
+  <!-- <script src="https://kit.fontawesome.com/e138785ca7.js" crossorigin="anonymous"></script> -->
 </head>
 <body class="hold-transition sidebar-mini layout-fixed">
 <div class="wrapper">
@@ -142,22 +143,30 @@ session_start();
 
                     if($result-> num_rows > 0){
                         while ($row = $result-> fetch_assoc()){
-                            echo "<tr><td>". $row["section_no"]."</td>
-                            <td>". $row["section_order"]."</td>
-                            <td>". $row["section_malay"]."</td>
-                            <td>". $row["section_english"]."</td>
-                            <td>". $row["date_created"]."</td>
-                            </tr>";
+                          ?>
+                          <tr>
+                            <td><?php echo $row['section_no']; ?></td>
+                            <td><?php echo $row['section_order']; ?></td>
+                            <td><?php echo $row['section_malay']; ?></td>
+                            <td><?php echo $row['section_english']; ?></td>
+                            <td><?php echo $row['date_created']; ?></td>
+                            <td>
+                              <div class="btn-group">
+                                <a href="viewsection.php" class="btn btn-primary btnn-block btn-sm fas fa-eye"></a>
+                                <a href="editsection.php" class="btn btn-primary btnn-block btn-sm fas fa-edit"></a>
+                                <a href="#" class="btn btn-danger btnn-block btn-sm fas fa-trash-can"></a>
+                              </div>
+                            </td>
+                          </tr>
+                          <?php
                         }
-                        /*<td><a href="viewsections.html" class="btn btn-primary btnn-block btn-sm float-middle fas fa-eye"></a>
-                            <a href="editsections.html" class="btn btnn-block btn-primary btn-sm float-middle fas fa-edit"></a></td>*/
                     }
                     ?>
                   </tbody>
                   <tfoot>
                   <tr>
                     <th>#</th>
-                    <th>Section Number</th>
+                    <th>Section Order</th>
                     <th>Section (Malay)</th>
                     <th>Section (English)</th>
                     <th>Date Created</th>
@@ -167,9 +176,7 @@ session_start();
                 </table>
               </div>
               <!-- /.card-body -->
-              <div class="card-footer">
-                
-              </div>
+              
             </div>
             
             
@@ -235,5 +242,42 @@ session_start();
 <!-- AdminLTE for demo purposes -->
 <!-- <script src="dist/js/demo.js"></script> -->
 <!-- AdminLTE dashboard demo (This is only for demo purposes) -->
+<!-- jQuery -->
+<script src="plugins/jquery/jquery.min.js"></script>
+<!-- Bootstrap 4 -->
+<script src="plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
+<!-- DataTables  & Plugins -->
+<script src="plugins/datatables/jquery.dataTables.min.js"></script>
+<script src="plugins/datatables-bs4/js/dataTables.bootstrap4.min.js"></script>
+<script src="plugins/datatables-responsive/js/dataTables.responsive.min.js"></script>
+<script src="plugins/datatables-responsive/js/responsive.bootstrap4.min.js"></script>
+<script src="plugins/datatables-buttons/js/dataTables.buttons.min.js"></script>
+<script src="plugins/datatables-buttons/js/buttons.bootstrap4.min.js"></script>
+<script src="plugins/jszip/jszip.min.js"></script>
+<script src="plugins/pdfmake/pdfmake.min.js"></script>
+<script src="plugins/pdfmake/vfs_fonts.js"></script>
+<script src="plugins/datatables-buttons/js/buttons.html5.min.js"></script>
+<script src="plugins/datatables-buttons/js/buttons.print.min.js"></script>
+<script src="plugins/datatables-buttons/js/buttons.colVis.min.js"></script>
+<!-- AdminLTE App -->
+<script src="dist/js/adminlte.min.js"></script>
+<!-- Page specific script -->
+<script>
+    $(function () {
+      $("#example1").DataTable({
+        "responsive": true, "lengthChange": false, "autoWidth": false,
+        "buttons": ["copy", "csv", "excel", "pdf", "print", "colvis"]
+      }).buttons().container().appendTo('#example1_wrapper .col-md-6:eq(0)');
+      $('#example2').DataTable({
+        "paging": true,
+        "lengthChange": true,
+        "searching": true,
+        "ordering": true,
+        "info": true,
+        "autoWidth": false,
+        "responsive": true,
+      });
+    });
+  </script>
 </body>
 </html>

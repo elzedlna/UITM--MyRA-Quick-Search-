@@ -11,7 +11,7 @@ session_start();
   <!-- Google Font: Source Sans Pro -->
   <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
   <!-- Font Awesome -->
-  <link rel="stylesheet" href="plugins/fontawesome-free/css/all.min.css">
+  <link rel="stylesheet" href="plugins/fontawesome-free/css/all.css">
   <!-- Ionicons -->
   <link rel="stylesheet" href="https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css">
   <!-- Tempusdominus Bootstrap 4 -->
@@ -33,6 +33,7 @@ session_start();
   <link rel="stylesheet" href="plugins/datatables-responsive/css/responsive.bootstrap4.min.css">
   <link rel="stylesheet" href="plugins/datatables-buttons/css/buttons.bootstrap4.min.css">
   <!-- Theme style -->
+  <!-- <script src="https://kit.fontawesome.com/e138785ca7.js" crossorigin="anonymous"></script> -->
 </head>
 <body class="hold-transition sidebar-mini layout-fixed">
 <div class="wrapper">
@@ -125,6 +126,7 @@ session_start();
                     <th>#</th>
                     <th>Section</th>
                     <th>Sub-Section</th>
+                    <th>Term Order</th>
                     <th>Term (Malay)</th>
                     <th>Term (English)</th>
                     <th>Date Created</th>
@@ -138,24 +140,32 @@ session_start();
                         die("Connection failed::". $conn-> connect_error);
                     }
 
-                    $sql = "SELECT s.section_order, sb.subsection_no, t.term_malay, t.term_english, t.date_created FROM term t
+                    $sql = "SELECT s.section_order, sb.subsection_order, t.term_no, t.term_order, t.term_malay, t.term_english, t.date_created FROM term t
                     JOIN subsection sb ON t.subsection_no = sb.subsection_no
                     JOIN section s ON sb.section_no = s.section_no";
                     $result = $conn->query($sql);
-                    $count = 0;
                     if($result-> num_rows > 0){
                         while ($row = $result-> fetch_assoc()){
-                            echo "<tr><td>". ($count+=1) ."</td>
-                            <td>". $row["section_order"]."</td>
-                            <td>". $row["subsection_no"]."</td>
-                            <td>". $row["term_malay"]."</td>
-                            <td>". $row["term_english"]."</td>
-                            <td>". $row["date_created"]."</td>
-                            </tr>";
+                          ?>
+                          <tr>
+                            <td><?php echo $row['term_no']; ?></td>
+                            <td><?php echo $row['section_order']; ?></td>
+                            <td><?php echo $row['subsection_order']; ?></td>
+                            <td><?php echo $row['term_order']; ?></td>
+                            <td><?php echo $row['term_malay']; ?></td>
+                            <td><?php echo $row['term_english']; ?></td>
+                            <td><?php echo $row['date_created']; ?></td>
+                            <td>
+                              <div class="btn-group">
+                                <a href="viewterm.php" class="btn btn-primary btnn-block btn-sm fas fa-eye"></a>
+                                <a href="editterm.php" class="btn btn-primary btnn-block btn-sm fas fa-edit"></a>
+                                <a href="#" class="btn btn-danger btnn-block btn-sm fas fa-trash-can"></a>
+                              </div>
+                            </td>
+                          </tr>
+                          <?php
                         }
-                        /*<td><a href="viewsections.html" class="btn btn-primary btnn-block btn-sm float-middle fas fa-eye"></a>
-                            <a href="editsections.html" class="btn btnn-block btn-primary btn-sm float-middle fas fa-edit"></a></td>*/
-                    }
+                      }   
                     ?>
                   </tbody>
                   <tfoot>
@@ -163,6 +173,7 @@ session_start();
                     <th>#</th>
                     <th>Section</th>
                     <th>Sub-Section</th>
+                    <th>Term Order</th>
                     <th>Term (Malay)</th>
                     <th>Term (English)</th>
                     <th>Date Created</th>
@@ -239,5 +250,38 @@ session_start();
 <!-- <script src="dist/js/demo.js"></script> -->
 <!-- AdminLTE dashboard demo (This is only for demo purposes) -->
 <script src="dist/js/pages/dashboard.js"></script>
+<!-- DataTables  & Plugins -->
+<script src="plugins/datatables/jquery.dataTables.min.js"></script>
+<script src="plugins/datatables-bs4/js/dataTables.bootstrap4.min.js"></script>
+<script src="plugins/datatables-responsive/js/dataTables.responsive.min.js"></script>
+<script src="plugins/datatables-responsive/js/responsive.bootstrap4.min.js"></script>
+<script src="plugins/datatables-buttons/js/dataTables.buttons.min.js"></script>
+<script src="plugins/datatables-buttons/js/buttons.bootstrap4.min.js"></script>
+<script src="plugins/jszip/jszip.min.js"></script>
+<script src="plugins/pdfmake/pdfmake.min.js"></script>
+<script src="plugins/pdfmake/vfs_fonts.js"></script>
+<script src="plugins/datatables-buttons/js/buttons.html5.min.js"></script>
+<script src="plugins/datatables-buttons/js/buttons.print.min.js"></script>
+<script src="plugins/datatables-buttons/js/buttons.colVis.min.js"></script>
+<!-- AdminLTE App -->
+<script src="dist/js/adminlte.min.js"></script>
+<!-- Page specific script -->
+<script>
+    $(function () {
+      $("#example1").DataTable({
+        "responsive": true, "lengthChange": false, "autoWidth": false,
+        "buttons": ["copy", "csv", "excel", "pdf", "print", "colvis"]
+      }).buttons().container().appendTo('#example1_wrapper .col-md-6:eq(0)');
+      $('#example2').DataTable({
+        "paging": true,
+        "lengthChange": true,
+        "searching": true,
+        "ordering": true,
+        "info": true,
+        "autoWidth": true,
+        "responsive": true,
+      });
+    });
+  </script>
 </body>
 </html>

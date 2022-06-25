@@ -1,5 +1,9 @@
 <?php
 session_start();
+include('connection.php');
+$sql = "SELECT * FROM section";
+$all_sections = mysqli_query($conn,$sql);
+
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -11,7 +15,7 @@ session_start();
   <!-- Google Font: Source Sans Pro -->
   <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
   <!-- Font Awesome -->
-  <link rel="stylesheet" href="plugins/fontawesome-free/css/all.min.css">
+  <link rel="stylesheet" href="plugins/fontawesome-free/css/all.css">
   <!-- Ionicons -->
   <link rel="stylesheet" href="https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css">
   <!-- Tempusdominus Bootstrap 4 -->
@@ -33,6 +37,8 @@ session_start();
   <link rel="stylesheet" href="plugins/datatables-responsive/css/responsive.bootstrap4.min.css">
   <link rel="stylesheet" href="plugins/datatables-buttons/css/buttons.bootstrap4.min.css">
   <!-- Theme style -->
+  <!-- <script src="https://kit.fontawesome.com/e138785ca7.js" crossorigin="anonymous"></script> -->
+
 </head>
 <body class="hold-transition sidebar-mini layout-fixed">
 <div class="wrapper">
@@ -122,39 +128,39 @@ session_start();
               <form action="paddterm.php" method="post">
                 <div class="card-body">
                   <div class="form-group">
-                    <label for="section_order">Section Number</label>
-                    <select class="form-control select2" id="section_order" name="section_order" style="width:15%">
-                        <option>A</option>
-                        <option>B</option>
-                        <option>C</option>
-                        <option>D</option>
-                        <option>E</option>
-                        <option>F</option>
-                        <option>G</option>
-                        <option>H</option>
-                        <option>I</option>
-                        <option>J</option>
-                        <option>K</option>
-                        <option>L</option>
-                        <option>M</option>
-                        <option>N</option>
-                        <option>O</option>
-                        <option>P</option>
-                        <option>Q</option>
-                        <option>R</option>
-                        <option>S</option>
-                        <option>T</option>
-                        <option>U</option>
-                        <option>V</option>
-                        <option>W</option>
-                        <option>X</option>
-                        <option>Y</option>
-                        <option>Z</option>
+                  <label for="section_no">Section</label>
+                    <select class="form-control select2" id="section_no" style="width:20em" name="section_no">
+                      <?php
+                      while($section = mysqli_fetch_array($all_sections,MYSQLI_ASSOC)):;
+                      ?>
+                      <option value="<?php echo $option = $section["section_no"];?>"><?php echo $section["section_order"] , " - " , $section["section_malay"];?></option>
+                      <?php endwhile; ?>
                     </select>
                   </div>
                   <div class="form-group">
                     <label for="subsection_no">Sub-Section Number</label>
-                    <input type="number" class="form-control" id="subsection_no" name="subsection_no" style="width:15%" min="0">
+                    <input type="number" class="form-control" id="subsection_no" name="subsection_no" style="width:4em" min="1">
+                  </div>
+                  <div class="form-group">
+                    <label for="term_order">Term Order</label>
+                    <select class="form-control select2" id="term_order" style="width:4em" name="term_order">
+                      <?php
+                      include('connection.php');
+                      $letters = range('a','z');
+                      $letters_used = array();
+                      $index = 0;
+                      $sql = "SELECT term_order FROM term ORDER BY term_order ASC";
+                      $terms = mysqli_query($conn,$sql);
+                      while($d = mysqli_fetch_assoc($terms)) {
+                        $letters_used[$index] = $d['term_order'];
+                        $index++; 
+                      }
+                      $result = array_diff($letters,$letters_used);
+
+                      foreach( $result as $t_order) {
+                        echo "<option value='".$t_order."'>$t_order</option>";
+                      }
+                      ?>
                     </select>
                   </div>
                   <div class="form-group">
@@ -173,7 +179,9 @@ session_start();
                 <!-- /.card-body -->
 
                 <div class="card-footer">
-                  <button type="submit" class="btn btn-primary">Submit</button>
+                  <button type="submit" class="btn btn-primary" data-toggle="modal" data-target="#modal-success">Submit</button>
+                  <button  id="cancel" class="btn btn-default">Cancel</button>
+                  <script type="text/javascript">document.getElementById("cancel").onclick = function(){location.href = "terms.php";};</script>
                 </div>
               </form>
             </div>
