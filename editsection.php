@@ -1,5 +1,22 @@
 <?php
 session_start();
+if(!isset($_SESSION['userlogged']) || $_SESSION['userlogged'] !=1) {
+  header("Location: login.php");
+}
+
+$conn = mysqli_connect("localhost", "root", "", "myra");
+if($conn-> connect_error){
+    die("Connection failed::". $conn-> connect_error);
+}
+
+$token = $_GET['id'];
+$sql = "SELECT * FROM section WHERE stoken = '".$token."'";
+$result = $conn->query($sql);
+$row = mysqli_fetch_assoc($result);
+$section_order = $row['section_order'];
+$section_malay = $row['section_malay'];
+$section_desc = $row['section_desc'];
+$section_english = $row['section_english'];
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -7,6 +24,7 @@ session_start();
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>MyRA Quick Search</title>
+  <link rel="shortcut icon" href="myralogo.png">
 
   <!-- Google Font: Source Sans Pro -->
   <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
@@ -118,60 +136,35 @@ session_start();
             <!-- general form elements -->
             <div class="card card-primary">
               <div class="card-header">
-                <h3 class="card-title">Add Section</h3>
+                <h3 class="card-title">Edit Section</h3>
               </div>
               <!-- /.card-header -->
               <!-- form start -->
-              <form>
+              <form action="peditsection.php?id=<?php echo $token?>" method="post">
                 <div class="card-body">
                   <div class="form-group">
-                    <label for="section_no">Section Number</label>
-                    <select class="form-control select2" id="section_no" style="width:15%">
-                        <option>A</option>
-                        <option>B</option>
-                        <option>C</option>
-                        <option>D</option>
-                        <option>E</option>
-                        <option>F</option>
-                        <option>G</option>
-                        <option>H</option>
-                        <option>I</option>
-                        <option>J</option>
-                        <option>K</option>
-                        <option>L</option>
-                        <option>M</option>
-                        <option>N</option>
-                        <option>O</option>
-                        <option>P</option>
-                        <option>Q</option>
-                        <option>R</option>
-                        <option>S</option>
-                        <option>T</option>
-                        <option>U</option>
-                        <option>V</option>
-                        <option>W</option>
-                        <option>X</option>
-                        <option>Y</option>
-                        <option>Z</option>
-                    </select>
+                    <label for="section_order">Section Order</label>
+                    <input type="text" class="form-control" style="width:4em" id="section_malay" name="section_malay" value="<?php echo $section_order; ?>" disabled>
                   </div>
                   <div class="form-group">
                     <label for="section_malay">Section (Malay)</label>
-                    <input type="text" class="form-control" id="section_malay">
+                    <input type="text" class="form-control" id="section_malay" name="section_malay" value="<?php echo $section_malay; ?>">
                   </div>
                   <div class="form-group">
                     <label for="section_english">Section (English)</label>
-                    <input type="text" class="form-control" id="section_english">
+                    <input type="text" class="form-control" id="section_english" name="section_english" value="<?php echo $section_english; ?>">
                   </div>
                   <div class="form-group">
-                        <label for="section_desc">Section Description</label>
-                        <textarea class="form-control" rows="3" id="section_desc"></textarea>
+                    <label for="section_desc">Section Description</label>
+                    <textarea class="form-control" rows="5" id="section_desc" name="section_desc" style="resize:none"><?php echo $section_desc; ?></textarea>
                   </div>
                 </div>
                 <!-- /.card-body -->
 
                 <div class="card-footer">
-                  <button type="submit" class="btn btn-primary">Submit</button>
+                  <button type="submit" id="submit" name="submit" class="btn btn-primary" data-toggle="modal" data-target="#modal-success">Submit</button>
+                  <button  id="back" class="btn btn-default">Back</button>
+                  <script type="text/javascript">document.getElementById("back").onclick = function(){location.href = "sections.php";};</script>
                 </div>
               </form>
             </div>

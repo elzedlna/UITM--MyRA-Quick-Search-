@@ -50,6 +50,8 @@ if(isset($_POST['login'])) {
           $_SESSION['USER_NAME'] = $re2['USER_NAME'];
           $_SESSION['USER_ROLE'] = $re2['role_no'];
           $_SESSION['USER_ROLENAME'] = $re2['role_name'];
+          $_SESSION['userlogged'] = 1;
+
           header("Location: home.php");
       } 
   } else if($json['status'] == "false") {
@@ -64,6 +66,7 @@ if(isset($_POST['login'])) {
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>MyRA Quick Search</title>
+  <link rel="shortcut icon" href="myralogo.png">
 
   <!-- Google Font: Source Sans Pro -->
   <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">

@@ -1,5 +1,9 @@
 <?php
 session_start();
+if(!isset($_SESSION['userlogged']) || $_SESSION['userlogged'] !=1) {
+  header("Location: login.php");
+}
+
 include('connection.php');
 $sql = "SELECT * FROM section";
 $all_sections = mysqli_query($conn,$sql);
@@ -13,7 +17,7 @@ $all_sub = mysqli_num_rows($result);
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>MyRA Quick Search</title>
-
+  <link rel="shortcut icon" href="myralogo.png">
   <!-- Google Font: Source Sans Pro -->
   <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
   <!-- Font Awesome -->
