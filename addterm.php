@@ -6,6 +6,8 @@ if(!isset($_SESSION['userlogged']) || $_SESSION['userlogged'] !=1) {
 include('connection.php');
 $sql = "SELECT * FROM section";
 $all_sections = mysqli_query($conn,$sql);
+$sql1 = "SELECT * FROM subsection sb JOIN section s ON sb.section_no = s.section_no";
+$all_sb = mysqli_query($conn,$sql1);
 
 ?>
 <!DOCTYPE html>
@@ -42,7 +44,31 @@ $all_sections = mysqli_query($conn,$sql);
   <link rel="stylesheet" href="plugins/datatables-buttons/css/buttons.bootstrap4.min.css">
   <!-- Theme style -->
   <!-- <script src="https://kit.fontawesome.com/e138785ca7.js" crossorigin="anonymous"></script> -->
-
+  <!-- Script -->
+  <script src="js/jquery.min.js"></script>
+  <!-- Ajax -->
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+  <script>
+  $(document).ready(function(){
+    $('#section_no').on('change', function(){
+      var sec_no = $(this).val();
+      if(sec_no){
+        $.ajax({
+                type:'POST',
+                url:'ptermsubs.php',
+                data:'section_no='+sec_no,
+                success:function(html){
+                    $('#subsection_no').html(html);
+                }
+            }); 
+      }
+      else{
+        $('#subsection_no').html('<option value="">Select a Section first</option>');
+      }
+    });
+  });
+  </script>
+  
 </head>
 <body class="hold-transition sidebar-mini layout-fixed">
 <div class="wrapper">
@@ -135,6 +161,7 @@ $all_sections = mysqli_query($conn,$sql);
                   <div class="form-group">
                   <label for="section_no">Section</label>
                     <select class="form-control select2" id="section_no" style="width:20em" name="section_no">
+                      <option value="">Select a Section</option>
                       <?php
                       while($section = mysqli_fetch_array($all_sections,MYSQLI_ASSOC)):;
                       ?>
@@ -143,8 +170,10 @@ $all_sections = mysqli_query($conn,$sql);
                     </select>
                   </div>
                   <div class="form-group">
-                    <label for="subsection_no">Sub-Section Number</label>
-                    <input type="number" class="form-control" id="subsection_no" name="subsection_no" style="width:4em" min="1">
+                    <label for="subsection_no">Sub-Section</label>
+                    <select class="form-control" id="subsection_no" name="subsection_no">
+                      <option value="">Select a Section first</option>
+                    </select>
                   </div>
                   <div class="form-group">
                     <label for="term_order">Term Order</label>

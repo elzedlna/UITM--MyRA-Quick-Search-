@@ -16,6 +16,13 @@ if(isset($_POST['submit'])) {
 
     $sql = "INSERT INTO term(term_order, term_malay, term_english, term_desc, date_created, subsection_no, USER_ID, ttoken) VALUES('".$term_order."','".$term_m."','".$term_e."','".$term_desc."','".$Cdate."','".$subsection_no."','".$user_id."','".$token."')";
 
+    $sql2 = "SELECT * FROM term WHERE ttoken = '$token'";
+    $result2 = mysqli_query($conn,$sql2);
+    $row = mysqli_fetch_assoc($result2);
+    
+    $sql3 = "INSERT INTO term_history (term_no, USER_ID, term_process) VALUES ('".$row['term_no']."', '".$user_id."', 'ADD')";
+    $result3 = mysqli_query($conn,$sql3);
+
     if ($conn->query($sql) === TRUE) {
         echo "<script type= 'text/javascript'>alert('New record successfully saved');</script> ";
         header("Location: terms.php");

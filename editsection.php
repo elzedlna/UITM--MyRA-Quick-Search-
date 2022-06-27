@@ -163,7 +163,7 @@ $section_english = $row['section_english'];
 
                 <div class="card-footer">
                   <button type="submit" id="submit" name="submit" class="btn btn-primary" data-toggle="modal" data-target="#modal-success">Submit</button>
-                  <button  id="back" class="btn btn-default">Back</button>
+                  <button  id="cancel" class="btn btn-default">Cancel</button>
                   <script type="text/javascript">document.getElementById("back").onclick = function(){location.href = "sections.php";};</script>
                 </div>
               </form>

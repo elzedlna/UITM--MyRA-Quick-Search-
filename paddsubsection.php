@@ -16,6 +16,13 @@ if(isset($_POST['submit'])) {
 
   $sql = "INSERT INTO subsection(subsection_order,subsection_malay, subsection_english, subsection_desc, date_created, section_no, USER_ID, sbtoken) VALUES('".$subsection_order."','".$subsection_m."','".$subsection_e."','".$subsection_desc."','".$Cdate."','".$section_no."','".$user_id."','".$token."')";
 
+  $sql2 = "SELECT * FROM subsection WHERE sbtoken = '$token'";
+  $result2 = mysqli_query($conn,$sql2);
+  $row = mysqli_fetch_assoc($result2);
+  
+  $sql3 = "INSERT INTO subsection_history (subsection_no, USER_ID, subs_process) VALUES ('".$row['subsection_no']."', '".$user_id."', 'ADD')";
+  $result3 = mysqli_query($conn,$sql3);
+
   if ($conn->query($sql) === TRUE) {
       echo "<script type= 'text/javascript'>alert('New record successfully saved');</script> ";
       header("Location: subsections.php");

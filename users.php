@@ -134,11 +134,43 @@ if(!isset($_SESSION['userlogged']) || $_SESSION['userlogged'] !=1) {
                     <th>Staff Name</th>
                     <th>Role</th>
                     <th>Status</th>
-                    <th>Date Created</th>
+                    <th>Date Assigned</th>
                     <th>Action</th>
                   </tr>
                   </thead>
                   <tbody>
+                  <?php
+                    $conn = mysqli_connect("localhost", "root", "", "myra");
+                    if($conn-> connect_error){
+                        die("Connection failed::". $conn-> connect_error);
+                    }
+
+                    $sql = "SELECT ua.assigned_no, ua.USER_ID, u.USER_NAME, ur.role_name, uc.access_status, ua.assigned_date FROM user_assigned ua JOIN user u ON ua.USER_ID = u.USER_ID JOIN user_role ur ON ua.role_no = ur.role_no JOIN user_access uc ON ua.access_no = uc.access_no";
+                    $result = $conn->query($sql);
+
+                    if($result-> num_rows > 0){
+                        while ($row = $result-> fetch_assoc()){
+                          ?>
+                          <tr>
+                            <td><?php echo $row['assigned_no']; ?></td>
+                            <td><?php echo $row['USER_ID']; ?></td>
+                            <td><?php echo $row['USER_NAME']; ?></td>
+                            <td><?php echo $row['role_name']; ?></td>
+                            <td><?php echo $row['access_status']; ?></td>
+                            <td><?php echo $row['assigned_date']; ?></td>
+
+                            <td>
+                              <div class="btn-group">
+                                <a href="viewuser.php" class="btn btn-primary btnn-block btn-sm fas fa-eye"></a>
+                                <a href="edituser.php" class="btn btn-primary btnn-block btn-sm fas fa-edit"></a>
+                                <a href="#" class="btn btn-danger btnn-block btn-sm fas fa-trash-can"></a>
+                              </div>
+                            </td>
+                          </tr>
+                          <?php
+                        }
+                    }
+                    ?>
                   </tbody>
                   <tfoot>
                   <tr>
@@ -147,7 +179,7 @@ if(!isset($_SESSION['userlogged']) || $_SESSION['userlogged'] !=1) {
                     <th>Staff Name</th>
                     <th>Role</th>
                     <th>Status</th>
-                    <th>Date Created</th>
+                    <th>Date Assigned</th>
                     <th>Action</th>
                   </tr>
                   </tfoot>

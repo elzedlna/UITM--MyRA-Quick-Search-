@@ -145,7 +145,7 @@ if(!isset($_SESSION['userlogged']) || $_SESSION['userlogged'] !=1) {
                         die("Connection failed::". $conn-> connect_error);
                     }
 
-                    $sql = "SELECT s.section_order, sb.subsection_order, t.term_no, t.term_order, t.term_malay, t.term_english, t.date_created, t.ttoken FROM term t
+                    $sql = "SELECT s.section_order, s.section_malay, sb.subsection_order, sb.subsection_malay, t.term_no, t.term_order, t.term_malay, t.term_english, t.date_created, t.ttoken FROM term t
                     JOIN subsection sb ON t.subsection_no = sb.subsection_no
                     JOIN section s ON sb.section_no = s.section_no";
                     $result = $conn->query($sql);
@@ -154,8 +154,8 @@ if(!isset($_SESSION['userlogged']) || $_SESSION['userlogged'] !=1) {
                           ?>
                           <tr>
                             <td><?php echo $row['term_no']; ?></td>
-                            <td><?php echo $row['section_order']; ?></td>
-                            <td><?php echo $row['subsection_order']; ?></td>
+                            <td><?php echo $row['section_order']." - ".$row['section_malay']; ?></td>
+                            <td><?php echo $row['subsection_order']." - ".$row['subsection_malay']; ?></td>
                             <td><?php echo $row['term_order']; ?></td>
                             <td><?php echo $row['term_malay']; ?></td>
                             <td><?php echo $row['term_english']; ?></td>

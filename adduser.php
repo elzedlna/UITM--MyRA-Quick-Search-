@@ -154,7 +154,8 @@ if(!isset($_SESSION['userlogged']) || $_SESSION['userlogged'] !=1) {
                 <!-- /.card-body -->
 
                 <div class="card-footer">
-                  <button type="submit" class="btn btn-primary">Submit</button>
+                  <button type="submit" id="submit" name="submit" class="btn btn-primary" data-toggle="modal" data-target="#modal-success">Submit</button>
+                  <button  id="cancel" class="btn btn-default">Cancel</button>
                 </div>
               </form>
             </div>
