@@ -3,6 +3,48 @@ session_start();
 if(!isset($_SESSION['userlogged']) || $_SESSION['userlogged'] !=1) {
   header("Location: login.php");
 }
+
+include("connection.php");
+
+//search id before insert
+if(isset($_POST['search'])) {
+  $id = $_POST['id'];
+  $query = "SELECT * FROM user_assigned WHERE USER_ID = '".$id."'";
+  $result = mysqli_query($conn, $query);
+
+  if ($result) {
+    if (mysqli_num_rows($result) > 0) {
+      //user already exists in user_assigned
+      echo  "<script type= 'text/javascript'>alert('User is already assigned to a role. Please choose another user.');</script> ";
+      $USER_NAME = "";
+      $USER_ID = "";
+
+    } else {
+      //user does not exists in user_assigned, proceed to search
+      //search user
+
+      $query = "SELECT USER_NAME, USER_ID FROM user WHERE USER_ID = '".$id."' LIMIT 1";
+      $result = mysqli_query($conn, $query);
+
+      if(mysqli_num_rows($result) > 0) {
+        while ($row = mysqli_fetch_array($result)) {
+          $USER_NAME = $row['USER_NAME'];
+          $USER_ID = $row['USER_ID'];
+        }  
+      } else {
+          echo  "<script type= 'text/javascript'>alert('Incorrect Staff ID');</script> ";
+          $USER_NAME = "";
+          $USER_ID = "";
+      }
+      mysqli_free_result($result);
+    }
+  }
+  
+} else {
+  $USER_NAME = "";
+  $USER_ID = "";
+}
+
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -38,6 +80,8 @@ if(!isset($_SESSION['userlogged']) || $_SESSION['userlogged'] !=1) {
   <link rel="stylesheet" href="plugins/datatables-buttons/css/buttons.bootstrap4.min.css">
   <!-- Theme style -->
   <!-- <script src="https://kit.fontawesome.com/e138785ca7.js" crossorigin="anonymous"></script> -->
+  <!-- Toastr -->
+  <link rel="stylesheet" href="../../plugins/toastr/toastr.min.css">
 
 </head>
 <body class="hold-transition sidebar-mini layout-fixed">
@@ -122,43 +166,82 @@ if(!isset($_SESSION['userlogged']) || $_SESSION['userlogged'] !=1) {
             <!-- general form elements -->
             <div class="card card-primary">
               <div class="card-header">
+                <h3 class="card-title">Search ID</h3>
+              </div>
+              <form method="post" class="form-horizontal">
+                <div class="card-body">
+                  <label for="id">Search Staff ID</label>
+                    <div class="form-group row">
+                      <div class="col-sm-2">
+                        <input type="text" name="id" id="id" class="form-control" placeholder="Search Staff ID" style="width:10em">
+                      </div>
+                      <button class="btn btn-primary" type="submit" id="search" name="search">Search ID</button>
+                    </div>
+                </div>
+              </form>
+            </div>
+            <div class="card card-primary">
+              <div class="card-header">
                 <h3 class="card-title">Add User</h3>
               </div>
               <!-- /.card-header -->
               <!-- form start -->
-              <form>
+              <form class="form-horizontal" action="padduser.php" method="post">
                 <div class="card-body">
                   <div class="form-group">
-                    <label for="staff_id">Staff ID</label>
-                    <input type="text" class="form-control" id="staff_id" placeholder="Staff ID">
+                    <label for="USER_ID">Staff ID</label>
+                    <input type="text" class="form-control" name="USER_ID" id="USER_ID" placeholder="Staff ID" value="<?php echo $USER_ID; ?>"disabled>
                   </div>
                   <div class="form-group">
-                    <label for="staff_name">Staff Name</label>
-                    <input type="text" class="form-control" id="staff_name" placeholder="Staff Name" disabled > 
+                    <label for="USER_NAME">Staff Name</label>
+                    <input type="text" class="form-control" name="USER_NAME" id="USER_NAME" placeholder="Staff Name" value="<?php echo $USER_NAME; ?>" disabled > 
                   </div>
                   <div class="form-group">
-                    <label for="staff_role">Role</label>
-                    <select class="form-control select2" style="width: 150px;">
-                            <option>Administrator</option>
-                            <option>Moderator</option>
-                        </select>
+                    <label for="role_no">Role</label>
+                    <select class="form-control select2" style="width: 150px;" id="role_no" name="role_no">
+                      <option value="1">Administrator</option>
+                      <option value="2">Moderator</option>
+                    </select>
                   </div>
                   <div class="form-group">
-                        <label>Access</label>
-                        <select class="form-control select2" style="width: 150px;">
-                            <option>Active</option>
-                            <option>Inactive</option>
-                        </select>
-                    </div>
+                    <label for="access_no">Access</label>
+                    <select class="form-control select2" style="width: 150px;" id="access_no" name="access_no">
+                        <option value="1">Active</option>
+                        <option value="0">Inactive</option>
+                    </select>
+                  </div>
                 </div>
                 <!-- /.card-body -->
 
                 <div class="card-footer">
-                  <button type="submit" id="submit" name="submit" class="btn btn-primary" data-toggle="modal" data-target="#modal-success">Submit</button>
-                  <button  id="cancel" class="btn btn-default">Cancel</button>
+                  <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#modal-primary">Submit</button>
+                  <button id="cancel" class="btn btn-default" >Cancel</button>
+                </div>
+
+                <div class="modal fade" id="modal-primary">
+                  <div class="modal-dialog">
+                    <div class="modal-content bg-primary">
+                      <div class="modal-header">
+                        <h4 class="modal-title">Add User</h4>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                          <span aria-hidden="true">&times;</span>
+                        </button>
+                      </div>
+                      <div class="modal-body">
+                        <p>Do you want to proceed?</p>
+                      </div>
+                      <div class="modal-footer justify-content-between">
+                        <button type="button" class="btn btn-outline-light" data-dismiss="modal">Close</button>
+                        <button type="submit" id="submit" name="submit" class="btn btn-outline-light">Submit</button>
+                      </div>
+                    </div>
+                    <!-- /.modal-content -->
+                  </div>
+                  <!-- /.modal-dialog -->
                 </div>
               </form>
             </div>
+            
             <!-- /.card -->
             
           </div>

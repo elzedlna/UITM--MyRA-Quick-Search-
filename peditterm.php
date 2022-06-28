@@ -10,22 +10,23 @@ if(isset($_POST['submit'])) {
     $Update = getTimestamp();
     $token = $_GET['id'];
     $user_id = $_SESSION['USER_ID'];
+    try {
+        $sql = "UPDATE term SET term_malay = '".$term_m."', term_english = '".$term_e."', term_desc = '".$term_desc."', date_updated = '".$Update."' WHERE ttoken = '".$token."'";
+        $result = mysqli_query($conn,$sql);
 
-    $sql = "UPDATE term SET term_malay = '".$term_m."', term_english = '".$term_e."', term_desc = '".$term_desc."', date_updated = '".$Update."' WHERE ttoken = '".$token."'";
+        $sql2 = "SELECT * FROM term WHERE ttoken = '$token'";
+        $result2 = mysqli_query($conn,$sql2);
+        $row = mysqli_fetch_assoc($result2);
+        
+        $sql3 = "INSERT INTO term_history (term_no, USER_ID, term_process) VALUES ('".$row['term_no']."', '".$user_id."', 'EDIT')";
+        $result3 = mysqli_query($conn,$sql3);
 
-    $sql2 = "SELECT * FROM term WHERE ttoken = '$token'";
-    $result2 = mysqli_query($conn,$sql2);
-    $row = mysqli_fetch_assoc($result2);
-    
-    $sql3 = "INSERT INTO term_history (term_no, USER_ID, term_process) VALUES ('".$row['term_no']."', '".$user_id."', 'EDIT')";
-    $result3 = mysqli_query($conn,$sql3);
-
-    if ($conn->query($sql) === TRUE) {
-        echo "<script type= 'text/javascript'>alert('Record updated successfully');</script> ";
-        header("Location: terms.php");
-    } else {
-        echo "<script type= 'text/javascript'>alert('Update unsuccessful);</script> ";
-    }
+        if ($result == TRUE) {
+            echo "<script type= 'text/javascript'>alert('Record successfully updated');window.location='terms.php';</script> ";
+        } else {
+            echo "<script type= 'text/javascript'>alert('Update unsuccessful);</script> ";
+        }
+    } catch (Exception $e) { echo "Error!: ". $e->getMessage(). "<br>"; die();}
 } else {
     header("Location: terms.php");
 }

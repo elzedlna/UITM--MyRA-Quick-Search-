@@ -32,11 +32,6 @@ $json = json_decode($response, TRUE);
 
 if($json['status'] == "true")
 {
-    /*if(checkStaffLogin($dbh, $dbh3, $userid) == true) 
-        header("Location: dashboard/index.php");
-    else
-        header("Location: index.php?warning");*/
-    // $sql3 = "select * from group_aizat.user_access where USER_ID = '".$USER_ID."' and appaccessid = 1";
     $sql3 = "SELECT * FROM myra.user_access WHERE USER_ID = '".$USER_ID."' and access_no = 1";
     $qry3 = mysqli_query($conn,$sql3);
     $row3 = mysqli_num_rows($qry3);

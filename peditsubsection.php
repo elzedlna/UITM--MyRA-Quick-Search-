@@ -10,23 +10,24 @@ if(isset($_POST['submit'])) {
   $Update = getTimestamp();
   $token = $_GET['id'];
   $user_id = $_SESSION['USER_ID'];
-  
-  $sql = "UPDATE subsection SET subsection_malay = '".$subsection_m."', subsection_english = '".$subsection_e."', subsection_desc = '".$subsection_desc."', date_updated = '".$Update."' WHERE sbtoken = '".$token."'";
+  try {
+    $sql = "UPDATE subsection SET subsection_malay = '".$subsection_m."', subsection_english = '".$subsection_e."', subsection_desc = '".$subsection_desc."', date_updated = '".$Update."' WHERE sbtoken = '".$token."'";
+    $result = mysqli_query($conn,$sql);
 
-  $sql2 = "SELECT * FROM subsection WHERE sbtoken = '$token'";
-  $result2 = mysqli_query($conn,$sql2);
-  $row = mysqli_fetch_assoc($result2);
-  
-  $sql3 = "INSERT INTO subsection_history (subsection_no, USER_ID, subs_process) VALUES ('".$row['subsection_no']."', '".$user_id."', 'EDIT')";
-  $result3 = mysqli_query($conn,$sql3);
+    $sql2 = "SELECT * FROM subsection WHERE sbtoken = '$token'";
+    $result2 = mysqli_query($conn,$sql2);
+    $row = mysqli_fetch_assoc($result2);
+    
+    $sql3 = "INSERT INTO subsection_history (subsection_no, USER_ID, subs_process) VALUES ('".$row['subsection_no']."', '".$user_id."', 'EDIT')";
+    $result3 = mysqli_query($conn,$sql3);
 
 
-  if ($conn->query($sql) === TRUE) {
-      echo "<script type= 'text/javascript'>alert('Record updated successfully');</script> ";
-      header("Location: subsections.php");
-  } else {
-      echo "<script type= 'text/javascript'>alert('Update unsuccessful);</script> ";
-  }
+    if ($result == TRUE) {
+        echo "<script type= 'text/javascript'>alert('Record successfully updated');window.location='subsections.php';</script> ";
+    } else {
+        echo "<script type= 'text/javascript'>alert('Update unsuccessful);</script> ";
+    }
+  } catch (Exception $e) { echo "Error!: ". $e->getMessage(). "<br>"; die();}
 } else {
   header("Location: subsections.php");
 }

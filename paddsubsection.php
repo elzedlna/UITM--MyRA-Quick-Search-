@@ -10,25 +10,42 @@ if(isset($_POST['submit'])) {
   $subsection_e = $_POST['subsection_english'];
   $subsection_desc = $_POST['subsection_desc'];
   $Cdate = getTimestamp();
-  // $section_no = getSectionNo($conn,$section_order);
   $user_id = $_SESSION['USER_ID'];
   $token = generateToken(10);
 
-  $sql = "INSERT INTO subsection(subsection_order,subsection_malay, subsection_english, subsection_desc, date_created, section_no, USER_ID, sbtoken) VALUES('".$subsection_order."','".$subsection_m."','".$subsection_e."','".$subsection_desc."','".$Cdate."','".$section_no."','".$user_id."','".$token."')";
+  function checkSubs($conn,$subsection_order,$section_no) {
+    $found = false;
+    $sql = "SELECT sb.subsection_order, s.section_no FROM subsection sb JOIN section s ON sb.section_no = sb.section_no WHERE sb.subsection_order = '".$subsection_order."' AND sb.section_no = '".$section_no."'";
+    $qry = mysqli_query($conn,$sql);
+    $row = mysqli_num_rows($qry);
 
-  $sql2 = "SELECT * FROM subsection WHERE sbtoken = '$token'";
-  $result2 = mysqli_query($conn,$sql2);
-  $row = mysqli_fetch_assoc($result2);
-  
-  $sql3 = "INSERT INTO subsection_history (subsection_no, USER_ID, subs_process) VALUES ('".$row['subsection_no']."', '".$user_id."', 'ADD')";
-  $result3 = mysqli_query($conn,$sql3);
-
-  if ($conn->query($sql) === TRUE) {
-      echo "<script type= 'text/javascript'>alert('New record successfully saved');</script> ";
-      header("Location: subsections.php");
-  } else {
-      echo "<script type= 'text/javascript'>alert('Record unsuccessfully saved);</script> ";
+    if($row > 0) {
+      $found = true;
+    }
+    return $found;
   }
+
+  try {
+    if(checkSubs($conn,$subsection_order,$section_no) == TRUE) {
+      echo "<script type= 'text/javascript'>alert('Record already exists.');window.location='addsubsection.php';</script> ";
+    } else {
+      $sql = "INSERT INTO subsection(subsection_order,subsection_malay, subsection_english, subsection_desc, date_created, section_no, USER_ID, sbtoken) VALUES('".$subsection_order."','".$subsection_m."','".$subsection_e."','".$subsection_desc."','".$Cdate."','".$section_no."','".$user_id."','".$token."')";
+      $result = mysqli_query($conn,$sql);
+  
+      $sql2 = "SELECT * FROM subsection WHERE sbtoken = '$token'";
+      $result2 = mysqli_query($conn,$sql2);
+      $row = mysqli_fetch_assoc($result2);
+    
+      $sql3 = "INSERT INTO subsection_history (subsection_no, USER_ID, subs_process) VALUES ('".$row['subsection_no']."', '".$user_id."', 'ADD')";
+      $result3 = mysqli_query($conn,$sql3);
+      
+      if($result == TRUE) {
+        echo "<script type= 'text/javascript'>alert('New record successfully saved');window.location='subsections.php';</script> ";
+      } else {
+        echo "<script type= 'text/javascript'>alert('Record unsuccessfully saved);</script> ";
+      }
+    }
+  } catch (Exception $e) { echo "Error!: ". $e->getMessage(). "<br>"; die();}
 } else {
   header("Location: subsections.php");
 }

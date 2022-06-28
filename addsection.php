@@ -37,6 +37,8 @@ if(!isset($_SESSION['userlogged']) || $_SESSION['userlogged'] !=1) {
   <link rel="stylesheet" href="plugins/datatables-buttons/css/buttons.bootstrap4.min.css">
   <!-- Theme style -->
   <!-- <script src="https://kit.fontawesome.com/e138785ca7.js" crossorigin="anonymous"></script> -->
+    <!-- Toastr -->
+    <link rel="stylesheet" href="../../plugins/toastr/toastr.min.css">
 
 </head>
 <body class="hold-transition sidebar-mini layout-fixed">
@@ -165,8 +167,30 @@ if(!isset($_SESSION['userlogged']) || $_SESSION['userlogged'] !=1) {
                 <!-- /.card-body -->
 
                 <div class="card-footer">
-                  <button type="submit" id="submit" name="submit" class="btn btn-primary" data-toggle="modal" data-target="#modal-success">Submit</button>
-                  <button id="cancel" class="btn btn-default">Cancel</button>
+                  <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#modal-primary">Submit</button>
+                  <button id="cancel" class="btn btn-default" >Cancel</button>
+                </div>
+
+                <div class="modal fade" id="modal-primary">
+                  <div class="modal-dialog">
+                    <div class="modal-content bg-primary">
+                      <div class="modal-header">
+                        <h4 class="modal-title">Add Section</h4>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                          <span aria-hidden="true">&times;</span>
+                        </button>
+                      </div>
+                      <div class="modal-body">
+                        <p>Do you want to proceed?</p>
+                      </div>
+                      <div class="modal-footer justify-content-between">
+                        <button type="button" class="btn btn-outline-light" data-dismiss="modal">Close</button>
+                        <button type="submit" id="submit" name="submit" class="btn btn-outline-light">Submit</button>
+                      </div>
+                    </div>
+                    <!-- /.modal-content -->
+                  </div>
+                  <!-- /.modal-dialog -->
                 </div>
               </form>
             </div>
