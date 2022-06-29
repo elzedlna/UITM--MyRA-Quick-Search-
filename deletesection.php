@@ -3,6 +3,20 @@ session_start();
 if(!isset($_SESSION['userlogged']) || $_SESSION['userlogged'] !=1) {
   header("Location: login.php");
 }
+$conn = mysqli_connect("localhost", "root", "", "myra");
+if($conn-> connect_error){
+    die("Connection failed::". $conn-> connect_error);
+}
+
+$token = $_GET['id'];
+$sql = "SELECT * FROM section WHERE stoken = '".$token."'";
+$result = $conn->query($sql);
+$row = mysqli_fetch_assoc($result);
+$section_order = $row['section_order'];
+$section_malay = $row['section_malay'];
+$section_desc = $row['section_desc'];
+$section_english = $row['section_english'];
+$date_created = $row['date_created'];
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -11,6 +25,7 @@ if(!isset($_SESSION['userlogged']) || $_SESSION['userlogged'] !=1) {
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>MyRA Quick Search</title>
   <link rel="shortcut icon" href="myralogo.png">
+
   <!-- Google Font: Source Sans Pro -->
   <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
   <!-- Font Awesome -->
@@ -37,8 +52,8 @@ if(!isset($_SESSION['userlogged']) || $_SESSION['userlogged'] !=1) {
   <link rel="stylesheet" href="plugins/datatables-buttons/css/buttons.bootstrap4.min.css">
   <!-- Theme style -->
   <!-- <script src="https://kit.fontawesome.com/e138785ca7.js" crossorigin="anonymous"></script> -->
-    <!-- Toastr -->
-    <link rel="stylesheet" href="../../plugins/toastr/toastr.min.css">
+  <!-- Toastr -->
+  <link rel="stylesheet" href="../../plugins/toastr/toastr.min.css">
 
 </head>
 <body class="hold-transition sidebar-mini layout-fixed">
@@ -121,76 +136,58 @@ if(!isset($_SESSION['userlogged']) || $_SESSION['userlogged'] !=1) {
         <div class="row">
           <div class="col-12">
             <!-- general form elements -->
-            <div class="card card-primary">
+            <div class="card card-danger">
               <div class="card-header">
-                <h3 class="card-title">Add Section</h3>
+                <h3 class="card-title">Delete Section</h3>
               </div>
               <!-- /.card-header -->
               <!-- form start -->
-              <form action="paddsection.php" method="post">
+              <form action="pdeletesection.php?id=<?php echo $token;?>" method="post">
                 <div class="card-body">
                   <div class="form-group">
                     <label for="section_order">Section Order</label>
-                    <select class="form-control select2" id="section_order" style="width:4em" name="section_order" required>
-                      <?php
-                      include('connection.php');
-                      $letters = range('A','Z');
-                      $letters_used = array();
-                      $index = 0;
-                      $sql = "SELECT section_order FROM section WHERE date_deleted IS NULL ORDER BY section_order ASC";
-                      $sections = mysqli_query($conn,$sql);
-                      while($d = mysqli_fetch_assoc($sections)) {
-                        $letters_used[$index] = $d['section_order'];
-                        $index++; 
-                      }
-                      $result = array_diff($letters,$letters_used);
-
-                      foreach( $result as $s_order) {
-                        echo "<option value='".$s_order."'>$s_order</option>";
-                      }
-                      ?>
-                    </select>
+                    <output class="form-control" id="section_order" style="width:4em" name="section_order"><?php echo $section_order; ?></output>
                   </div>
                   <div class="form-group">
                     <label for="section_malay">Section (Malay)</label>
-                    <input type="text" class="form-control" id="section_malay" name="section_malay">
+                    <output type="text" class="form-control" id="section_malay" name="section_malay"><?php echo $section_malay; ?></output>
                   </div>
                   <div class="form-group">
                     <label for="section_english">Section (English)</label>
-                    <input type="text" class="form-control" id="section_english" name="section_english">
+                    <output type="text" class="form-control" id="section_english" name="section_english"><?php echo $section_english; ?></output>
                   </div>
                   <div class="form-group">
                     <label for="section_desc">Section Description</label>
-                    <textarea class="form-control" rows="5" id="section_desc" name="section_desc" style="resize:none"></textarea>
+                    <textarea class="form-control" rows="5" id="section_desc" name="section_desc" style="resize:none" disabled><?php echo $section_desc; ?></textarea>
                   </div>
                 </div>
                 <!-- /.card-body -->
 
                 <div class="card-footer">
-                  <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#modal-primary">Submit</button>
-                  <button id="cancel" class="btn btn-default" >Cancel</button>
+                  <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#modal-primary">Delete</button>
+                  <button id="back" name="back" class="btn btn-default">Back</button>
+                  <script type="text/javascript">document.getElementById("back").onclick = function(){location.href = "sections.php";};</script>
                 </div>
-
                 <div class="modal fade" id="modal-primary">
-                  <div class="modal-dialog">
-                    <div class="modal-content bg-primary">
-                      <div class="modal-header">
-                        <h4 class="modal-title">Add Section</h4>
+                    <div class="modal-dialog">
+                    <div class="modal-content bg-danger">
+                        <div class="modal-header">
+                        <h4 class="modal-title">Delete Record</h4>
                         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                          <span aria-hidden="true">&times;</span>
+                            <span aria-hidden="true">&times;</span>
                         </button>
-                      </div>
-                      <div class="modal-body">
-                        <p>Do you want to proceed?</p>
-                      </div>
-                      <div class="modal-footer justify-content-between">
-                        <button type="button" class="btn btn-outline-light" data-dismiss="modal">Close</button>
-                        <button type="submit" id="submit" name="submit" class="btn btn-outline-light">Submit</button>
-                      </div>
+                        </div>
+                        <div class="modal-body">
+                        <p>Do you want to delete this record?</p>
+                        </div>
+                        <div class="modal-footer justify-content-between">
+                            <button type="button" class="btn btn-outline-light" data-dismiss="modal">Close</button>
+                            <button type="submit" id="submit" name="submit" class="btn btn-outline-light">Delete</button>
+                        </div>
                     </div>
                     <!-- /.modal-content -->
-                  </div>
-                  <!-- /.modal-dialog -->
+                    </div>
+                    <!-- /.modal-dialog -->
                 </div>
               </form>
             </div>

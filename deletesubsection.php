@@ -3,6 +3,21 @@ session_start();
 if(!isset($_SESSION['userlogged']) || $_SESSION['userlogged'] !=1) {
   header("Location: login.php");
 }
+$conn = mysqli_connect("localhost", "root", "", "myra");
+if($conn-> connect_error){
+    die("Connection failed::". $conn-> connect_error);
+}
+
+$sbtoken = $_GET['id'];
+$sql = "SELECT * FROM subsection sb JOIN section s ON sb.section_no = s.section_no WHERE sb.sbtoken = '".$sbtoken."'";
+$result = $conn->query($sql);
+$row = mysqli_fetch_assoc($result);
+$section_no = $row['section_order'] . " - " . $row['section_malay'];
+$subsection_order = $row['subsection_order'];
+$subsection_malay = $row['subsection_malay'];
+$subsection_english = $row['subsection_english'];
+$subsection_desc = $row['subsection_desc'];
+
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -40,14 +55,15 @@ if(!isset($_SESSION['userlogged']) || $_SESSION['userlogged'] !=1) {
   <!-- <script src="https://kit.fontawesome.com/e138785ca7.js" crossorigin="anonymous"></script> -->
   <!-- Toastr -->
   <link rel="stylesheet" href="../../plugins/toastr/toastr.min.css">
+
 </head>
 <body class="hold-transition sidebar-mini layout-fixed">
 <div class="wrapper">
 
-  <!-- Preloader 
+  <!-- Preloader
   <div class="preloader flex-column justify-content-center align-items-center">
     <img class="animation__shake" src="dist/img/AdminLTELogo.png" alt="AdminLTELogo" height="60" width="60">
-  </div>-->
+  </div> -->
 
   <!-- Navbar -->
   <nav class="main-header navbar navbar-expand navbar-white navbar-light">
@@ -86,8 +102,8 @@ if(!isset($_SESSION['userlogged']) || $_SESSION['userlogged'] !=1) {
       <!-- Sidebar Menu -->
       <nav class="mt-2">
       <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
-          <?php include('menu.php'); ?>
-        </ul>
+        <?php include('menu.php'); ?>
+      </ul>
       </nav>
       <!-- /.sidebar-menu -->
     </div>
@@ -120,80 +136,67 @@ if(!isset($_SESSION['userlogged']) || $_SESSION['userlogged'] !=1) {
       <div class="container-fluid">
         <div class="row">
           <div class="col-12">
-            <div class="card card-primary">
+            <!-- general form elements -->
+            <div class="card card-danger">
               <div class="card-header">
-                <h3 class="card-title">Terms</h3>
-                <a href="addterm.php"><button type="submit" class="card-title btn btn-warning float-right">Add Term</button></a>
+                <h3 class="card-title">Delete Sub-Section</h3>
               </div>
               <!-- /.card-header -->
-              <div class="card-body">
-                <table id="example2" class="table table-bordered table-hover">
-                  <thead>
-                  <tr>
-                    <th>#</th>
-                    <th>Section</th>
-                    <th>Sub-Section</th>
-                    <th>Term Order</th>
-                    <th>Term (Malay)</th>
-                    <th>Term (English)</th>
-                    <th>Date Created</th>
-                    <th>Action</th>
-                  </tr>
-                  </thead>
-                  <tbody>
-                  <?php
-                    $conn = mysqli_connect("localhost", "root", "", "myra");
-                    if($conn-> connect_error){
-                        die("Connection failed::". $conn-> connect_error);
-                    }
+              <!-- form start -->
+              <form action="pdeletesubsection.php?id=<?php echo $sbtoken; ?>" method="post">
+                <div class="card-body">
+                  <div class="form-group">
+                    <label for="section_no">Section</label>
+                    <output class="form-control" id="section_no" style="width:20em" name="section_no"><?php echo $section_no; ?></output>
+                  </div>
+                  <div class="form-group">
+                    <label for="subsection_order">Sub-Section Order</label>
+                    <output class="form-control" id="subsection_order" name="subsection_order" style="width:4em"><?php echo $subsection_order; ?></output>
+                  </div>
+                  <div class="form-group">
+                    <label for="subsection_malay">Sub-Section (Malay)</label>
+                    <output class="form-control" id="subsection_malay" name="subsection_malay"><?php echo $subsection_malay; ?></output>
+                  </div>
+                  <div class="form-group">
+                    <label for="subsection_english">Sub-Section (English)</label>
+                    <output class="form-control" id="subsection_english" name="subsection_english"><?php echo $subsection_english; ?></output>
+                  </div>
+                  <div class="form-group">
+                    <label for="subsection_desc">Sub-Section Description</label>
+                    <textarea class="form-control" rows="5" id="subsection_desc" name="subsection_desc" style="resize:none" disabled><?php echo $subsection_desc; ?></textarea>
+                  </div>
+                </div>
+                <!-- /.card-body -->
 
-                    $sql = "SELECT s.section_order, s.section_malay, sb.subsection_order, sb.subsection_malay, t.term_no, t.term_order, t.term_malay, t.term_english, t.date_created, t.ttoken FROM term t
-                    JOIN subsection sb ON t.subsection_no = sb.subsection_no
-                    JOIN section s ON sb.section_no = s.section_no WHERE s.date_deleted IS NULL AND sb.date_deleted IS NULL AND t.date_deleted IS NULL";
-                    $result = $conn->query($sql);
-                    $counter = 1;
-                    if($result-> num_rows > 0){
-                        while ($row = $result-> fetch_assoc()){
-                          ?>
-                          <tr>
-                            <td><?php echo $counter++; ?></td>
-                            <td><?php echo $row['section_order']." - ".$row['section_malay']; ?></td>
-                            <td><?php echo $row['subsection_order']." - ".$row['subsection_malay']; ?></td>
-                            <td><?php echo $row['term_order']; ?></td>
-                            <td><?php echo $row['term_malay']; ?></td>
-                            <td><?php echo $row['term_english']; ?></td>
-                            <td><?php echo $row['date_created']; ?></td>
-                            <td>
-                              <div class="btn-group">
-                                  <button type="button" name="view" id="view" onclick="window.location.href='viewterm.php?id=<?php echo $row['ttoken']; ?>'" class="btn btn-primary btnn-block btn-sm fas fa-eye"></button>
-                                  <button type="button" name="edit" id="edit" onclick="window.location.href='editterm.php?id=<?php echo $row['ttoken']; ?>'" class="btn btn-primary btnn-block btn-sm fas fa-edit"></button>
-                                  <button type="button" name="delete" id="delete" onclick="window.location.href='deleteterm.php?id=<?php echo $row['ttoken']; ?>'" class="btn btn-danger btnn-block btn-sm fas fa-trash-can"></button>
-                              </div>
-                            </td>
-                          </tr>
-                          <?php
-                        }
-                      }   
-                    ?>
-                  </tbody>
-                  <tfoot>
-                  <tr>
-                    <th>#</th>
-                    <th>Section</th>
-                    <th>Sub-Section</th>
-                    <th>Term Order</th>
-                    <th>Term (Malay)</th>
-                    <th>Term (English)</th>
-                    <th>Date Created</th>
-                    <th>Action</th>
-                  </tr>
-                  </tfoot>
-                </table>
-              </div>
-              <div class="card-footer">
-              </div>
-              <!-- /.card-body -->
+                <div class="card-footer">
+                  <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#modal-primary">Delete</button>
+                  <button  id="back" class="btn btn-default">Back</button>
+                  <script type="text/javascript">document.getElementById("back").onclick = function(){location.href = "subsections.php";};</script>
+                </div>
+                <div class="modal fade" id="modal-primary">
+                    <div class="modal-dialog">
+                    <div class="modal-content bg-danger">
+                        <div class="modal-header">
+                        <h4 class="modal-title">Delete Record</h4>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                        </div>
+                        <div class="modal-body">
+                        <p>Do you want to delete this record?</p>
+                        </div>
+                        <div class="modal-footer justify-content-between">
+                            <button type="button" class="btn btn-outline-light" data-dismiss="modal">Close</button>
+                            <button type="submit" id="submit" name="submit" class="btn btn-outline-light">Delete</button>
+                        </div>
+                    </div>
+                    <!-- /.modal-content -->
+                    </div>
+                    <!-- /.modal-dialog -->
+                </div>
+              </form>
             </div>
+            <!-- /.card -->
             
           </div>
           <!-- /.col -->
@@ -258,38 +261,5 @@ if(!isset($_SESSION['userlogged']) || $_SESSION['userlogged'] !=1) {
 <!-- <script src="dist/js/demo.js"></script> -->
 <!-- AdminLTE dashboard demo (This is only for demo purposes) -->
 <script src="dist/js/pages/dashboard.js"></script>
-<!-- DataTables  & Plugins -->
-<script src="plugins/datatables/jquery.dataTables.min.js"></script>
-<script src="plugins/datatables-bs4/js/dataTables.bootstrap4.min.js"></script>
-<script src="plugins/datatables-responsive/js/dataTables.responsive.min.js"></script>
-<script src="plugins/datatables-responsive/js/responsive.bootstrap4.min.js"></script>
-<script src="plugins/datatables-buttons/js/dataTables.buttons.min.js"></script>
-<script src="plugins/datatables-buttons/js/buttons.bootstrap4.min.js"></script>
-<script src="plugins/jszip/jszip.min.js"></script>
-<script src="plugins/pdfmake/pdfmake.min.js"></script>
-<script src="plugins/pdfmake/vfs_fonts.js"></script>
-<script src="plugins/datatables-buttons/js/buttons.html5.min.js"></script>
-<script src="plugins/datatables-buttons/js/buttons.print.min.js"></script>
-<script src="plugins/datatables-buttons/js/buttons.colVis.min.js"></script>
-<!-- AdminLTE App -->
-<script src="dist/js/adminlte.min.js"></script>
-<!-- Page specific script -->
-<script>
-    $(function () {
-      $("#example1").DataTable({
-        "responsive": true, "lengthChange": false, "autoWidth": false,
-        "buttons": ["copy", "csv", "excel", "pdf", "print", "colvis"]
-      }).buttons().container().appendTo('#example1_wrapper .col-md-6:eq(0)');
-      $('#example2').DataTable({
-        "paging": true,
-        "lengthChange": true,
-        "searching": true,
-        "ordering": true,
-        "info": true,
-        "autoWidth": true,
-        "responsive": true,
-      });
-    });
-  </script>
 </body>
 </html>

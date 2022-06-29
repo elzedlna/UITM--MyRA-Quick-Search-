@@ -145,23 +145,25 @@ if(!isset($_SESSION['userlogged']) || $_SESSION['userlogged'] !=1) {
                         die("Connection failed::". $conn-> connect_error);
                     }
 
-                    $sql = "SELECT * FROM section";
+                    $sql = "SELECT * FROM section WHERE date_deleted IS NULL ORDER BY section_no";
                     $result = $conn->query($sql);
-
+                    $counter = 1;
                     if($result-> num_rows > 0){
                         while ($row = $result-> fetch_assoc()){
+                          $token = $row['stoken'];
                           ?>
                           <tr>
-                            <td><?php echo $row['section_no']; ?></td>
+                            
+                            <td><?php echo $counter++; ?></td>
                             <td><?php echo $row['section_order']; ?></td>
                             <td><?php echo $row['section_malay']; ?></td>
                             <td><?php echo $row['section_english']; ?></td>
                             <td><?php echo $row['date_created']; ?></td>
                             <td>
                               <div class="btn-group">
-                                <a href="viewsection.php?id=<?php echo $row['stoken']; ?>" class="btn btn-primary btnn-block btn-sm fas fa-eye"></a>
-                                <a href="editsection.php?id=<?php echo $row['stoken']; ?>" class="btn btn-primary btnn-block btn-sm fas fa-edit"></a>
-                                <a href="#" class="btn btn-danger btnn-block btn-sm fas fa-trash-can"></a>
+                                <button type="button" onclick="window.location.href='viewsection.php?id=<?php echo $token; ?>'" class="btn btn-primary btnn-block btn-sm fas fa-eye"></button>
+                                <button type="button" onclick="window.location.href='editsection.php?id=<?php echo $token; ?>'" class="btn btn-primary btnn-block btn-sm fas fa-edit"></button>
+                                <button type="button" onclick="window.location.href='deletesection.php?id=<?php echo $token; ?>'" class="btn btn-danger btnn-block btn-sm fas fa-trash-can"></button>
                               </div>
                             </td>
                           </tr>

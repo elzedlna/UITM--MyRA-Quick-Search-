@@ -147,25 +147,26 @@ if(!isset($_SESSION['userlogged']) || $_SESSION['userlogged'] !=1) {
                         die("Connection failed::". $conn-> connect_error);
                     }
 
-                    $sql = "SELECT sb.subsection_no, s.section_order, s.section_malay, sb.subsection_order, sb.subsection_malay, sb.subsection_english, sb.date_created, sb.sbtoken FROM subsection sb JOIN section s ON s.section_no = sb.section_no";
+                    $sql = "SELECT sb.subsection_no, s.section_order, s.section_malay, sb.subsection_order, sb.subsection_malay, sb.subsection_english, sb.date_created, sb.sbtoken FROM subsection sb JOIN section s ON s.section_no = sb.section_no WHERE s.date_deleted IS NULL AND sb.date_deleted IS NULL";
                     $result = $conn->query($sql);
+                    $counter = 1;
                     // $sql1 = "SELECT count(section_no) FROM subsection WHERE section_no =
                     if($result-> num_rows > 0){
                         while ($row = $result-> fetch_assoc()){
                           ?>
                           
                           <tr>
-                            <td><?php echo $row['subsection_no']; ?></td>
+                            <td><?php echo $counter++; ?></td>
                             <td><?php echo $row['section_order']." - ".$row['section_malay']; ?></td>
                             <td><?php echo $row['subsection_order']; ?></td>
                             <td><?php echo $row['subsection_malay']; ?></td>
                             <td><?php echo $row['subsection_english']; ?></td>
                             <td><?php echo $row['date_created']; ?></td>
                             <td>
-                            <div class="btn-group">
-                                <a href="viewsubsection.php?id=<?php echo $row['sbtoken']; ?>" class="btn btn-primary btnn-block btn-sm fas fa-eye"></a>
-                                <a href="editsubsection.php?id=<?php echo $row['sbtoken']; ?>" class="btn btn-primary btnn-block btn-sm fas fa-edit"></a>
-                                <a href="#" class="btn btn-danger btnn-block btn-sm fas fa-trash-can"></a>
+                              <div class="btn-group">
+                                  <button type="button" name="view" id="view" onclick="window.location.href='viewsubsection.php?id=<?php echo $row['sbtoken']; ?>'" class="btn btn-primary btnn-block btn-sm fas fa-eye"></button>
+                                  <button type="button" name="edit" id="edit" onclick="window.location.href='editsubsection.php?id=<?php echo $row['sbtoken']; ?>'" class="btn btn-primary btnn-block btn-sm fas fa-edit"></button>
+                                  <button type="button" name="delete" id="delete" onclick="window.location.href='deletesubsection.php?id=<?php echo $row['sbtoken']; ?>'" class="btn btn-danger btnn-block btn-sm fas fa-trash-can"></button>
                               </div>
                             </td>
                           </tr>
