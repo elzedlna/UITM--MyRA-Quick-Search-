@@ -166,7 +166,7 @@ if(!isset($_SESSION['userlogged']) || $_SESSION['userlogged'] !=1) {
                             <td>
                               <div class="btn-group">
                                   <button type="button" name="view" id="view" onclick="window.location.href='viewterm.php?id=<?php echo $row['ttoken']; ?>'" class="btn btn-primary btnn-block btn-sm fas fa-eye"></button>
-                                  <button type="button" name="edit" id="edit" onclick="window.location.href='editterm.php?id=<?php echo $row['ttoken']; ?>'" class="btn btn-primary btnn-block btn-sm fas fa-edit"></button>
+                                  <button type="button" name="edit" id="edit" onclick="window.location.href='editterm.php?id=<?php echo $row['ttoken']; ?>'" class="btn btn-secondary btnn-block btn-sm fas fa-edit"></button>
                                   <button type="button" name="delete" id="delete" onclick="window.location.href='deleteterm.php?id=<?php echo $row['ttoken']; ?>'" class="btn btn-danger btnn-block btn-sm fas fa-trash-can"></button>
                               </div>
                             </td>

@@ -164,7 +164,7 @@ if(!isset($_SESSION['userlogged']) || $_SESSION['userlogged'] !=1) {
                             <td>
                               <div class="btn-group">
                                 <a href="viewuser.php" class="btn btn-primary btnn-block btn-sm fas fa-eye"></a>
-                                <a href="edituser.php" class="btn btn-primary btnn-block btn-sm fas fa-edit"></a>
+                                <a href="edituser.php" class="btn btn-secondary btnn-block btn-sm fas fa-edit"></a>
                                 <a href="#" class="btn btn-danger btnn-block btn-sm fas fa-trash-can"></a>
                               </div>
                             </td>

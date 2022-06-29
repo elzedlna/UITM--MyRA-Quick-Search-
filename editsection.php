@@ -136,7 +136,7 @@ $section_english = $row['section_english'];
         <div class="row">
           <div class="col-12">
             <!-- general form elements -->
-            <div class="card card-primary">
+            <div class="card card-secondary">
               <div class="card-header">
                 <h3 class="card-title">Edit Section</h3>
               </div>
@@ -165,13 +165,13 @@ $section_english = $row['section_english'];
                 <!-- <script type="text/javascript">document.getElementById("back").onclick = function(){location.href = "sections.php";};</script> -->
 
                 <div class="card-footer">
-                  <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#modal-primary">Submit</button>
+                  <button type="button" class="btn btn-secondary" data-toggle="modal" data-target="#modal-primary">Submit</button>
                   <button id="cancel" class="btn btn-default" >Cancel</button>
                 </div>
 
                 <div class="modal fade" id="modal-primary">
                   <div class="modal-dialog">
-                    <div class="modal-content bg-primary">
+                    <div class="modal-content bg-secondary">
                       <div class="modal-header">
                         <h4 class="modal-title">Edit Section</h4>
                         <button type="button" class="close" data-dismiss="modal" aria-label="Close">

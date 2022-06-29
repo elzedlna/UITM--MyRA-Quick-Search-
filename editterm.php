@@ -139,7 +139,7 @@ $term_desc = $row['term_desc'];
         <div class="row">
           <div class="col-12">
             <!-- general form elements -->
-            <div class="card card-primary">
+            <div class="card card-secondary">
               <div class="card-header">
                 <h3 class="card-title">Edit Term</h3>
               </div>
@@ -176,13 +176,13 @@ $term_desc = $row['term_desc'];
                 <!-- <script type="text/javascript">document.getElementById("back").onclick = function(){location.href = "terms.php";};</script> -->
 
                 <div class="card-footer">
-                  <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#modal-primary">Submit</button>
+                  <button type="button" class="btn btn-secondary" data-toggle="modal" data-target="#modal-primary">Submit</button>
                   <button id="cancel" class="btn btn-default" >Cancel</button>
                 </div>
 
                 <div class="modal fade" id="modal-primary">
                   <div class="modal-dialog">
-                    <div class="modal-content bg-primary">
+                    <div class="modal-content bg-secondary">
                       <div class="modal-header">
                         <h4 class="modal-title">Edit Term</h4>
                         <button type="button" class="close" data-dismiss="modal" aria-label="Close">

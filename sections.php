@@ -162,7 +162,7 @@ if(!isset($_SESSION['userlogged']) || $_SESSION['userlogged'] !=1) {
                             <td>
                               <div class="btn-group">
                                 <button type="button" onclick="window.location.href='viewsection.php?id=<?php echo $token; ?>'" class="btn btn-primary btnn-block btn-sm fas fa-eye"></button>
-                                <button type="button" onclick="window.location.href='editsection.php?id=<?php echo $token; ?>'" class="btn btn-primary btnn-block btn-sm fas fa-edit"></button>
+                                <button type="button" onclick="window.location.href='editsection.php?id=<?php echo $token; ?>'" class="btn btn-secondary btnn-block btn-sm fas fa-edit"></button>
                                 <button type="button" onclick="window.location.href='deletesection.php?id=<?php echo $token; ?>'" class="btn btn-danger btnn-block btn-sm fas fa-trash-can"></button>
                               </div>
                             </td>
