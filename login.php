@@ -38,7 +38,7 @@ if(isset($_POST['login'])) {
   
   if($json['status'] == "true")
   {
-       $sql3 = "SELECT * FROM user_assigned ua JOIN user u ON ua.USER_ID = u.USER_ID JOIN user_role ur ON ua.role_no = ur.role_no WHERE u.USER_ID = '".$USER_ID."' AND ua.access_no=1";
+       $sql3 = "SELECT * FROM user_assigned ua JOIN user u ON ua.USER_ID = u.USER_ID JOIN user_role ur ON ua.role_no = ur.role_no WHERE u.USER_ID = '".$USER_ID."' AND ua.access_no = 1 AND ua.assigned_deleted IS NULL";
       echo $sql3;
       $qry3 = mysqli_query($conn,$sql3);
       $row3 = mysqli_num_rows($qry3);
@@ -51,7 +51,30 @@ if(isset($_POST['login'])) {
           $_SESSION['USER_ROLE'] = $re2['role_no'];
           $_SESSION['USER_ROLENAME'] = $re2['role_name'];
           $_SESSION['userlogged'] = 1;
-
+          date_default_timezone_set("Asia/Kuala_Lumpur");
+          $date = getTimestamp();
+          function get_ip() {
+              if(isset($_SERVER['HTTP_CLIENT_IP'])) {
+                return $_SERVER['HTTP_CLIENT_IP'];
+              } else if(isset($_SERVER['HTTP_X-FORWARD_FOR'])) {
+                return $_SERVER['HTTP_X-FORWARD_FOR'];
+              } else {
+                return (isset($_SERVER['REMOTE_ADDR']) ? $_SERVER['REMOTE_ADDR'] : '');
+              }
+          }
+          $ip=get_ip();
+          $token = generateToken(10);
+          $_SESSION['logintoken'] = $token;
+          if(isset($_SESSION['USER_ID'])) {
+            $sql = "INSERT into auditlog(audit_login, audit_ip, USER_ID, atoken) VALUES ('".$date."','".$ip."','".$_SESSION['USER_ID']."','".$token."')";
+            $result = mysqli_query($conn,$sql);
+          }
+          /* // @ $hostname=gethostbyaddr($_SERVER['REMOTE_ADDR']);
+          if($_SESSION['USER_ID'] = $USER_ID) {
+            $sqlNewLogin = "INSERT into auditlog(audit_login, audit_ip, USER_ID, atoken) VALUES ('".$date."',$ip,'".$_SESSION['USER_ID']."',$token)";
+            $queryNewLogin = mysqli_query($conn,$sqlNewLogin) or die ("Error: ". mysqli_error($conn));
+            $_SESSION['logintime']=$date;
+          }   */
           header("Location: home.php");
       } 
   } else if($json['status'] == "false") {

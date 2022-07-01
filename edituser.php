@@ -3,6 +3,24 @@ session_start();
 if(!isset($_SESSION['userlogged']) || $_SESSION['userlogged'] !=1) {
   header("Location: login.php");
 }
+
+$conn = mysqli_connect("localhost", "root", "", "myra");
+if($conn-> connect_error){
+    die("Connection failed::". $conn-> connect_error);
+}
+
+$utoken = $_GET['id'];
+$sql = "SELECT * FROM user u JOIN user_assigned ua ON u.USER_ID = ua.USER_ID JOIN user_role ur ON ua.role_no = ur.role_no JOIN user_access uc ON ua.access_no = uc.access_no WHERE ua.utoken = '".$utoken."'";
+$result = $conn->query($sql);
+$row = mysqli_fetch_assoc($result);
+$USER_ID = $row['USER_ID'];
+$USER_NAME = $row['USER_NAME'];
+$role_no = $row['role_no'];
+$role_name = $row['role_name'];
+$access_no = $row['access_no'];
+$access_status = $row['access_status'];
+
+
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -122,47 +140,63 @@ if(!isset($_SESSION['userlogged']) || $_SESSION['userlogged'] !=1) {
         <div class="row">
           <div class="col-12">
             <!-- general form elements -->
-            <div class="card card-primary">
+            <div class="card card-secondary">
               <div class="card-header">
-                <h3 class="card-title">Add User</h3>
+                <h3 class="card-title">Edit User</h3>
               </div>
               <!-- /.card-header -->
               <!-- form start -->
-              <form>
+              <form action="pedituser.php?id=<?php echo $utoken; ?>" method="post">
                 <div class="card-body">
                   <div class="form-group">
-                    <label for="staff_id">Staff ID</label>
-                    <input type="text" class="form-control" id="staff_id" placeholder="Staff ID">
+                    <label for="USER_ID">Staff ID</label>
+                    <input type="text" class="form-control" id="USER_ID" name="USER_ID" style="width:10em" value="<?php echo $USER_ID; ?>" disabled>
                   </div>
                   <div class="form-group">
-                    <label for="staff_password">Password</label>
-                    <input type="password" class="form-control" id="staff_password" placeholder="Password">
+                    <label for="USER_NAME">Staff Name</label>
+                    <input type="text" class="form-control" id="USER_NAME" name="USER_NAME" value="<?php echo $USER_NAME; ?>" disabled>
                   </div>
                   <div class="form-group">
-                    <label for="staff_role">Role</label>
-                    <select class="form-control select2" style="width: 25%;">
-                            <option>Administrator</option>
-                            <option>Moderator</option>
-                        </select>
+                    <label for="role_no">Role</label>
+                    <?php
+                    $query1 = "SELECT * FROM user_role";
+                    $result1 = mysqli_query($conn,$query1);
+                    ?>
+                    <select class="form-control select2" style="width: 15em;" id="role_no" name="role_no">
+                      <option value="<?php echo $role_no; ?>" disabled selected hidden><?php echo $role_name; ?></option>
+                      <?php
+                      while($role = mysqli_fetch_array($result1,MYSQLI_ASSOC)):;
+                      ?>
+                      <option value="<?php echo $role['role_no']; ?>"><?php echo $role['role_name']; ?></option>
+                      <?php endwhile; ?>
+                    </select>
                   </div>
                   <div class="form-group">
-                        <label>Access</label>
-                        <select class="form-control select2" style="width: 25%;">
-                            <option>Granted</option>
-                            <option>Not Granted</option>
-                        </select>
-                    </div>
+                    <label for="access_no">Access</label>
+                    <?php
+                    $query2 = "SELECT * FROM user_access";
+                    $result2 = mysqli_query($conn,$query2);
+                    ?>
+                    <select class="form-control select2" style="width: 15em;" id="access_no" name="access_no">
+                      <option value="<?php echo $access_no; ?>" disabled selected hidden><?php echo $access_status; ?></option>
+                      <?php
+                      while($access = mysqli_fetch_array($result2,MYSQLI_ASSOC)):;
+                      ?>
+                      <option value="<?php echo $access["access_no"];?>"><?php echo $access["access_status"]; ?></option>
+                      <?php endwhile; ?>
+                    </select>
+                  </div>
                 </div>
                 <!-- /.card-body -->
 
                 <div class="card-footer">
-                  <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#modal-primary">Submit</button>
+                  <button type="button" class="btn btn-secondary" data-toggle="modal" data-target="#modal-primary">Submit</button>
                   <button id="cancel" class="btn btn-default" >Cancel</button>
                 </div>
 
                 <div class="modal fade" id="modal-primary">
                   <div class="modal-dialog">
-                    <div class="modal-content bg-primary">
+                    <div class="modal-content bg-secondary">
                       <div class="modal-header">
                         <h4 class="modal-title">Edit User</h4>
                         <button type="button" class="close" data-dismiss="modal" aria-label="Close">

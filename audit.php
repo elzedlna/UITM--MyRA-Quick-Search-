@@ -135,12 +135,44 @@ if(!isset($_SESSION['userlogged']) || $_SESSION['userlogged'] !=1) {
                     <th>Name</th>
                     <th>Role</th>
                     <th>IP Address</th>
-                    <th>Location</th>
                     <th>Login</th>
                     <th>Logout</th>
                   </tr>
                   </thead>
                   <tbody>
+                  <?php
+                    $conn = mysqli_connect("localhost", "root", "", "myra");
+                    if($conn-> connect_error){
+                        die("Connection failed::". $conn-> connect_error);
+                    }
+
+                    $sql = "SELECT u.USER_ID,u.USER_NAME,ur.role_name,a.audit_ip,a.audit_login,a.audit_logout FROM auditlog a JOIN user u ON a.USER_ID = u.USER_ID JOIN user_assigned ua ON a.USER_ID = ua.USER_ID JOIN user_role ur ON ua.role_no = ur.role_no";
+                    $result = $conn->query($sql);
+                    $counter = 1;
+                    if($result-> num_rows > 0){
+                        while ($row = $result-> fetch_assoc()){
+                          ?>
+                          <tr>
+                            <td><?php echo $counter++; ?></td>
+                            <td><?php echo $row['USER_ID']; ?></td>
+                            <td><?php echo $row['USER_NAME']; ?></td>
+                            <td><?php echo $row['role_name']; ?></td>
+                            <td><?php echo $row['audit_ip']; ?></td>
+                            <td><?php echo $row['audit_login']; ?></td>
+                            <td><?php echo $row['audit_logout']; ?></td>
+
+                            <!-- <td>
+                              <div class="btn-group">
+                                  <button type="button" name="view" id="view" onclick="window.location.href='viewuser.php?id=<?php echo $row['utoken']; ?>'" class="btn btn-primary btnn-block btn-sm fas fa-eye"></button>
+                                  <button type="button" name="edit" id="edit" onclick="window.location.href='edituser.php?id=<?php echo $row['utoken']; ?>'" class="btn btn-secondary btnn-block btn-sm fas fa-edit"></button>
+                                  <button type="button" name="delete" id="delete" onclick="window.location.href='deleteuser.php?id=<?php echo $row['utoken']; ?>'" class="btn btn-danger btnn-block btn-sm fas fa-trash-can"></button>
+                              </div>
+                            </td> -->
+                          </tr>
+                          <?php
+                        }
+                    }
+                    ?>
                   </tbody>
                   <tfoot>
                   <tr>
@@ -149,7 +181,6 @@ if(!isset($_SESSION['userlogged']) || $_SESSION['userlogged'] !=1) {
                     <th>Name</th>
                     <th>Role</th>
                     <th>IP Address</th>
-                    <th>Location</th>
                     <th>Login</th>
                     <th>Logout</th>
                   </tr>

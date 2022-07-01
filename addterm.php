@@ -70,7 +70,6 @@ $all_sb = mysqli_query($conn,$sql1);
     });
   });
   </script>
-  
 </head>
 <body class="hold-transition sidebar-mini layout-fixed">
 <div class="wrapper">

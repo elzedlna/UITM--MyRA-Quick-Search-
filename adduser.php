@@ -1,49 +1,26 @@
 <?php
+include("connection.php");
 session_start();
 if(!isset($_SESSION['userlogged']) || $_SESSION['userlogged'] !=1) {
   header("Location: login.php");
 }
+$_SESSION['name'] = "";
+$_SESSION['id'] = "";
 
-include("connection.php");
-
-//search id before insert
 if(isset($_POST['search'])) {
   $id = $_POST['id'];
-  $query = "SELECT * FROM user_assigned WHERE USER_ID = '".$id."'";
-  $result = mysqli_query($conn, $query);
-
-  if ($result) {
-    if (mysqli_num_rows($result) > 0) {
-      //user already exists in user_assigned
-      echo  "<script type= 'text/javascript'>alert('User is already assigned to a role. Please choose another user.');</script> ";
-      $USER_NAME = "";
-      $USER_ID = "";
-
-    } else {
-      //user does not exists in user_assigned, proceed to search
-      //search user
-
-      $query = "SELECT USER_NAME, USER_ID FROM user WHERE USER_ID = '".$id."' LIMIT 1";
-      $result = mysqli_query($conn, $query);
-
-      if(mysqli_num_rows($result) > 0) {
-        while ($row = mysqli_fetch_array($result)) {
-          $USER_NAME = $row['USER_NAME'];
-          $USER_ID = $row['USER_ID'];
-        }  
-      } else {
-          echo  "<script type= 'text/javascript'>alert('Incorrect Staff ID');</script> ";
-          $USER_NAME = "";
-          $USER_ID = "";
-      }
-      mysqli_free_result($result);
-    }
+  $sql = "SELECT * FROM user WHERE USER_ID = '".$id."'" ;
+  $result = mysqli_query($conn,$sql);
+  $row = mysqli_fetch_assoc($result);
+  if($row > 0) {
+    $_SESSION['name'] = $row['USER_NAME'];
+    $_SESSION['id'] = $row['USER_ID'];
+  } else {
+    echo "<script type= 'text/javascript'>alert('Incorrect Staff ID.');</script> "; 
+    $_SESSION['id'] = "";
+    $_SESSION['name'] = "";
   }
-  
-} else {
-  $USER_NAME = "";
-  $USER_ID = "";
-}
+} 
 
 ?>
 <!DOCTYPE html>
@@ -168,46 +145,69 @@ if(isset($_POST['search'])) {
               <div class="card-header">
                 <h3 class="card-title">Search ID</h3>
               </div>
-              <form method="post" class="form-horizontal">
+              <form method="post" class="form-horizontal" action="adduser.php">
                 <div class="card-body">
                   <label for="id">Search Staff ID</label>
                     <div class="form-group row">
                       <div class="col-sm-2">
-                        <input type="text" name="id" id="id" class="form-control" placeholder="Search Staff ID" style="width:10em">
+                        <input type="text" name="id" id="id" class="form-control" placeholder="Search Staff ID" style="width:10em" required>
                       </div>
                       <button class="btn btn-primary" type="submit" id="search" name="search">Search ID</button>
                     </div>
                 </div>
               </form>
             </div>
+            <script>
+              if ( window.history.replaceState ) {
+                  window.history.replaceState( null, null, window.location.href );
+                }
+            </script>
             <div class="card card-primary">
               <div class="card-header">
                 <h3 class="card-title">Add User</h3>
               </div>
               <!-- /.card-header -->
               <!-- form start -->
+
               <form class="form-horizontal" action="padduser.php" method="post">
                 <div class="card-body">
                   <div class="form-group">
                     <label for="USER_ID">Staff ID</label>
-                    <input type="text" class="form-control" name="USER_ID" id="USER_ID" placeholder="Staff ID" value="<?php echo $USER_ID; ?>"disabled>
+                    <input type="text" class="form-control" name="USER_ID" id="USER_ID" placeholder="Staff ID" value="<?php echo $_SESSION['id'] ?>" disabled>
                   </div>
                   <div class="form-group">
                     <label for="USER_NAME">Staff Name</label>
-                    <input type="text" class="form-control" name="USER_NAME" id="USER_NAME" placeholder="Staff Name" value="<?php echo $USER_NAME; ?>" disabled > 
+                    <input type="text" class="form-control" name="USER_NAME" id="USER_NAME" placeholder="Staff Name" value="<?php echo $_SESSION['name'] ?>" disabled > 
                   </div>
                   <div class="form-group">
                     <label for="role_no">Role</label>
-                    <select class="form-control select2" style="width: 150px;" id="role_no" name="role_no">
-                      <option value="1">Administrator</option>
-                      <option value="2">Moderator</option>
+                    <?php
+                    $query2 = "SELECT * FROM user_role";
+                    $result2 = mysqli_query($conn,$query2);
+                    ?>
+                    <select class="form-control select2" style="width: 15em;" id="role_no" name="role_no">
+                      <!-- <option value="" disabled selected>Select a Role</option> -->
+                      <?php
+                      while($role = mysqli_fetch_array($result2,MYSQLI_ASSOC)):;
+                      ?>
+                      <option value="<?php echo $option = $role["role_no"];?>"><?php echo $role["role_name"]; ?></option>
+                      <?php endwhile; ?>
                     </select>
                   </div>
                   <div class="form-group">
                     <label for="access_no">Access</label>
-                    <select class="form-control select2" style="width: 150px;" id="access_no" name="access_no">
-                        <option value="1">Active</option>
-                        <option value="0">Inactive</option>
+                    <?php
+                    $query3 = "SELECT * FROM user_access";
+                    $result3 = mysqli_query($conn,$query3);
+                    ?>
+                    <select class="form-control select2" style="width: 15em;" id="access_no" name="access_no">
+                      <!-- <option value="" disabled selected>Access Type</option> -->
+                      
+                      <?php
+                      while($access = mysqli_fetch_array($result3,MYSQLI_ASSOC)):;
+                      ?>
+                      <option value="<?php echo $option = $access["access_no"];?>"><?php echo $access["access_status"]; ?></option>
+                      <?php endwhile; ?>
                     </select>
                   </div>
                 </div>
@@ -307,5 +307,6 @@ if(isset($_POST['search'])) {
 <!-- <script src="dist/js/demo.js"></script> -->
 <!-- AdminLTE dashboard demo (This is only for demo purposes) -->
 <script src="dist/js/pages/dashboard.js"></script>
+
 </body>
 </html>

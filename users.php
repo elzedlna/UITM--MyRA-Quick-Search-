@@ -147,14 +147,14 @@ if(!isset($_SESSION['userlogged']) || $_SESSION['userlogged'] !=1) {
                         die("Connection failed::". $conn-> connect_error);
                     }
 
-                    $sql = "SELECT ua.assigned_no, ua.USER_ID, u.USER_NAME, ur.role_name, uc.access_status, ua.assigned_date FROM user_assigned ua JOIN user u ON ua.USER_ID = u.USER_ID JOIN user_role ur ON ua.role_no = ur.role_no JOIN user_access uc ON ua.access_no = uc.access_no";
+                    $sql = "SELECT ua.USER_ID, u.USER_NAME, ur.role_name, uc.access_status, ua.assigned_date, ua.utoken FROM user_assigned ua JOIN user u ON ua.USER_ID = u.USER_ID JOIN user_role ur ON ua.role_no = ur.role_no JOIN user_access uc ON ua.access_no = uc.access_no WHERE ua.assigned_deleted IS NULL ORDER BY ua.assigned_no";
                     $result = $conn->query($sql);
-
+                    $counter = 1;
                     if($result-> num_rows > 0){
                         while ($row = $result-> fetch_assoc()){
                           ?>
                           <tr>
-                            <td><?php echo $row['assigned_no']; ?></td>
+                            <td><?php echo $counter++; ?></td>
                             <td><?php echo $row['USER_ID']; ?></td>
                             <td><?php echo $row['USER_NAME']; ?></td>
                             <td><?php echo $row['role_name']; ?></td>
@@ -163,9 +163,9 @@ if(!isset($_SESSION['userlogged']) || $_SESSION['userlogged'] !=1) {
 
                             <td>
                               <div class="btn-group">
-                                <a href="viewuser.php" class="btn btn-primary btnn-block btn-sm fas fa-eye"></a>
-                                <a href="edituser.php" class="btn btn-secondary btnn-block btn-sm fas fa-edit"></a>
-                                <a href="#" class="btn btn-danger btnn-block btn-sm fas fa-trash-can"></a>
+                                  <button type="button" name="view" id="view" onclick="window.location.href='viewuser.php?id=<?php echo $row['utoken']; ?>'" class="btn btn-primary btnn-block btn-sm fas fa-eye"></button>
+                                  <button type="button" name="edit" id="edit" onclick="window.location.href='edituser.php?id=<?php echo $row['utoken']; ?>'" class="btn btn-secondary btnn-block btn-sm fas fa-edit"></button>
+                                  <button type="button" name="delete" id="delete" onclick="window.location.href='deleteuser.php?id=<?php echo $row['utoken']; ?>'" class="btn btn-danger btnn-block btn-sm fas fa-trash-can"></button>
                               </div>
                             </td>
                           </tr>

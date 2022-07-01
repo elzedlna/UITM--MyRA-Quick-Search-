@@ -61,6 +61,7 @@ if($json['status'] == "true")
         }
         $ip=get_ip();
         $token = generateToken(10);
+
         @ $hostname=gethostbyaddr($_SERVER['REMOTE_ADDR']);
         if($_SESSION['USER_ID']=$USER_ID)
         {
