@@ -16,7 +16,7 @@ if(isset($_POST['submit'])) {
 
     function checkTerm($conn,$term_order,$subsection_no,$section_no) {
         $found = false;
-        $sql = "SELECT t.term_order, sb.subsection_no, s.section_no FROM term t JOIN subsection sb ON sb.subsection_no = t.subsection_no JOIN section s ON s.section_no = sb.section_no WHERE term_order='".$term_order."' AND sb.subsection_no = '".$subsection_no."' AND s.section_no = '".$section_no."'";
+        $sql = "SELECT t.term_order, sb.subsection_no, s.section_no FROM term t JOIN subsection sb ON sb.subsection_no = t.subsection_no JOIN section s ON s.section_no = sb.section_no WHERE t.date_deleted IS NULL AND t.term_order='".$term_order."' AND sb.subsection_no = '".$subsection_no."' AND s.section_no = '".$section_no."'";
         $qry = mysqli_query($conn,$sql);
         $row = mysqli_num_rows($qry);
     

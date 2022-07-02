@@ -15,7 +15,7 @@ if(isset($_POST['submit'])) {
 
   function checkSubs($conn,$subsection_order,$section_no) {
     $found = false;
-    $sql = "SELECT sb.subsection_order, s.section_no FROM subsection sb JOIN section s ON sb.section_no = sb.section_no WHERE sb.subsection_order = '".$subsection_order."' AND sb.section_no = '".$section_no."'";
+    $sql = "SELECT sb.subsection_order, s.section_no FROM subsection sb JOIN section s ON sb.section_no = sb.section_no WHERE sb.date_deleted IS NULL AND sb.subsection_order = '".$subsection_order."' AND sb.section_no = '".$section_no."'";
     $qry = mysqli_query($conn,$sql);
     $row = mysqli_num_rows($qry);
 

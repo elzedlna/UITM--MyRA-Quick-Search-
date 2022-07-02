@@ -145,7 +145,7 @@ if(!isset($_SESSION['userlogged']) || $_SESSION['userlogged'] !=1) {
                         die("Connection failed::". $conn-> connect_error);
                     }
 
-                    $sql = "SELECT * FROM section WHERE date_deleted IS NULL ORDER BY section_no";
+                    $sql = "SELECT * FROM section WHERE date_deleted IS NULL ORDER BY section_order";
                     $result = $conn->query($sql);
                     $counter = 1;
                     if($result-> num_rows > 0){

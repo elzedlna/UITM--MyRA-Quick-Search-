@@ -149,7 +149,7 @@ if(!isset($_SESSION['userlogged']) || $_SESSION['userlogged'] !=1) {
 
                     $sql = "SELECT s.section_order, s.section_malay, sb.subsection_order, sb.subsection_malay, t.term_no, t.term_order, t.term_malay, t.term_english, t.date_created, t.ttoken FROM term t
                     JOIN subsection sb ON t.subsection_no = sb.subsection_no
-                    JOIN section s ON sb.section_no = s.section_no WHERE s.date_deleted IS NULL AND sb.date_deleted IS NULL AND t.date_deleted IS NULL ORDER BY t.term_no ASC";
+                    JOIN section s ON sb.section_no = s.section_no WHERE s.date_deleted IS NULL AND sb.date_deleted IS NULL AND t.date_deleted IS NULL ORDER BY s.section_no ASC, sb.subsection_no ASC, t.term_order ASC";
                     $result = $conn->query($sql);
                     $counter = 1;
                     if($result-> num_rows > 0){
