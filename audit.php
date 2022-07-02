@@ -146,7 +146,7 @@ if(!isset($_SESSION['userlogged']) || $_SESSION['userlogged'] !=1) {
                         die("Connection failed::". $conn-> connect_error);
                     }
 
-                    $sql = "SELECT u.USER_ID,u.USER_NAME,ur.role_name,a.audit_ip,a.audit_login,a.audit_logout FROM auditlog a JOIN user u ON a.USER_ID = u.USER_ID JOIN user_assigned ua ON a.USER_ID = ua.USER_ID JOIN user_role ur ON ua.role_no = ur.role_no";
+                    $sql = "SELECT u.USER_ID,u.USER_NAME,ur.role_name,a.audit_ip,a.audit_login,a.audit_logout FROM auditlog a JOIN user u ON a.USER_ID = u.USER_ID JOIN user_assigned ua ON a.USER_ID = ua.USER_ID JOIN user_role ur ON a.role_no = ur.role_no ORDER BY audit_no DESC";
                     $result = $conn->query($sql);
                     $counter = 1;
                     if($result-> num_rows > 0){

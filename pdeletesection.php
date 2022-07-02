@@ -19,9 +19,11 @@ if(isset($_POST['submit'])) {
         $result3 = mysqli_query($conn,$sql3);
 
         if ($result == TRUE) {
-            echo "<script type= 'text/javascript'>alert('Record successfully deleted');window.location='sections.php';</script> ";
+            // echo "<script type= 'text/javascript'>alert('Record successfully deleted');window.location='sections.php';</script> ";
+            header("Location: sections.php?deleted");
         } else {
-            echo "<script type= 'text/javascript'>alert('Delete unsuccessful);</script> ";
+            // echo "<script type= 'text/javascript'>alert('Delete unsuccessful);</script> ";
+            header("Location: deletesection.php?deletefail");
         }
     } catch (Exception $e) { echo "Error!: ". $e->getMessage(). "<br>"; die();}
     

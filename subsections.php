@@ -147,7 +147,7 @@ if(!isset($_SESSION['userlogged']) || $_SESSION['userlogged'] !=1) {
                         die("Connection failed::". $conn-> connect_error);
                     }
 
-                    $sql = "SELECT sb.subsection_no, s.section_order, s.section_malay, sb.subsection_order, sb.subsection_malay, sb.subsection_english, sb.date_created, sb.sbtoken FROM subsection sb JOIN section s ON s.section_no = sb.section_no WHERE s.date_deleted IS NULL AND sb.date_deleted IS NULL";
+                    $sql = "SELECT sb.subsection_no, s.section_order, s.section_malay, sb.subsection_order, sb.subsection_malay, sb.subsection_english, sb.date_created, sb.sbtoken FROM subsection sb JOIN section s ON s.section_no = sb.section_no WHERE s.date_deleted IS NULL AND sb.date_deleted IS NULL ORDER BY sb.subsection_no ASC";
                     $result = $conn->query($sql);
                     $counter = 1;
                     // $sql1 = "SELECT count(section_no) FROM subsection WHERE section_no =
@@ -223,28 +223,141 @@ if(!isset($_SESSION['userlogged']) || $_SESSION['userlogged'] !=1) {
 </div>
 <!-- ./wrapper -->
 
+<!-- modal -->
+<div class="modal fade" id="subadded">
+    <div class="modal-dialog">
+        <div class="modal-content bg-success">
+            <div class="modal-header">
+                <h4 class="modal-title">Success!</h4>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <p>New sub-section has been successfully added!</p>
+            </div>
+            <div class="modal-footer justify-content-between">
+                <button type="button" class="btn btn-outline-light" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+  </div>
+
+  <div class="modal fade" id="subedited">
+    <div class="modal-dialog">
+        <div class="modal-content bg-secondary">
+            <div class="modal-header">
+                <h4 class="modal-title">Success!</h4>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <p>Sub-Section has been successfully updated!</p>
+            </div>
+            <div class="modal-footer justify-content-between">
+                <button type="button" class="btn btn-outline-light" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+  </div>
+
+  <div class="modal fade" id="subdeleted">
+    <div class="modal-dialog">
+        <div class="modal-content bg-danger">
+            <div class="modal-header">
+                <h4 class="modal-title">Success!</h4>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <p>Sub-Section has been successfully deleted!</p>
+            </div>
+            <div class="modal-footer justify-content-between">
+                <button type="button" class="btn btn-outline-light" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+  </div>
+
+  <div class="modal fade" id="nodata">
+    <div class="modal-dialog">
+        <div class="modal-content bg-danger">
+            <div class="modal-header">
+                <h4 class="modal-title">Something went wrong...</h4>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <p>No sub-sections were added.</p>
+            </div>
+            <div class="modal-footer justify-content-between">
+                <button type="button" class="btn btn-outline-light" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+  </div>
+  <!-- /modal  -->
 <!-- jQuery -->
 <script src="plugins/jquery/jquery.min.js"></script>
 <!-- jQuery UI 1.11.4 -->
 <script src="plugins/jquery-ui/jquery-ui.min.js"></script>
 <!-- Resolve conflict in jQuery UI tooltip with Bootstrap tooltip -->
-<script>
-  $.widget.bridge('uibutton', $.ui.button)
-</script>
+<script>$.widget.bridge('uibutton', $.ui.button)</script>
 <!-- Bootstrap 4 -->
 <script src="plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
-<!-- ChartJS -->
-<script src="plugins/chart.js/Chart.min.js"></script>
-<!-- Sparkline -->
-<script src="plugins/sparklines/sparkline.js"></script>
-<!-- JQVMap -->
-<script src="plugins/jqvmap/jquery.vmap.min.js"></script>
-<script src="plugins/jqvmap/maps/jquery.vmap.usa.js"></script>
-<!-- jQuery Knob Chart -->
-<script src="plugins/jquery-knob/jquery.knob.min.js"></script>
-<!-- daterangepicker -->
-<script src="plugins/moment/moment.min.js"></script>
-<script src="plugins/daterangepicker/daterangepicker.js"></script>
+<!-- Tempusdominus Bootstrap 4 -->
+<script src="plugins/tempusdominus-bootstrap-4/js/tempusdominus-bootstrap-4.min.js"></script>
+<!-- Summernote -->
+<script src="plugins/summernote/summernote-bs4.min.js"></script>
+<!-- overlayScrollbars -->
+<script src="plugins/overlayScrollbars/js/jquery.overlayScrollbars.min.js"></script>
+<!-- AdminLTE App -->
+<script src="dist/js/adminlte.js"></script>
+<!-- AdminLTE for demo purposes -->
+<!-- <script src="dist/js/demo.js"></script> -->
+<!-- AdminLTE dashboard demo (This is only for demo purposes) -->
+<script src="dist/js/pages/dashboard.js"></script>
+<!-- page script -->
+<!-- modal -->
+<?php if (isset($_GET['empty'])){ ?>
+    <script type="text/javascript">
+    $(document).ready(function(){
+        $("#nodata").modal("show");
+    });
+    </script>
+<?php } ?>
+<?php if (isset($_GET['exists'])){ ?>
+    <script type="text/javascript">
+    $(document).ready(function(){
+        $("#subexists").modal("show");
+    });
+    </script>
+<?php } ?>
+<?php if (isset($_GET['added'])){ ?>
+    <script type="text/javascript">
+    $(document).ready(function(){
+        $("#subadded").modal("show");
+    });
+    </script>
+<?php } ?>
+<?php if (isset($_GET['edited'])){ ?>
+    <script type="text/javascript">
+    $(document).ready(function(){
+        $("#subedited").modal("show");
+    });
+    </script>
+<?php } ?>
+<?php if (isset($_GET['deleted'])){ ?>
+    <script type="text/javascript">
+    $(document).ready(function(){
+        $("#subdeleted").modal("show");
+    });
+    </script>
+<?php } ?>
+<!-- /modal  -->
 <!-- Tempusdominus Bootstrap 4 -->
 <script src="plugins/tempusdominus-bootstrap-4/js/tempusdominus-bootstrap-4.min.js"></script>
 <!-- Summernote -->

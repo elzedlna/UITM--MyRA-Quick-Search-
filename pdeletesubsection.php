@@ -20,9 +20,11 @@ if(isset($_POST['submit'])) {
 
 
     if ($result == TRUE) {
-        echo "<script type= 'text/javascript'>alert('Record successfully deleted');window.location='subsections.php';</script> ";
+      // echo "<script type= 'text/javascript'>alert('Record successfully deleted');window.location='subsections.php';</script> ";
+      header("Location: subsections.php?deleted");
     } else {
-        echo "<script type= 'text/javascript'>alert('Delete unsuccessful);</script> ";
+      // echo "<script type= 'text/javascript'>alert('Delete unsuccessful);</script> ";
+      header("Location: deletesubsection.php?deletefail");
     }
   } catch (Exception $e) { echo "Error!: ". $e->getMessage(). "<br>"; die();}
 } else {

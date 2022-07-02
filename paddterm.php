@@ -27,25 +27,34 @@ if(isset($_POST['submit'])) {
     }
 
     try {
-        if(checkTerm($conn,$term_order,$subsection_no,$section_no) == TRUE) {
-            echo "<script type= 'text/javascript'>alert('Record already exists.');window.location='addsubsection.php';</script> ";
-        } else {
-            $sql = "INSERT INTO term(term_order, term_malay, term_english, term_desc, date_created, subsection_no, USER_ID, ttoken) VALUES('".$term_order."','".$term_m."','".$term_e."','".$term_desc."','".$Cdate."','".$subsection_no."','".$user_id."','".$token."')";
-            $result = mysqli_query($conn,$sql);
-
-            $sql2 = "SELECT * FROM term WHERE ttoken = '$token'";
-            $result2 = mysqli_query($conn,$sql2);
-            $row = mysqli_fetch_assoc($result2);
-            
-            $sql3 = "INSERT INTO term_history (term_no, USER_ID, term_process) VALUES ('".$row['term_no']."', '".$user_id."', 'ADD')";
-            $result3 = mysqli_query($conn,$sql3);
-
-            if ($result == TRUE) {
-                echo "<script type= 'text/javascript'>alert('New record successfully saved');window.location='terms.php';</script> ";
+        if($term_m != "" || $term_m != NULL || $term_e != "" || $term_e != NULL) {
+            if(checkTerm($conn,$term_order,$subsection_no,$section_no) == TRUE) {
+                // echo "<script type= 'text/javascript'>alert('Record already exists.');window.location='addsubsection.php';</script> ";
+                header("Location: addterm.php?exists");
             } else {
-                echo "<script type= 'text/javascript'>alert('Record unsuccessfully saved);</script> ";
+                $sql = "INSERT INTO term(term_order, term_malay, term_english, term_desc, date_created, subsection_no, USER_ID, ttoken) VALUES('".$term_order."','".$term_m."','".$term_e."','".$term_desc."','".$Cdate."','".$subsection_no."','".$user_id."','".$token."')";
+                $result = mysqli_query($conn,$sql);
+    
+                $sql2 = "SELECT * FROM term WHERE ttoken = '$token'";
+                $result2 = mysqli_query($conn,$sql2);
+                $row = mysqli_fetch_assoc($result2);
+                
+                $sql3 = "INSERT INTO term_history (term_no, USER_ID, term_process) VALUES ('".$row['term_no']."', '".$user_id."', 'ADD')";
+                $result3 = mysqli_query($conn,$sql3);
+    
+                if ($result == TRUE) {
+                    // echo "<script type= 'text/javascript'>alert('New record successfully saved');window.location='terms.php';</script> ";
+                    header("Location: terms.php?added");
+                } else {
+                    // echo "<script type= 'text/javascript'>alert('Record unsuccessfully saved);</script> ";
+                    header("Location: addterm.php?addfail");
+                }
             }
+        } else {
+            header("Location: addterm.php?empty");
         }
+        
+        
     } catch (Exception $e) { echo "Error!: ". $e->getMessage(). "<br>"; die();}
     
 } else {

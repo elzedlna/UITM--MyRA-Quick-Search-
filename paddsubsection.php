@@ -26,25 +26,33 @@ if(isset($_POST['submit'])) {
   }
 
   try {
-    if(checkSubs($conn,$subsection_order,$section_no) == TRUE) {
-      echo "<script type= 'text/javascript'>alert('Record already exists.');window.location='addsubsection.php';</script> ";
-    } else {
-      $sql = "INSERT INTO subsection(subsection_order,subsection_malay, subsection_english, subsection_desc, date_created, section_no, USER_ID, sbtoken) VALUES('".$subsection_order."','".$subsection_m."','".$subsection_e."','".$subsection_desc."','".$Cdate."','".$section_no."','".$user_id."','".$token."')";
-      $result = mysqli_query($conn,$sql);
-  
-      $sql2 = "SELECT * FROM subsection WHERE sbtoken = '$token'";
-      $result2 = mysqli_query($conn,$sql2);
-      $row = mysqli_fetch_assoc($result2);
-    
-      $sql3 = "INSERT INTO subsection_history (subsection_no, USER_ID, subs_process) VALUES ('".$row['subsection_no']."', '".$user_id."', 'ADD')";
-      $result3 = mysqli_query($conn,$sql3);
-      
-      if($result == TRUE) {
-        echo "<script type= 'text/javascript'>alert('New record successfully saved');window.location='subsections.php';</script> ";
+    if($subsection_m != "" || $subsection_m != NULL || $subsection_e != "" || $subsection_e != NULL) {
+      if(checkSubs($conn,$subsection_order,$section_no) == TRUE) {
+        // echo "<script type= 'text/javascript'>alert('Record already exists.');window.location='addsubsection.php';</script>";
+        header("Location: addsubsection.php?exists");
       } else {
-        echo "<script type= 'text/javascript'>alert('Record unsuccessfully saved);</script> ";
+        $sql = "INSERT INTO subsection(subsection_order,subsection_malay, subsection_english, subsection_desc, date_created, section_no, USER_ID, sbtoken) VALUES('".$subsection_order."','".$subsection_m."','".$subsection_e."','".$subsection_desc."','".$Cdate."','".$section_no."','".$user_id."','".$token."')";
+        $result = mysqli_query($conn,$sql);
+    
+        $sql2 = "SELECT * FROM subsection WHERE sbtoken = '$token'";
+        $result2 = mysqli_query($conn,$sql2);
+        $row = mysqli_fetch_assoc($result2);
+      
+        $sql3 = "INSERT INTO subsection_history (subsection_no, USER_ID, subs_process) VALUES ('".$row['subsection_no']."', '".$user_id."', 'ADD')";
+        $result3 = mysqli_query($conn,$sql3);
+        
+        if($result == TRUE) {
+          // echo "<script type= 'text/javascript'>alert('New record successfully saved');window.location='subsections.php';</script> ";
+          header("Location: subsections.php?added");
+        } else {
+          // echo "<script type= 'text/javascript'>alert('Record unsuccessfully saved);</script> ";
+          header("Location: addsubsection.php?addfail");
+        }
       }
+    } else {
+      header("Location: addsubsection.php?empty");
     }
+    
   } catch (Exception $e) { echo "Error!: ". $e->getMessage(). "<br>"; die();}
 } else {
   header("Location: subsections.php");

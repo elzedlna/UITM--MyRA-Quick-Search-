@@ -24,20 +24,24 @@ if(isset($_POST['submit'])) {
 
     try {
         if(checkUser($conn,$USER_ID) == TRUE) {
-            echo "<script type= 'text/javascript'>alert('User already exists.');window.location='adduser.php';</script> ";
+            // echo "<script type= 'text/javascript'>alert('User already exists.');window.location='adduser.php';</script> ";
+            header("Location: adduser.php?exists");
         } else {
             if(isset($_SESSION['id']) && $_SESSION['id'] != NULL) {
                 $sql = "INSERT INTO user_assigned (USER_ID, role_no, access_no, assigned_date, utoken) VALUES('".$USER_ID."','".$role_no."','".$access_no."','".$assigned_date."','".$token."')";
                 $result = mysqli_query($conn,$sql);
 
                 if ($result == TRUE) {
-                    echo "<script type= 'text/javascript'>alert('New user successfully assigned.');window.location='users.php';</script> ";
+                    header("Location: users.php?added");
                 } else {
-                    echo "<script type= 'text/javascript'>alert('Role assign was unsuccessful.');</script> ";
+                    // echo "<script type= 'text/javascript'>alert('Role assign was unsuccessful.');</script> ";
+                    header("Location: adduser.php?addfail");
                 }
 
                 $_SESSION['id'] = "";
                 $_SESSION['name'] = "";
+            } else {
+                header("Location: users.php?empty");
             }
         }
     } catch (Exception $e) { echo "Error!: ". $e->getMessage(). "<br>"; die();}
