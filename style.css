@@ -2,9 +2,39 @@
 
 * {
     font-family: 'Poppins',sans-serif;
+    /* font-family: 'Bahnschrift',sans-serif; */
     font-size: medium;
 }
 
-.main-sidebar, .sidebar-dark-primary, .elevation-4 {
+aside.main-sidebar.sidebar-dark-primary.elevation-4 {
     background-color: rgb(20,36,61);
 }
+
+aside.main-sidebar.sidebar-dark-primary.elevation-4 a {
+    color: rgb(160, 189, 236);
+}
+
+#example2 tr th, #example2 tr tfoot {
+    text-align: center;
+    background-color: #007bff42;
+}
+
+#example2 tbody tr:hover,
+#example2 tbody tr:nth-child(even):hover,
+#example2 tbody tr:nth-child(odd):hover {
+    background-color: #93c6ff;
+}
+
+#example2 tbody tr {
+    text-align: left;
+    text-overflow: clip;
+}
+
+#example2 tbody tr:nth-child(odd) {
+    background-color: #007bff19;
+}
+
+/* #example2 tr:nth-child(odd) {
+    background-color: rgba(141, 192, 255, 0.726);
+} */
+

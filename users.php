@@ -85,8 +85,8 @@ if($_SESSION['USER_ROLE'] != 1) {
           <div class="col-12">
             <div class="card card-primary">
               <div class="card-header">
-                <h3 class="card-title">Users</h3>
-                <a href="adduser.php"><button type="submit" class="card-title btn btn-warning float-right">Add User</button></a>
+                  <h3 class="card-title">Users</h3>
+                  <a href="adduser.php"><button type="submit" class="card-title btn btn-warning float-right">Add User</button></a>
               </div>
               <!-- /.card-header -->
               <div class="card-body">
