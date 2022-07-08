@@ -15,7 +15,7 @@ if(isset($_POST['submit'])) {
     
     try {
         if($section_m != "" || $section_m != NULL || $section_e != "" || $section_e != NULL) {
-            $sql = "INSERT INTO section(section_order, section_malay, section_english, section_desc, USER_ID, stoken)VALUES('".$section_order."','".$section_m."','".$section_e."','".$section_desc."','".$user_id."','".$token."')";
+            $sql = "INSERT INTO section(section_order, section_malay, section_english, section_desc, USER_ID, date_updated, stoken)VALUES('".$section_order."','".$section_m."','".$section_e."','".$section_desc."','".$user_id."','".$Update."','".$token."')";
             $result = mysqli_query($conn,$sql);
 
             $sql2 = "SELECT * FROM section WHERE stoken = '$token'";

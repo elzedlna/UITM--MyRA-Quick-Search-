@@ -4,7 +4,7 @@ include("connection.php");
 include("functions.php");
 date_default_timezone_set("Asia/Kuala_Lumpur");
 if(isset($_POST['submit'])) {
-    $token = $_GET['id'];
+    $token = mysqli_real_escape_string($conn,$_GET['id']);
     $sql = "SELECT role_no, access_no FROM user_assigned WHERE utoken = '".$token."'";
     $result = mysqli_query($conn,$sql);
     $row = mysqli_fetch_assoc($result);

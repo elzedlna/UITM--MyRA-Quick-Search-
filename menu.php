@@ -48,7 +48,7 @@ if($_SESSION['USER_ROLE'] == 2) {
 
 echo '<li class="nav-item">
 <a href="plogout.php" class="nav-link">
-<i class="nav-icon fas fa-solid fa-angle-left"></i>
+<i class="nav-icon fas fa-solid fa-power-off"></i>
 <p>Log Out</p>
 </a>
 </li>';

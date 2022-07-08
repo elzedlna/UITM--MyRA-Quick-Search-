@@ -8,7 +8,7 @@ if(isset($_POST['submit'])) {
     $section_e = $_POST['section_english'];
     $section_desc = $_POST['section_desc'];
     $Update = getTimestamp();
-    $token = $_GET['id'];
+    $token = mysqli_real_escape_string($conn,$_GET['id']);
     $user_id = $_SESSION['USER_ID'];
     try {
         if($section_m != "" || $section_m != NULL || $section_e != "" || $section_e != NULL) {

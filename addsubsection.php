@@ -3,9 +3,12 @@ session_start();
 if(!isset($_SESSION['userlogged']) || $_SESSION['userlogged'] !=1) {
   header("Location: login.php");
 }
+if($_SESSION['USER_ROLE'] != 2) {
+  header("Location: home.php");
+}
 
 include('connection.php');
-$sql = "SELECT * FROM section";
+$sql = "SELECT * FROM section WHERE date_deleted IS NULL";
 $all_sections = mysqli_query($conn,$sql);
 $sql1 = "SELECT sb.subsection_order FROM subsection sb JOIN section s ON sb.section_no = s.section_no";
 $result = mysqli_query($conn,$sql1);
@@ -17,35 +20,32 @@ $all_sub = mysqli_num_rows($result);
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>MyRA Quick Search</title>
-  <link rel="shortcut icon" href="myralogo.png">
-  <!-- Google Font: Source Sans Pro -->
-  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
-  <!-- Font Awesome -->
-  <link rel="stylesheet" href="plugins/fontawesome-free/css/all.css">
-  <!-- Ionicons -->
-  <link rel="stylesheet" href="https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css">
-  <!-- Tempusdominus Bootstrap 4 -->
-  <link rel="stylesheet" href="plugins/tempusdominus-bootstrap-4/css/tempusdominus-bootstrap-4.min.css">
-  <!-- iCheck -->
-  <link rel="stylesheet" href="plugins/icheck-bootstrap/icheck-bootstrap.min.css">
-  <!-- JQVMap -->
-  <link rel="stylesheet" href="plugins/jqvmap/jqvmap.min.css">
-  <!-- Theme style -->
-  <link rel="stylesheet" href="dist/css/adminlte.min.css">
-  <!-- overlayScrollbars -->
-  <link rel="stylesheet" href="plugins/overlayScrollbars/css/OverlayScrollbars.min.css">
-  <!-- Daterange picker -->
-  <link rel="stylesheet" href="plugins/daterangepicker/daterangepicker.css">
-  <!-- summernote -->
-  <link rel="stylesheet" href="plugins/summernote/summernote-bs4.min.css">
-  <!-- DataTables -->
-  <link rel="stylesheet" href="plugins/datatables-bs4/css/dataTables.bootstrap4.min.css">
-  <link rel="stylesheet" href="plugins/datatables-responsive/css/responsive.bootstrap4.min.css">
-  <link rel="stylesheet" href="plugins/datatables-buttons/css/buttons.bootstrap4.min.css">
-  <!-- Theme style -->
-  <!-- <script src="https://kit.fontawesome.com/e138785ca7.js" crossorigin="anonymous"></script> -->
-    <!-- Toastr -->
-    <link rel="stylesheet" href="../../plugins/toastr/toastr.min.css">
+  <?php include('stylelinks.php')?>
+
+  <!-- Script -->
+  <script src="js/jquery.min.js"></script>
+  <!-- Ajax -->
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+  <script>
+  $(document).ready(function(){
+    $('#section_no').on('change', function(){
+      var sec_no = $(this).val();
+      if(sec_no){
+        $.ajax({
+                type:'POST',
+                url:'psubsec.php',
+                data:'section_no='+sec_no,
+                success:function(html){
+                    $('#subsection_order').html(html);
+                }
+            }); 
+      }
+      else{
+        $('#subsection_no').html('<input type="text" class="form-control" id="subsection_order" name="subsection_order" style="width:4em"value="1"');
+      }
+    });
+  });
+  </script>
 
 </head>
 <body class="hold-transition sidebar-mini layout-fixed">
@@ -57,19 +57,7 @@ $all_sub = mysqli_num_rows($result);
   </div> -->
 
   <!-- Navbar -->
-  <nav class="main-header navbar navbar-expand navbar-white navbar-light">
-    <!-- Left navbar links -->
-    <ul class="navbar-nav">
-      <li class="nav-item">
-        <a class="nav-link" data-widget="pushmenu" href="#" role="button"><i class="fas fa-bars"></i></a>
-      </li>
-      <li class="nav-item d-none d-sm-inline-block">
-        <a href="home.php" class="nav-link">Home</a>
-      </li>
-      
-    </ul>
-    <!-- Right navbar links -->
-  </nav>
+  <?php include('navbar.php');?>
   <!-- /.navbar -->
 
   <!-- Main Sidebar Container -->
@@ -113,7 +101,7 @@ $all_sub = mysqli_num_rows($result);
           <div class="col-sm-6">
             <ol class="breadcrumb float-sm-right">
               <li class="breadcrumb-item"><a href="#">Home</a></li>
-              <li class="breadcrumb-item active">Dashboard</li>
+              <li class="breadcrumb-item active">Add Subsection</li>
             </ol>
           </div><!-- /.col -->
         </div><!-- /.row -->
@@ -147,7 +135,6 @@ $all_sub = mysqli_num_rows($result);
                     </select>
                   </div>
                   <div class="form-group">
-                    <!-- <input type="number" class="form-control" id="subsection_order" name="subsection_order" style="width:4em" min="<?php echo $all_sub?>" max="<?php echo $all_sub?>"> -->
                     <label for="subsection_order">Sub-Section Order</label>
                     <input type="number" class="form-control" id="subsection_order" name="subsection_order" style="width:4em" min="1">
                   </div>
@@ -161,7 +148,7 @@ $all_sub = mysqli_num_rows($result);
                   </div>
                   <div class="form-group">
                         <label for="subsection_desc">Sub-Section Description</label>
-                        <textarea class="form-control" rows="5" id="subsection_desc" name="subsection_desc" style="resize:none"></textarea>
+                        <textarea class="form-control" rows="5" id="summernote" name="subsection_desc" style="resize:none"></textarea>
                   </div>
                 </div>
                 <!-- /.card-body -->
@@ -283,26 +270,7 @@ $all_sub = mysqli_num_rows($result);
   </div>
 <!-- /modal -->
 
-<!-- jQuery -->
-<script src="plugins/jquery/jquery.min.js"></script>
-<!-- jQuery UI 1.11.4 -->
-<script src="plugins/jquery-ui/jquery-ui.min.js"></script>
-<!-- Resolve conflict in jQuery UI tooltip with Bootstrap tooltip -->
-<script>$.widget.bridge('uibutton', $.ui.button)</script>
-<!-- Bootstrap 4 -->
-<script src="plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
-<!-- Tempusdominus Bootstrap 4 -->
-<script src="plugins/tempusdominus-bootstrap-4/js/tempusdominus-bootstrap-4.min.js"></script>
-<!-- Summernote -->
-<script src="plugins/summernote/summernote-bs4.min.js"></script>
-<!-- overlayScrollbars -->
-<script src="plugins/overlayScrollbars/js/jquery.overlayScrollbars.min.js"></script>
-<!-- AdminLTE App -->
-<script src="dist/js/adminlte.js"></script>
-<!-- AdminLTE for demo purposes -->
-<!-- <script src="dist/js/demo.js"></script> -->
-<!-- AdminLTE dashboard demo (This is only for demo purposes) -->
-<script src="dist/js/pages/dashboard.js"></script>
+<?php include('scripts.php'); ?>
 <!-- page script -->
 <!-- modal -->
 <?php if (isset($_GET['empty'])){ ?>
@@ -326,22 +294,5 @@ $all_sub = mysqli_num_rows($result);
     });
     </script>
 <?php } ?>
-<!-- Tempusdominus Bootstrap 4 -->
-<script src="plugins/tempusdominus-bootstrap-4/js/tempusdominus-bootstrap-4.min.js"></script>
-<!-- Summernote -->
-<script src="plugins/summernote/summernote-bs4.min.js"></script>
-<!-- overlayScrollbars -->
-<script src="plugins/overlayScrollbars/js/jquery.overlayScrollbars.min.js"></script>
-<!-- AdminLTE App -->
-<script src="dist/js/adminlte.js"></script>
-<!-- AdminLTE for demo purposes -->
-<!-- <script src="dist/js/demo.js"></script> -->
-<!-- AdminLTE dashboard demo (This is only for demo purposes) -->
-<script src="dist/js/pages/dashboard.js"></script>
-<script>
-if ( window.history.replaceState ) {
-    window.history.replaceState( null, null, window.location.href );
-  }
-</script>
 </body>
 </html>

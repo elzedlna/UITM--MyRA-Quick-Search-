@@ -5,9 +5,9 @@ include("functions.php");
 date_default_timezone_set("Asia/Kuala_Lumpur");
 if(isset($_POST['submit'])) {
     $Delete = getTimestamp();
-    $token = $_GET['id'];
+    $token = mysqli_real_escape_string($conn,$_GET['id']);
     try {
-        $sql = "UPDATE user_assigned SET assigned_deleted = '".$Delete."' WHERE utoken = '".$token."'";
+        $sql = "UPDATE user_assigned SET assigned_deleted = '".$Delete."',assigned_updated = '".$Delete."' WHERE utoken = '".$token."'";
         // $sql = "DELETE FROM user_assigned WHERE utoken = '".$token."'";
 
         $result = mysqli_query($conn,$sql);

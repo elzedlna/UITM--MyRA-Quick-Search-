@@ -10,6 +10,7 @@ if(isset($_POST['submit'])) {
     $term_e = $_POST['term_english'];
     $term_desc = $_POST['term_desc'];
     $Cdate = getTimestamp();
+    $Update = getTimestamp();
     $subsection_no = $_POST['subsection_no'];
     $user_id = $_SESSION['USER_ID'];
     $token = generateToken(10);
@@ -27,12 +28,12 @@ if(isset($_POST['submit'])) {
     }
 
     try {
-        if($term_m != "" || $term_m != NULL || $term_e != "" || $term_e != NULL) {
+        if(($term_m != "" || $term_m != NULL || $term_e != "" || $term_e != NULL ) && $subsection_no != NULL) {
             if(checkTerm($conn,$term_order,$subsection_no,$section_no) == TRUE) {
                 // echo "<script type= 'text/javascript'>alert('Record already exists.');window.location='addsubsection.php';</script> ";
                 header("Location: addterm.php?exists");
             } else {
-                $sql = "INSERT INTO term(term_order, term_malay, term_english, term_desc, date_created, subsection_no, USER_ID, ttoken) VALUES('".$term_order."','".$term_m."','".$term_e."','".$term_desc."','".$Cdate."','".$subsection_no."','".$user_id."','".$token."')";
+                $sql = "INSERT INTO term(term_order, term_malay, term_english, term_desc, date_created, date_updated, subsection_no, USER_ID, ttoken) VALUES('".$term_order."','".$term_m."','".$term_e."','".$term_desc."','".$Cdate."','".$Update."','".$subsection_no."','".$user_id."','".$token."')";
                 $result = mysqli_query($conn,$sql);
     
                 $sql2 = "SELECT * FROM term WHERE ttoken = '$token'";

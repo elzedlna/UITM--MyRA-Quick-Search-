@@ -5,10 +5,10 @@ include("functions.php");
 date_default_timezone_set("Asia/Kuala_Lumpur");
 if(isset($_POST['submit'])) {
     $Delete = getTimestamp();
-    $token = $_GET['id'];
+    $token = mysqli_real_escape_string($conn,$_GET['id']);
     $user_id = $_SESSION['USER_ID'];
     try {
-        $sql = "UPDATE term SET date_deleted = '".$Delete."' WHERE ttoken = '".$token."'";
+        $sql = "UPDATE term SET date_deleted = '".$Delete."',date_updated = '".$Delete."' WHERE ttoken = '".$token."'";
         $result = mysqli_query($conn,$sql);
 
         $sql2 = "SELECT * FROM term WHERE ttoken = '$token'";

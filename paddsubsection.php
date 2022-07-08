@@ -10,6 +10,7 @@ if(isset($_POST['submit'])) {
   $subsection_e = $_POST['subsection_english'];
   $subsection_desc = $_POST['subsection_desc'];
   $Cdate = getTimestamp();
+  $Update = getTimestamp();
   $user_id = $_SESSION['USER_ID'];
   $token = generateToken(10);
 
@@ -26,12 +27,12 @@ if(isset($_POST['submit'])) {
   }
 
   try {
-    if($subsection_m != "" || $subsection_m != NULL || $subsection_e != "" || $subsection_e != NULL) {
+    if(($subsection_m != "" || $subsection_m != NULL || $subsection_e != "" || $subsection_e != NULL ) && $section_no != NULL) {
       if(checkSubs($conn,$subsection_order,$section_no) == TRUE) {
         // echo "<script type= 'text/javascript'>alert('Record already exists.');window.location='addsubsection.php';</script>";
         header("Location: addsubsection.php?exists");
       } else {
-        $sql = "INSERT INTO subsection(subsection_order,subsection_malay, subsection_english, subsection_desc, date_created, section_no, USER_ID, sbtoken) VALUES('".$subsection_order."','".$subsection_m."','".$subsection_e."','".$subsection_desc."','".$Cdate."','".$section_no."','".$user_id."','".$token."')";
+        $sql = "INSERT INTO subsection(subsection_order,subsection_malay, subsection_english, subsection_desc, date_created, date_updated, section_no, USER_ID, sbtoken) VALUES('".$subsection_order."','".$subsection_m."','".$subsection_e."','".$subsection_desc."','".$Cdate."','".$Update."','".$section_no."','".$user_id."','".$token."')";
         $result = mysqli_query($conn,$sql);
     
         $sql2 = "SELECT * FROM subsection WHERE sbtoken = '$token'";

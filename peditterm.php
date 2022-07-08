@@ -8,7 +8,7 @@ if(isset($_POST['submit'])) {
     $term_e = $_POST['term_english'];
     $term_desc = $_POST['term_desc'];
     $Update = getTimestamp();
-    $token = $_GET['id'];
+    $token = mysqli_real_escape_string($conn,$_GET['id']);
     $user_id = $_SESSION['USER_ID'];
     try {
         if($term_m != "" || $term_m != NULL || $term_e != "" || $term_e != NULL) {
