@@ -227,7 +227,24 @@ if(!isset($_SESSION['userlogged']) || $_SESSION['userlogged'] !=1) {
     </div>
   </div>
 
-  
+  <div class="modal fade" id="noaccess">
+    <div class="modal-dialog">
+        <div class="modal-content bg-danger">
+            <div class="modal-header">
+                <h4 class="modal-title">Something went wrong...</h4>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <p>You tried to access a restricted page.</p>
+            </div>
+            <div class="modal-footer justify-content-between">
+                <button type="button" class="btn btn-outline-light" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+  </div>
 
    <!-- footer -->
    <?php include('version.php'); ?>
@@ -244,12 +261,12 @@ if(!isset($_SESSION['userlogged']) || $_SESSION['userlogged'] !=1) {
 <?php include('scripts.php');?>
 
 <!-- page script -->
-<?php if (isset($_GET['success'])){ ?>
-    <!-- <script type="text/javascript">
+<?php if (isset($_GET['noaccess'])){ ?>
+    <script type="text/javascript">
     $(document).ready(function(){
-        $("#loginsuccess").modal("show");
+        $("#noaccess").modal("show");
     });
-    </script> -->
+    </script>
 <?php } ?>
 <?php
 

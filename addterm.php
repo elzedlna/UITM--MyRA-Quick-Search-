@@ -4,7 +4,7 @@ if(!isset($_SESSION['userlogged']) || $_SESSION['userlogged'] !=1) {
   header("Location: login.php");
 }
 if($_SESSION['USER_ROLE'] != 2) {
-  header("Location: home.php");
+  header("Location: home.php?noaccess");
 }
 include('connection.php');
 $sql = "SELECT * FROM section WHERE date_deleted IS NULL ORDER BY section_order ASC";

@@ -4,7 +4,7 @@ if(!isset($_SESSION['userlogged']) || $_SESSION['userlogged'] !=1) {
   header("Location: login.php");
 }
 if($_SESSION['USER_ROLE'] != 1) {
-  header("Location: home.php");
+  header("Location: home.php?noaccess");
 }
 ?>
 <!DOCTYPE html>
