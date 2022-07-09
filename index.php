@@ -14,7 +14,7 @@
     <!-- Left navbar links -->
     <ul class="order-1 order-md-3 navbar-nav navbar-no-expand ml-auto">
       <li class="nav-item d-none d-sm-inline-block">
-        <a href="login.php" class="nav-link">Log in</a>
+        <a href="login.php" class="nav-link">LOG IN</a>
       </li>
     </ul>
 </nav>

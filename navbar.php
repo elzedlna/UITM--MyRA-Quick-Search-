@@ -21,7 +21,7 @@ echo '<nav class="main-header navbar navbar-expand navbar-white navbar-light">
   <li class="nav-item d-none d-sm-inline-block" style="padding-right: 10px;">'.$icon.'</li>
   <li class="nav-item d-none d-sm-inline-block" style="padding-right: 15px;">'.$_SESSION['USER_NAME'].'</li>
   <li class="nav-item d-none d-sm-inline-block">
-    <a href="plogout.php" class="d-block">LOG OUT</a>
+    <a href="plogout.php" class="d-block">LOG OUT <i class="fas fa-power-off" style="padding-left:5px;padding-right:5px"></i></a>
   </li>
 </ul>
 </nav>';

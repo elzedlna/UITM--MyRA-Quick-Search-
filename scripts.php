@@ -59,7 +59,17 @@ if ( window.history.replaceState ) {
   })
 </script>
 <!-- SweetAlert2 -->
-<script src="../../plugins/sweetalert2/sweetalert2.min.js"></script>
+<script src="plugins/sweetalert2/sweetalert2.min.js"></script>
 <!-- Toastr -->
-<script src="../../plugins/toastr/toastr.min.js"></script>';
+<script src="plugins/toastr/toastr.min.js"></script>
+<!-- jquery-validation -->
+<script src="plugins/jquery-validation/jquery.validate.min.js"></script>
+<script src="plugins/jquery-validation/additional-methods.min.js"></script>
+<!-- FLOT CHARTS -->
+<script src="plugins/flot/jquery.flot.js"></script>
+<!-- FLOT RESIZE PLUGIN - allows the chart to redraw when the window is resized -->
+<script src="plugins/flot/plugins/jquery.flot.resize.js"></script>
+<!-- FLOT PIE PLUGIN - also used to draw donut charts -->
+<script src="plugins/flot/plugins/jquery.flot.pie.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.js"></script>';
 ?>

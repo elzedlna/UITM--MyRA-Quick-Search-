@@ -2,7 +2,6 @@
 
 * {
     font-family: 'Poppins',sans-serif;
-    /* font-family: 'Bahnschrift',sans-serif; */
     font-size: medium;
 }
 
@@ -14,27 +13,30 @@ aside.main-sidebar.sidebar-dark-primary.elevation-4 a {
     color: rgb(160, 189, 236);
 }
 
-#example2 tr th, #example2 tr tfoot {
+
+table#example2 {
+    font-weight: 500;
+}
+
+table#example2 tr th, #example2 tr tfoot {
     text-align: center;
     background-color: #007bff42;
 }
 
-#example2 tbody tr:hover,
-#example2 tbody tr:nth-child(even):hover,
-#example2 tbody tr:nth-child(odd):hover {
+table#example2 tbody tr:hover,
+table#example2 tbody tr:nth-child(even):hover,
+table#example2 tbody tr:nth-child(odd):hover {
     background-color: #93c6ff;
 }
 
-#example2 tbody tr {
+table#example2 tbody tr {
     text-align: left;
     text-overflow: clip;
 }
 
-#example2 tbody tr:nth-child(odd) {
+table#example2 tbody tr:nth-child(odd) {
     background-color: #007bff19;
-}
+    transition: all 0.3s ease;
 
-/* #example2 tr:nth-child(odd) {
-    background-color: rgba(141, 192, 255, 0.726);
-} */
+}
 

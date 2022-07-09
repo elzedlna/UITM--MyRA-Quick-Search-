@@ -66,7 +66,7 @@ if(!isset($_SESSION['userlogged']) || $_SESSION['userlogged'] !=1) {
           </div><!-- /.col -->
           <div class="col-sm-6">
             <ol class="breadcrumb float-sm-right">
-              <li class="breadcrumb-item"><a href="#">Home</a></li>
+              <li class="breadcrumb-item"><a href="home.php">Home</a></li>
               <li class="breadcrumb-item active">Dashboard</li>
             </ol>
           </div><!-- /.col -->
@@ -166,48 +166,37 @@ if(!isset($_SESSION['userlogged']) || $_SESSION['userlogged'] !=1) {
           </div>
         </div>
         <!-- /.row -->
-        <!-- Main row -->
-        <div class="row">
-          <!-- Left col -->
-          <section class="col-lg-7 connectedSortable">
-            <!-- Custom tabs (Charts with tabs)-->
-           
-            <!-- /.card -->
 
-            <!-- DIRECT CHAT -->
-            
-            <!--/.direct-chat -->
-
-            <!-- TO DO List -->
-            
-            <!-- /.card -->
-          </section>
-          <!-- /.Left col -->
-          <!-- right col (We are only adding the ID to make the widgets sortable)-->
-          <section class="col-lg-5 connectedSortable">
-
-            <!-- Map card -->
-           
-            <!-- /.card -->
-
-            <!-- solid sales graph -->
-           
-            <!-- /.card -->
-
-            <!-- Calendar -->
-            
-            <!-- /.card -->
-          </section>
-          <!-- right col -->
-        </div>
-        <!-- /.row (main row) -->
       </div><!-- /.container-fluid -->
     </section>
     <section class="content">
       <div class="container-fluid">
         <div class="row">
           <div class="col-12">
-            
+              <!-- Line chart -->
+            <?php if($_SESSION['USER_ROLE'] == 1) { ?>
+            <div class="card card-primary">
+              <div class="card-header">
+                <h3 class="card-title">
+                  <i class="far fa-chart-bar"></i>
+                  Monthly Searches
+                </h3>
+
+                <div class="card-tools">
+                  <button type="button" class="btn btn-tool" data-card-widget="collapse">
+                    <i class="fas fa-minus"></i>
+                  </button>
+
+                </div>
+              </div>
+              <div class="card-body">
+                <!-- <div id="line-chart" style="height: 300px;"></div> -->
+                <canvas id="myChart"></canvas>
+
+              </div>
+            </div>
+            <?php } ?>
+            <!-- /.card -->
           </div>
           <!-- /.col -->
         </div>
@@ -215,7 +204,6 @@ if(!isset($_SESSION['userlogged']) || $_SESSION['userlogged'] !=1) {
       </div>
       <!-- /.container-fluid -->
     </section>
-
     <!-- /.content -->
   </div>
   <!-- /.content-wrapper -->
@@ -241,13 +229,9 @@ if(!isset($_SESSION['userlogged']) || $_SESSION['userlogged'] !=1) {
 
   
 
-  <footer class="main-footer">
-    <!--<strong>Copyright &copy; 2014-2021 <a href="https://adminlte.io">AdminLTE.io</a>.</strong>
-    All rights reserved.
-    <div class="float-right d-none d-sm-inline-block">
-      <b>Version</b> 3.2.0
-    </div>-->
-  </footer>
+   <!-- footer -->
+   <?php include('version.php'); ?>
+  <!-- / footer  -->
 
   <!-- Control Sidebar -->
   <aside class="control-sidebar control-sidebar-dark">
@@ -267,23 +251,105 @@ if(!isset($_SESSION['userlogged']) || $_SESSION['userlogged'] !=1) {
     });
     </script> -->
 <?php } ?>
-<script>
-    $(function () {
-      $("#example1").DataTable({
-        "responsive": true, "lengthChange": false, "autoWidth": false,
-        "buttons": ["copy", "csv", "excel", "pdf", "print", "colvis"]
-      }).buttons().container().appendTo('#example1_wrapper .col-md-6:eq(0)');
-      $('#example2').DataTable({
-        "paging": true,
-        "lengthChange": false,
-        "searching": true,
-        "ordering": true,
-        "info": true,
-        "autoWidth": false,
-        "responsive": true,
-      });
-    });
-  </script>
+<?php
+
+// January
+$sqljan = "SELECT count(*) AS total FROM auditsearch WHERE MONTH(search_date) = 1";
+$resjan = mysqli_query($conn,$sqljan);
+$rowjan = mysqli_fetch_assoc($resjan);
+$jan = $rowjan['total'];
+// February
+$sqlfeb = "SELECT count(*) AS total FROM auditsearch WHERE MONTH(search_date) = 2";
+$resfeb = mysqli_query($conn,$sqlfeb);
+$rowfeb = mysqli_fetch_assoc($resfeb);
+$feb = $rowfeb['total'];
+// March
+$sqlmac = "SELECT count(*) AS total FROM auditsearch WHERE MONTH(search_date) = 3";
+$resmac = mysqli_query($conn,$sqlmac);
+$rowmac = mysqli_fetch_assoc($resmac);
+$mac = $rowmac['total'];
+// April
+$sqlapr = "SELECT count(*) AS total FROM auditsearch WHERE MONTH(search_date) = 4";
+$resapr = mysqli_query($conn,$sqlapr);
+$rowapr = mysqli_fetch_assoc($resapr);
+$apr = $rowapr['total'];
+// May
+$sqlmay = "SELECT count(*) AS total FROM auditsearch WHERE MONTH(search_date) = 5";
+$resmay = mysqli_query($conn,$sqlmay);
+$rowmay = mysqli_fetch_assoc($resmay);
+$may = $rowmay['total'];
+// June
+$sqljun = "SELECT count(*) AS total FROM auditsearch WHERE MONTH(search_date) = 6";
+$resjun = mysqli_query($conn,$sqljun);
+$rowjun = mysqli_fetch_assoc($resjun);
+$jun = $rowjun['total'];
+// July
+$sqljul = "SELECT count(*) AS total FROM auditsearch WHERE MONTH(search_date) = 7";
+$resjul = mysqli_query($conn,$sqljul);
+$rowjul = mysqli_fetch_assoc($resjul);
+$jul = $rowjul['total'];
+// August
+$sqlaug = "SELECT count(*) AS total FROM auditsearch WHERE MONTH(search_date) = 8";
+$resaug = mysqli_query($conn,$sqlaug);
+$rowaug = mysqli_fetch_assoc($resaug);
+$aug = $rowaug['total'];
+// September
+$sqlsep = "SELECT count(*) AS total FROM auditsearch WHERE MONTH(search_date) = 9";
+$ressep = mysqli_query($conn,$sqlsep);
+$rowsep = mysqli_fetch_assoc($ressep);
+$sep = $rowsep['total'];
+// October
+$sqloct = "SELECT count(*) AS total FROM auditsearch WHERE MONTH(search_date) = 10";
+$resoct = mysqli_query($conn,$sqloct);
+$rowoct = mysqli_fetch_assoc($resoct);
+$oct = $rowoct['total'];
+// November
+$sqlnov = "SELECT count(*) AS total FROM auditsearch WHERE MONTH(search_date) = 11";
+$resnov = mysqli_query($conn,$sqlnov);
+$rownov = mysqli_fetch_assoc($resnov);
+$nov = $rownov['total'];
+// December
+$sqldec = "SELECT count(*) AS total FROM auditsearch WHERE MONTH(search_date) = 12";
+$resdec = mysqli_query($conn,$sqldec);
+$rowdec = mysqli_fetch_assoc($resdec);
+$dec = $rowdec['total'];
+
+?>
 <!-- Page specific script -->
+<script>
+var xValues = ['January','February','March','April','May','June','July','August','September','October','November','December'];
+
+var yValues = [<?php echo $jan;?>,<?php echo $feb;?>,<?php echo $mac;?>,<?php echo $apr;?>,<?php echo $may;?>,<?php echo $jun;?>,<?php echo $jul;?>,<?php echo $aug;?>,<?php echo $sep;?>,<?php echo $oct;?>,<?php echo $nov;?>,<?php echo $dec;?>];
+
+new Chart("myChart", {
+  type: "line",
+  data: {
+    labels: xValues,
+    datasets: [{
+      fill: false,
+      lineTension: 0,
+      backgroundColor: "rgba(0,0,255,1.0)",
+      borderColor: "rgba(0,0,255,0.1)",
+      data: yValues
+    }]
+  },
+  options: {
+    legend: {display: false},
+    scales: {
+    yAxes: [{
+        ticks: {min: 0, max:100},
+        scaleLabel: {
+            display: true,
+            labelString: 'NUMBER OF SEARCHES'
+        }}],
+    xAxes: [{
+        scaleLabel: {
+            display: true,
+            labelString: 'MONTH'
+        }}]
+    }
+  }
+});
+</script>
 </body>
 </html>
