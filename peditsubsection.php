@@ -7,12 +7,13 @@ if(isset($_POST['submit'])) {
   $subsection_m = $_POST['subsection_malay'];
   $subsection_e = $_POST['subsection_english'];
   $subsection_desc = $_POST['subsection_desc'];
+  $subsection_order = $_POST['subsection_order'];
   $Update = getTimestamp();
   $token = mysqli_real_escape_string($conn,$_GET['id']);
   $user_id = $_SESSION['USER_ID'];
   try {
     if($subsection_m != "" || $subsection_m != NULL || $subsection_e != "" || $subsection_e != NULL) {
-      $sql = "UPDATE subsection SET subsection_malay = '".$subsection_m."', subsection_english = '".$subsection_e."', subsection_desc = '".$subsection_desc."', date_updated = '".$Update."' WHERE sbtoken = '".$token."'";
+      $sql = "UPDATE subsection SET subsection_order = '".$subsection_order."',subsection_malay = '".$subsection_m."', subsection_english = '".$subsection_e."', subsection_desc = '".$subsection_desc."', date_updated = '".$Update."' WHERE sbtoken = '".$token."'";
       $result = mysqli_query($conn,$sql);
 
       $sql2 = "SELECT * FROM subsection WHERE sbtoken = '$token'";

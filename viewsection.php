@@ -128,6 +128,7 @@ if($row) {
                     <textarea class="form-control" rows="5" id="summernote" name="section_desc" style="resize:none" disabled><?php echo $section_desc; ?></textarea>
                   </div>
                 </div>
+
                 <!-- /.card-body -->
 
                 <div class="card-footer">

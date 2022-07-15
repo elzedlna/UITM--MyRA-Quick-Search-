@@ -114,7 +114,7 @@ if($row) {
                 <div class="card-body">
                   <div class="form-group">
                     <label for="section_no">Section</label>
-                    <output class="form-control" id="section_no" style="width:20em" name="section_no"><?php echo $section_no; ?></output>
+                    <output class="form-control" id="section_no" name="section_no"><?php echo $section_no; ?></output>
                   </div>
                   <div class="form-group">
                     <label for="subsection_order">Sub-Section Order</label>
@@ -141,25 +141,23 @@ if($row) {
                   <script type="text/javascript">document.getElementById("back").onclick = function(){location.href = "subsections.php";};</script>
                 </div>
                 <div class="modal fade" id="modal-primary">
-                    <div class="modal-dialog">
+                  <div class="modal-dialog">
                     <div class="modal-content bg-danger">
-                        <div class="modal-header">
+                      <div class="modal-header">
                         <h4 class="modal-title">Delete Record</h4>
                         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                            <span aria-hidden="true">&times;</span>
+                          <span aria-hidden="true">&times;</span>
                         </button>
-                        </div>
-                        <div class="modal-body">
+                      </div>
+                      <div class="modal-body">
                         <p>Do you want to delete this record?</p>
-                        </div>
-                        <div class="modal-footer justify-content-between">
-                            <button type="button" class="btn btn-outline-light" data-dismiss="modal">Close</button>
-                            <button type="submit" id="submit" name="submit" class="btn btn-outline-light">Delete</button>
-                        </div>
+                      </div>
+                      <div class="modal-footer justify-content-between">
+                        <button type="button" class="btn btn-outline-light" data-dismiss="modal">Close</button>
+                        <button type="submit" id="submit" name="submit" class="btn btn-outline-light">Delete</button>
+                      </div>
                     </div>
-                    <!-- /.modal-content -->
-                    </div>
-                    <!-- /.modal-dialog -->
+                  </div>
                 </div>
               </form>
             </div>

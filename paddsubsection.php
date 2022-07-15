@@ -12,7 +12,7 @@ if(isset($_POST['submit'])) {
   $Cdate = getTimestamp();
   $Update = getTimestamp();
   $user_id = $_SESSION['USER_ID'];
-  $token = generateToken(10);
+  $token = generateToken(100);
 
   function checkSubs($conn,$subsection_order,$section_no) {
     $found = false;

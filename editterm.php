@@ -124,7 +124,25 @@ if($row) {
                   </div>
                   <div class="form-group">
                     <label for="term_order">Term Order</label>
-                    <input type="text" class="form-control" id="term_order" style="width:4em" name="term_order" value="<?php echo $term_order; ?>" disabled>
+                    <select class="form-control select2" id="term_order" style="width:4em" name="term_order" required>
+                      <option value="<?php echo $term_order;?>" selected><?php echo $term_order;?></option>
+                      <?php
+                      $letters = range('a','z');
+                      $letters_used = array();
+                      $index = 0;
+                      $sql = "SELECT term_order FROM term WHERE date_deleted IS NULL AND subsection_no = '".$row['subsection_no']."' ORDER BY term_order ASC";
+                      $terms = mysqli_query($conn,$sql);
+                      while($d = mysqli_fetch_assoc($terms)) {
+                        $letters_used[$index] = $d['term_order'];
+                        $index++; 
+                      }
+                      $result = array_diff($letters,$letters_used);
+
+                      foreach( $result as $t_order) {
+                        echo "<option value='".$t_order."'>$t_order</option>";
+                      }
+                      ?>
+                    </select>
                   </div>
                   <div class="form-group">
                     <label for="term_malay">Term (Malay)</label>

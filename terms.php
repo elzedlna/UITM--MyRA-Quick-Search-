@@ -84,7 +84,7 @@ if($_SESSION['USER_ROLE'] != 2) {
           <div class="col-12">
             <div class="card card-primary">
               <div class="card-header">
-                <h3 class="card-title">Terms</h3>
+                <h3 class="card-title">Active Terms</h3>
                 <a href="addterm.php"><button type="submit" class="card-title btn btn-warning float-right">Add Term</button></a>
               </div>
               <!-- /.card-header -->
@@ -130,8 +130,28 @@ if($_SESSION['USER_ROLE'] != 2) {
                                   <button type="button" name="view" id="view" onclick="window.location.href='viewterm.php?id=<?php echo $row['ttoken']; ?>'" class="btn btn-primary btnn-block btn-sm fas fa-eye"></button>
                                   <?php if($row['USER_ID'] == $_SESSION['USER_ID']) { ?>
                                   <button type="button" name="edit" id="edit" onclick="window.location.href='editterm.php?id=<?php echo $row['ttoken']; ?>'" class="btn btn-secondary btnn-block btn-sm fas fa-edit"></button>
-                                  <button type="button" name="delete" id="delete" onclick="window.location.href='deleteterm.php?id=<?php echo $row['ttoken']; ?>'" class="btn btn-danger btnn-block btn-sm fas fa-trash-can"></button>
+                                  <!-- <button type="button" name="delete" id="delete" onclick="window.location.href='deleteterm.php?id=<?php echo $row['ttoken']; ?>'" class="btn btn-danger btnn-block btn-sm fas fa-trash-can"></button> -->
+                                  <button type="button" data-href="pdeleteterm.php?id=<?php echo $row['ttoken']; ?>" class="btn btn-danger btnn-block btn-sm fas fa-trash-can" data-toggle="modal" data-target="#delete"></button>
                                   <?php } ?>
+                              </div>
+                              <div class="modal fade" id="delete">
+                                <div class="modal-dialog">
+                                  <div class="modal-content bg-danger">
+                                    <div class="modal-header">
+                                      <h4 class="modal-title">Delete Term</h4>
+                                      <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                          <span aria-hidden="true">&times;</span>
+                                      </button>
+                                    </div>
+                                    <div class="modal-body">
+                                      <p>Do you want to delete this term?</p>
+                                    </div>
+                                    <div class="modal-footer justify-content-between">
+                                      <button type="button" class="btn btn-outline-light" data-dismiss="modal">Close</button>
+                                      <a class="btn btn-outline-light btn-delete">Delete</a>
+                                    </div>
+                                  </div>
+                                </div>
                               </div>
                             </td>
                           </tr>
@@ -149,6 +169,99 @@ if($_SESSION['USER_ROLE'] != 2) {
                     <th>Term (Malay)</th>
                     <th>Term (English)</th>
                     <th>Date Created</th>
+                    <th>Action</th>
+                  </tr>
+                  </tfoot>
+                </table>
+              </div>
+              <div class="card-footer">
+              </div>
+              <!-- /.card-body -->
+            </div>
+            <div class="card card-primary">
+              <div class="card-header">
+                <h3 class="card-title">Deleted Terms</h3>
+              </div>
+              <!-- /.card-header -->
+              <div class="card-body">
+                <table id="example2" class="table table-bordered table-hover">
+                  <thead>
+                  <tr>
+                    <th>#</th>
+                    <th>Section</th>
+                    <th>Sub-Section</th>
+                    <th>Term Order</th>
+                    <th>Term (Malay)</th>
+                    <th>Term (English)</th>
+                    <th>Date Deleted</th>
+                    <th>Action</th>
+                  </tr>
+                  </thead>
+                  <tbody>
+                  <?php
+                    $conn = mysqli_connect("localhost", "root", "", "myra");
+                    if($conn-> connect_error){
+                        die("Connection failed::". $conn-> connect_error);
+                    }
+
+                    $sql = "SELECT t.date_deleted, t.USER_ID, s.section_order, s.section_malay, sb.subsection_order, sb.subsection_malay, t.term_no, t.term_order, t.term_malay, t.term_english, t.date_created, t.ttoken FROM term t
+                    JOIN subsection sb ON t.subsection_no = sb.subsection_no
+                    JOIN section s ON sb.section_no = s.section_no WHERE s.date_deleted IS NOT NULL OR sb.date_deleted IS NOT NULL OR t.date_deleted IS NOT NULL ORDER BY s.section_no ASC, sb.subsection_no ASC, t.term_order ASC";
+                    $result = $conn->query($sql);
+                    $counter = 1;
+                    if($result-> num_rows > 0){
+                        while ($row = $result-> fetch_assoc()){
+                          ?>
+                          <tr>
+                            <td><?php echo $counter++; ?></td>
+                            <td><?php echo $row['section_order']." - ".$row['section_malay']; ?></td>
+                            <td><?php echo $row['subsection_order']." - ".$row['subsection_malay']; ?></td>
+                            <td><?php echo $row['term_order']; ?></td>
+                            <td><?php echo $row['term_malay']; ?></td>
+                            <td><?php echo $row['term_english']; ?></td>
+                            <td><?php echo $row['date_deleted']; ?></td>
+                            <td>
+                              <div class="btn-group">
+                                  <button type="button" name="view" id="view" onclick="window.location.href='viewterm.php?id=<?php echo $row['ttoken']; ?>'" class="btn btn-primary btnn-block btn-sm fas fa-eye"></button>
+                                  <?php if($row['USER_ID'] == $_SESSION['USER_ID'] && $row['date_deleted'] != NULL) { ?>
+                                  <button type="button" data-href="prestoreterm.php?id=<?php echo $row['ttoken']; ?>" class="btn btn-secondary btnn-block btn-sm fas fa-plus-square" data-toggle="modal" data-target="#restore"></button>
+                                  <?php } ?>
+                              </div>
+                              <div class="modal fade" id="restore">
+                                <div class="modal-dialog">
+                                    <div class="modal-content bg-secondary">
+                                        <div class="modal-header">
+                                            <h4 class="modal-title">Restore</h4>
+                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                            <span aria-hidden="true">&times;</span>
+                                            </button>
+                                        </div>
+                                        <div class="modal-body">
+                                            <p>Do you want to restore this term?</p>
+                                        </div>
+                                        <div class="modal-footer justify-content-between">
+                                            <button type="button" class="btn btn-outline-light" data-dismiss="modal">Close</button>
+                                            <a class="btn btn-outline-light btn-restore">Restore</a>
+                                        </div>
+                                    </div>
+                                </div>
+                              </div>
+                            </td>
+                          </tr>
+                          <?php
+                        }
+                      }   
+                    ?>
+                  </tbody>
+                  <tfoot>
+                  <tr>
+                    <th>#</th>
+                    <th>Section</th>
+                    <th>Sub-Section</th>
+                    <th>Term Order</th>
+                    <th>Term (Malay)</th>
+                    <th>Term (English)</th>
+                    <th>Date Deleted</th>
                     <th>Action</th>
                   </tr>
                   </tfoot>
@@ -223,6 +336,63 @@ if($_SESSION['USER_ROLE'] != 2) {
     </div>
   </div>
 
+<div class="modal fade" id="deleteerror">
+  <div class="modal-dialog">
+      <div class="modal-content bg-danger">
+          <div class="modal-header">
+              <h4 class="modal-title">Error</h4>
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+              </button>
+          </div>
+          <div class="modal-body">
+              <p>Delete was unsuccessful.</p>
+          </div>
+          <div class="modal-footer justify-content-between">
+              <button type="button" class="btn btn-outline-light" data-dismiss="modal">Close</button>
+          </div>
+      </div>
+  </div>
+</div>
+
+<div class="modal fade" id="restoreerror">
+  <div class="modal-dialog">
+      <div class="modal-content bg-danger">
+          <div class="modal-header">
+              <h4 class="modal-title">Error</h4>
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+              </button>
+          </div>
+          <div class="modal-body">
+              <p>Delete was unsuccessful.</p>
+          </div>
+          <div class="modal-footer justify-content-between">
+              <button type="button" class="btn btn-outline-light" data-dismiss="modal">Close</button>
+          </div>
+      </div>
+  </div>
+</div>
+
+<div class="modal fade" id="termrestored">
+    <div class="modal-dialog">
+        <div class="modal-content bg-secondary">
+            <div class="modal-header">
+                <h4 class="modal-title">Success!</h4>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <p>Term has been successfully restored!</p>
+            </div>
+            <div class="modal-footer justify-content-between">
+                <button type="button" class="btn btn-outline-light" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+  </div>
+
   <div class="modal fade" id="termdeleted">
     <div class="modal-dialog">
         <div class="modal-content bg-danger">
@@ -281,7 +451,14 @@ if($_SESSION['USER_ROLE'] != 2) {
   </div>
   <!-- /modal  -->
   <?php include('scripts.php');?>
-
+  <script>
+    $('#restore').on('show.bs.modal', function(e) {
+        $(this).find('.btn-restore').attr('href', $(e.relatedTarget).data('href'));
+    });
+    $('#delete').on('show.bs.modal', function(e) {
+        $(this).find('.btn-delete').attr('href', $(e.relatedTarget).data('href'));
+    });
+  </script>
 <!-- page script -->
 <!-- modal -->
 <?php if (isset($_GET['empty'])){ ?>
@@ -291,10 +468,31 @@ if($_SESSION['USER_ROLE'] != 2) {
     });
     </script>
 <?php } ?>
+<?php if (isset($_GET['deletefail'])){ ?>
+    <script type="text/javascript">
+    $(document).ready(function(){
+        $("#deleteerror").modal("show");
+    });
+    </script>
+<?php } ?>
+<?php if (isset($_GET['restorefail'])){ ?>
+    <script type="text/javascript">
+    $(document).ready(function(){
+        $("#restoreerror").modal("show");
+    });
+    </script>
+<?php } ?>
 <?php if (isset($_GET['exists'])){ ?>
     <script type="text/javascript">
     $(document).ready(function(){
         $("#termexists").modal("show");
+    });
+    </script>
+<?php } ?>
+<?php if (isset($_GET['restored'])){ ?>
+    <script type="text/javascript">
+    $(document).ready(function(){
+        $("#termrestored").modal("show");
     });
     </script>
 <?php } ?>
@@ -336,7 +534,7 @@ if($_SESSION['USER_ROLE'] != 2) {
         "responsive": true, "lengthChange": false, "autoWidth": false,
         "buttons": ["copy", "csv", "excel", "pdf", "print", "colvis"]
       }).buttons().container().appendTo('#example1_wrapper .col-md-6:eq(0)');
-      $('#example2').DataTable({
+      $('table#example2').DataTable({
         "paging": true,
         "lengthChange": false,
         "searching": true,

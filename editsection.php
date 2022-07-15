@@ -113,7 +113,26 @@ if($row) {
                 <div class="card-body">
                   <div class="form-group">
                     <label for="section_order">Section Order</label>
-                    <input type="text" class="form-control" style="width:4em" id="section_malay" name="section_malay" value="<?php echo $section_order; ?>" disabled>
+                    <select class="form-control select2" id="section_order" style="width:4em" name="section_order" required>
+                      <option value="<?php echo $section_order;?>" selected><?php echo $section_order;?></option>
+                      <?php
+                      $letters = range('A','Z');
+                      $letters_used = array();
+                      $index = 0;
+                      $sql = "SELECT section_order FROM section WHERE date_deleted IS NULL ORDER BY section_order ASC";
+                      $sections = mysqli_query($conn,$sql);
+                      while($d = mysqli_fetch_assoc($sections)) {
+                        $letters_used[$index] = $d['section_order'];
+                        $index++; 
+                      }
+                      $result = array_diff($letters,$letters_used);
+
+                      foreach( $result as $s_order) {
+                        echo "<option value='".$s_order."'>$s_order</option>";
+                      }
+                      ?>
+                    </select>
+                    <!-- <input type="text" class="form-control" style="width:4em" id="section_malay" name="section_malay" value="<?php echo $section_order; ?>" disabled> -->
                   </div>
                   <div class="form-group">
                     <label for="section_malay">Section (Malay)</label>

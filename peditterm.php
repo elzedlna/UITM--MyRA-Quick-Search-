@@ -7,12 +7,13 @@ if(isset($_POST['submit'])) {
     $term_m = $_POST['term_malay'];
     $term_e = $_POST['term_english'];
     $term_desc = $_POST['term_desc'];
+    $term_order = $_POST['term_order'];
     $Update = getTimestamp();
     $token = mysqli_real_escape_string($conn,$_GET['id']);
     $user_id = $_SESSION['USER_ID'];
     try {
         if($term_m != "" || $term_m != NULL || $term_e != "" || $term_e != NULL) {
-            $sql = "UPDATE term SET term_malay = '".$term_m."', term_english = '".$term_e."', term_desc = '".$term_desc."', date_updated = '".$Update."' WHERE ttoken = '".$token."'";
+            $sql = "UPDATE term SET term_order = '".$term_order."',term_malay = '".$term_m."', term_english = '".$term_e."', term_desc = '".$term_desc."', date_updated = '".$Update."' WHERE ttoken = '".$token."'";
             $result = mysqli_query($conn,$sql);
 
             $sql2 = "SELECT * FROM term WHERE ttoken = '$token'";

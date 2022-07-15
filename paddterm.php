@@ -13,7 +13,7 @@ if(isset($_POST['submit'])) {
     $Update = getTimestamp();
     $subsection_no = $_POST['subsection_no'];
     $user_id = $_SESSION['USER_ID'];
-    $token = generateToken(10);
+    $token = generateToken(100);
 
     function checkTerm($conn,$term_order,$subsection_no,$section_no) {
         $found = false;

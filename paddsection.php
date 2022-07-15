@@ -10,7 +10,7 @@ if(isset($_POST['submit'])) {
     $section_desc = $_POST['section_desc'];
     $Cdate = getTimestamp();
     $Update = getTimestamp();
-    $token = generateToken(10);
+    $token = generateToken(100);
     $user_id = $_SESSION['USER_ID'];
     
     try {

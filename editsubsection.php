@@ -114,11 +114,11 @@ if($row) {
                 <div class="card-body">
                   <div class="form-group">
                     <label for="section_no">Section</label>
-                    <input type="text" class="form-control" id="section_no" style="width:20em" name="section_no" value="<?php echo $section_no; ?>" disabled>
+                    <input type="text" class="form-control" id="section_no" name="section_no" value="<?php echo $section_no; ?>" disabled>
                   </div>
                   <div class="form-group">
                     <label for="subsection_order">Sub-Section Order</label>
-                    <input type="text" class="form-control" id="subsection_order" name="subsection_order" style="width:4em" value="<?php echo $subsection_order; ?>" disabled>
+                    <input type="number" min="1" class="form-control" id="subsection_order" name="subsection_order" style="width:4em" value="<?php echo $subsection_order; ?>">
                   </div>
                   <div class="form-group">
                     <label for="subsection_malay">Sub-Section (Malay)</label>

@@ -4,6 +4,7 @@ include("connection.php");
 include("functions.php");
 date_default_timezone_set("Asia/Kuala_Lumpur");
 if(isset($_POST['submit'])) {
+    $section_order = $_POST['section_order'];
     $section_m = $_POST['section_malay'];
     $section_e = $_POST['section_english'];
     $section_desc = $_POST['section_desc'];
@@ -12,7 +13,7 @@ if(isset($_POST['submit'])) {
     $user_id = $_SESSION['USER_ID'];
     try {
         if($section_m != "" || $section_m != NULL || $section_e != "" || $section_e != NULL) {
-            $sql = "UPDATE section SET section_malay = '".$section_m."', section_english = '".$section_e."', section_desc = '".$section_desc."', date_updated = '".$Update."' WHERE stoken = '".$token."'";
+            $sql = "UPDATE section SET section_order = '".$section_order."',section_malay = '".$section_m."', section_english = '".$section_e."', section_desc = '".$section_desc."', date_updated = '".$Update."' WHERE stoken = '".$token."'";
             $result = mysqli_query($conn,$sql);
 
             $sql2 = "SELECT * FROM section WHERE stoken = '$token'";

@@ -8,7 +8,7 @@ if(isset($_POST['submit'])) {
     $role_no = $_POST['role_no'];
     $access_no = $_POST['access_no'];
     $assigned_date = getTimestamp();
-    $token = generateToken(10);
+    $token = generateToken(100);
     $update = getTimestamp();
 
     function checkUser($conn,$USER_ID) {

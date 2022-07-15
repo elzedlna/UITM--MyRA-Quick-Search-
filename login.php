@@ -61,7 +61,7 @@ if(isset($_POST['login'])) {
             }
         }
         $ip=get_ip();
-        $token = generateToken(10);
+        $token = generateToken(100);
         $_SESSION['logintoken'] = $token;
         if(isset($_SESSION['USER_ID'])) {
           $sql = "INSERT into auditlog(audit_login, audit_ip, USER_ID, atoken, role_no) VALUES ('".$date."','".$ip."','".$_SESSION['USER_ID']."','".$token."','".$_SESSION['USER_ROLE']."')";

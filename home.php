@@ -174,7 +174,6 @@ if(!isset($_SESSION['userlogged']) || $_SESSION['userlogged'] !=1) {
         <div class="row">
           <div class="col-12">
               <!-- Line chart -->
-            <?php if($_SESSION['USER_ROLE'] == 1) { ?>
             <div class="card card-primary">
               <div class="card-header">
                 <h3 class="card-title">
@@ -195,7 +194,6 @@ if(!isset($_SESSION['userlogged']) || $_SESSION['userlogged'] !=1) {
 
               </div>
             </div>
-            <?php } ?>
             <!-- /.card -->
           </div>
           <!-- /.col -->

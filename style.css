@@ -13,30 +13,53 @@ aside.main-sidebar.sidebar-dark-primary.elevation-4 a {
     color: rgb(160, 189, 236);
 }
 
-
-table#example2 {
+table.table#example2 {
     font-weight: 500;
 }
 
-table#example2 tr th, #example2 tr tfoot {
+table.table#example2 tr th,table.table#example2 tr tfoot {
     text-align: center;
     background-color: #007bff42;
 }
 
-table#example2 tbody tr:hover,
-table#example2 tbody tr:nth-child(even):hover,
-table#example2 tbody tr:nth-child(odd):hover {
+table.table#example2 tbody tr:hover,
+table.table#example2 tbody tr:nth-child(even):hover,
+table.table#example2 tbody tr:nth-child(odd):hover {
     background-color: #93c6ff;
 }
 
-table#example2 tbody tr {
+table.table#example2 tbody tr {
     text-align: left;
     text-overflow: clip;
 }
 
-table#example2 tbody tr:nth-child(odd) {
+table.table#example2 tbody tr:nth-child(odd) {
     background-color: #007bff19;
     transition: all 0.3s ease;
-
 }
+
+/* table.table#ds {
+    font-weight: 500;
+}
+
+table.table#ds tr th, table.table#ds tr tfoot {
+    text-align: center;
+    background-color: #007bff42;
+}
+
+table.table#ds tbody tr:hover,
+table.table#ds tbody tr:nth-child(even):hover,
+table.table#ds tbody tr:nth-child(odd):hover {
+    background-color: #ff9393;
+}
+
+table.table#ds tbody tr {
+    text-align: left;
+    text-overflow: clip;
+}
+
+table.table#ds tbody tr:nth-child(odd) {
+    background-color: #ff000019;
+    transition: all 0.3s ease;
+} */
 
