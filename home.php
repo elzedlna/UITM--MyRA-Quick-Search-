@@ -1,6 +1,9 @@
 <?php
 session_start();
 include('connection.php');
+include('functions.php');
+date_default_timezone_set("Asia/Kuala_Lumpur");
+
 if(!isset($_SESSION['userlogged']) || $_SESSION['userlogged'] !=1) {
   header("Location: login.php");
 }
@@ -268,63 +271,65 @@ if(!isset($_SESSION['userlogged']) || $_SESSION['userlogged'] !=1) {
 <?php } ?>
 <?php
 
+$year = date("Y");
+
 // January
-$sqljan = "SELECT count(*) AS total FROM auditsearch WHERE MONTH(search_date) = 1";
+$sqljan = "SELECT count(*) AS total FROM auditsearch WHERE MONTH(search_date) = 1 AND YEAR(search_date) = '".$year."'";
 $resjan = mysqli_query($conn,$sqljan);
 $rowjan = mysqli_fetch_assoc($resjan);
 $jan = $rowjan['total'];
 // February
-$sqlfeb = "SELECT count(*) AS total FROM auditsearch WHERE MONTH(search_date) = 2";
+$sqlfeb = "SELECT count(*) AS total FROM auditsearch WHERE MONTH(search_date) = 2 AND YEAR(search_date) = '".$year."'";
 $resfeb = mysqli_query($conn,$sqlfeb);
 $rowfeb = mysqli_fetch_assoc($resfeb);
 $feb = $rowfeb['total'];
 // March
-$sqlmac = "SELECT count(*) AS total FROM auditsearch WHERE MONTH(search_date) = 3";
+$sqlmac = "SELECT count(*) AS total FROM auditsearch WHERE MONTH(search_date) = 3 AND YEAR(search_date) = '".$year."'";
 $resmac = mysqli_query($conn,$sqlmac);
 $rowmac = mysqli_fetch_assoc($resmac);
 $mac = $rowmac['total'];
 // April
-$sqlapr = "SELECT count(*) AS total FROM auditsearch WHERE MONTH(search_date) = 4";
+$sqlapr = "SELECT count(*) AS total FROM auditsearch WHERE MONTH(search_date) = 4 AND YEAR(search_date) = '".$year."'";
 $resapr = mysqli_query($conn,$sqlapr);
 $rowapr = mysqli_fetch_assoc($resapr);
 $apr = $rowapr['total'];
 // May
-$sqlmay = "SELECT count(*) AS total FROM auditsearch WHERE MONTH(search_date) = 5";
+$sqlmay = "SELECT count(*) AS total FROM auditsearch WHERE MONTH(search_date) = 5 AND YEAR(search_date) = '".$year."'";
 $resmay = mysqli_query($conn,$sqlmay);
 $rowmay = mysqli_fetch_assoc($resmay);
 $may = $rowmay['total'];
 // June
-$sqljun = "SELECT count(*) AS total FROM auditsearch WHERE MONTH(search_date) = 6";
+$sqljun = "SELECT count(*) AS total FROM auditsearch WHERE MONTH(search_date) = 6 AND YEAR(search_date) = '".$year."'";
 $resjun = mysqli_query($conn,$sqljun);
 $rowjun = mysqli_fetch_assoc($resjun);
 $jun = $rowjun['total'];
 // July
-$sqljul = "SELECT count(*) AS total FROM auditsearch WHERE MONTH(search_date) = 7";
+$sqljul = "SELECT count(*) AS total FROM auditsearch WHERE MONTH(search_date) = 7 AND YEAR(search_date) = '".$year."'";
 $resjul = mysqli_query($conn,$sqljul);
 $rowjul = mysqli_fetch_assoc($resjul);
 $jul = $rowjul['total'];
 // August
-$sqlaug = "SELECT count(*) AS total FROM auditsearch WHERE MONTH(search_date) = 8";
+$sqlaug = "SELECT count(*) AS total FROM auditsearch WHERE MONTH(search_date) = 8 AND YEAR(search_date) = '".$year."'";
 $resaug = mysqli_query($conn,$sqlaug);
 $rowaug = mysqli_fetch_assoc($resaug);
 $aug = $rowaug['total'];
 // September
-$sqlsep = "SELECT count(*) AS total FROM auditsearch WHERE MONTH(search_date) = 9";
+$sqlsep = "SELECT count(*) AS total FROM auditsearch WHERE MONTH(search_date) = 9 AND YEAR(search_date) = '".$year."'";
 $ressep = mysqli_query($conn,$sqlsep);
 $rowsep = mysqli_fetch_assoc($ressep);
 $sep = $rowsep['total'];
 // October
-$sqloct = "SELECT count(*) AS total FROM auditsearch WHERE MONTH(search_date) = 10";
+$sqloct = "SELECT count(*) AS total FROM auditsearch WHERE MONTH(search_date) = 10 AND YEAR(search_date) = '".$year."'";
 $resoct = mysqli_query($conn,$sqloct);
 $rowoct = mysqli_fetch_assoc($resoct);
 $oct = $rowoct['total'];
 // November
-$sqlnov = "SELECT count(*) AS total FROM auditsearch WHERE MONTH(search_date) = 11";
+$sqlnov = "SELECT count(*) AS total FROM auditsearch WHERE MONTH(search_date) = 11 AND YEAR(search_date) = '".$year."'";
 $resnov = mysqli_query($conn,$sqlnov);
 $rownov = mysqli_fetch_assoc($resnov);
 $nov = $rownov['total'];
 // December
-$sqldec = "SELECT count(*) AS total FROM auditsearch WHERE MONTH(search_date) = 12";
+$sqldec = "SELECT count(*) AS total FROM auditsearch WHERE MONTH(search_date) = 12 AND YEAR(search_date) = '".$year."'";
 $resdec = mysqli_query($conn,$sqldec);
 $rowdec = mysqli_fetch_assoc($resdec);
 $dec = $rowdec['total'];
