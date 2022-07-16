@@ -117,11 +117,11 @@ if($row) {
                 <div class="card-body">
                   <div class="form-group">
                   <label for="section_no">Section</label>
-                    <output class="form-control" id="section_no" style="width:20em" name="section_no"><?php echo $section_no; ?></output>
+                    <output class="form-control" id="section_no" name="section_no" style="overflow:auto"><?php echo $section_no; ?></output>
                   </div>
                   <div class="form-group">
                     <label for="subsection_no">Sub-Section</label>
-                    <output class="form-control" id="subsection_no" style="width:20em" name="subsection_no"><?php echo $subsection_no; ?></output>
+                    <output class="form-control" id="subsection_no" name="subsection_no" style="overflow:auto"><?php echo $subsection_no; ?></output>
                   </div>
                   <div class="form-group">
                     <label for="term_order">Term Order</label>
@@ -129,11 +129,11 @@ if($row) {
                   </div>
                   <div class="form-group">
                     <label for="term_malay">Term (Malay)</label>
-                    <output class="form-control" id="term_malay" name="term_malay"><?php echo $term_malay; ?></output>
+                    <output class="form-control" id="term_malay" name="term_malay" style="overflow:auto"><?php echo $term_malay; ?></output>
                   </div>
                   <div class="form-group">
                     <label for="term_english">Term (English)</label>
-                    <output class="form-control" id="term_english" name="term_english"><?php echo $term_english; ?></output>
+                    <output class="form-control" id="term_english" name="term_english" style="overflow:auto"><?php echo $term_english; ?></output>
                   </div>
                   <div class="form-group">
                     <label for="term_desc">Term Description</label>

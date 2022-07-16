@@ -116,11 +116,11 @@ if($row) {
                 <div class="card-body">
                   <div class="form-group">
                   <label for="section_no">Section</label>
-                    <input type="text" class="form-control" id="section_no" style="width:20em" name="section_no" value="<?php echo $section_no; ?>" disabled>
+                    <input type="text" class="form-control" id="section_no" style="overflow:auto" name="section_no" value="<?php echo $section_no; ?>" disabled>
                   </div>
                   <div class="form-group">
                     <label for="subsection_no">Sub-Section</label>
-                    <input type="text" class="form-control" id="subsection_no" style="width:20em" name="subsection_no" value="<?php echo $subsection_no; ?>" disabled>
+                    <input type="text" class="form-control" id="subsection_no" style="overflow:auto" name="subsection_no" value="<?php echo $subsection_no; ?>" disabled>
                   </div>
                   <div class="form-group">
                     <label for="term_order">Term Order</label>
@@ -146,11 +146,11 @@ if($row) {
                   </div>
                   <div class="form-group">
                     <label for="term_malay">Term (Malay)</label>
-                    <input type="text" class="form-control" id="term_malay" name="term_malay" value="<?php echo $term_malay; ?>">
+                    <input type="text" class="form-control" id="term_malay" name="term_malay" value="<?php echo $term_malay; ?>" style="overflow:auto">
                   </div>
                   <div class="form-group">
                     <label for="term_english">Term (English)</label>
-                    <input type="text" class="form-control" id="term_english" name="term_english" value="<?php echo $term_english; ?>">
+                    <input type="text" class="form-control" id="term_english" name="term_english" value="<?php echo $term_english; ?>" style="overflow:auto">
                   </div>
                   <div class="form-group">
                     <label for="term_desc">Term Description</label>

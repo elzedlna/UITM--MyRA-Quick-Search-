@@ -334,6 +334,15 @@ $resdec = mysqli_query($conn,$sqldec);
 $rowdec = mysqli_fetch_assoc($resdec);
 $dec = $rowdec['total'];
 
+$sqltotal = "SELECT count(*) AS total FROM auditsearch";
+$restotal = mysqli_query($conn,$sqltotal);
+$rowtotal = mysqli_fetch_assoc($restotal);
+$total = $rowtotal['total'];
+if($total < 100) {
+  $total = 100;
+} else {
+  $total = $total;
+}
 ?>
 <!-- Page specific script -->
 <script>
@@ -357,7 +366,7 @@ new Chart("myChart", {
     legend: {display: false},
     scales: {
     yAxes: [{
-        ticks: {min: 0, max:100},
+        ticks: {min: 0, max:<?php echo $total; ?>},
         scaleLabel: {
             display: true,
             labelString: 'NUMBER OF SEARCHES'

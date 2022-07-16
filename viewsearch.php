@@ -81,7 +81,8 @@ if($row) {
                                 </div>
                                 <div class="form-group">
                                     <label for="subsection">Sub-Section</label>
-                                    <output class="form-control" id="subsection" name="subsection"><?php echo $subsection; ?></output>
+                                    <!-- <textarea name="subsection" id="subsection" cols="30" rows="3" class="form-control" disabled style="resize:none"></textarea> -->
+                                    <output class="form-control" id="subsection" name="subsection" style="overflow:auto"><?php echo $subsection; ?></output>
                                 </div>
                                 <div class="form-group">
                                     <label for="subsection_desc">Sub-Section Description</label>
@@ -89,11 +90,11 @@ if($row) {
                                 </div>
                                 <div class="form-group">
                                     <label for="term_malay">Term (Malay)</label>
-                                    <output class="form-control" id="term_malay" name="term_malay"><?php echo $term_malay;?></output>
+                                    <output class="form-control" id="term_malay" name="term_malay" style="overflow:auto"><?php echo $term_malay;?></output>
                                 </div>
                                 <div class="form-group">
                                     <label for="term_english">Term (English)</label>
-                                    <output class="form-control" id="term_english" name="term_english"><?php echo $term_english;?></output>
+                                    <output class="form-control" id="term_english" name="term_english" style="overflow:auto"><?php echo $term_english;?></output>
                                 </div>
                                 <div class="form-group">
                                     <label for="term_desc">Term Description</label>
