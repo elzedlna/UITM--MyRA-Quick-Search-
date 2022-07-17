@@ -115,7 +115,8 @@ session_start();
               </tr>
             </tfoot>
           </table>
-          <?php }} ?>
+          <?php }
+        } ?>
         </div>
         <?php } ?>
     </section>
