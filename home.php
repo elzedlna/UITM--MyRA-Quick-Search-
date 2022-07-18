@@ -334,7 +334,7 @@ $resdec = mysqli_query($conn,$sqldec);
 $rowdec = mysqli_fetch_assoc($resdec);
 $dec = $rowdec['total'];
 
-$sqltotal = "SELECT count(*) AS total FROM auditsearch";
+/* $sqltotal = "SELECT count(*) AS total FROM auditsearch";
 $restotal = mysqli_query($conn,$sqltotal);
 $rowtotal = mysqli_fetch_assoc($restotal);
 $total = $rowtotal['total'];
@@ -342,12 +342,11 @@ if($total < 100) {
   $total = 100;
 } else {
   $total = $total;
-}
+} */
 ?>
 <!-- Page specific script -->
 <script>
 var xValues = ['January','February','March','April','May','June','July','August','September','October','November','December'];
-
 var yValues = [<?php echo $jan;?>,<?php echo $feb;?>,<?php echo $mac;?>,<?php echo $apr;?>,<?php echo $may;?>,<?php echo $jun;?>,<?php echo $jul;?>,<?php echo $aug;?>,<?php echo $sep;?>,<?php echo $oct;?>,<?php echo $nov;?>,<?php echo $dec;?>];
 
 new Chart("myChart", {
@@ -366,7 +365,7 @@ new Chart("myChart", {
     legend: {display: false},
     scales: {
     yAxes: [{
-        ticks: {min: 0, max:<?php echo $total; ?>},
+        ticks: {min: 0, max: yValues.max},
         scaleLabel: {
             display: true,
             labelString: 'NUMBER OF SEARCHES'
