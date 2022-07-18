@@ -49,7 +49,7 @@ session_start();
                 <div class="col-md-8 offset-md-2">
                     <form action="index.php" method="POST">
                         <div class="input-group">
-                            <input type="text" id="keyword" name="keyword" class="form-control form-control-lg" placeholder="Type your keywords here">
+                            <input type="text" id="keyword" name="keyword" class="form-control form-control-lg" placeholder="Type your keywords here" value="<?php if(isset($_POST['keyword'])) { echo $_POST['keyword']; }?>">
                             <div class="input-group-append">
                                 <button type="submit" id="search" name="search" class="btn btn-lg btn-default">
                                     <i class="fa fa-search"></i>
