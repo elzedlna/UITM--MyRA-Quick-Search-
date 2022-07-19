@@ -127,7 +127,7 @@ $all_sub = mysqli_num_rows($result);
                 <div class="card-body">
                   <div class="form-group">
                     <label for="section_no">Section</label>
-                    <select class="form-control select2" id="section_no" style="width:20em" name="section_no">
+                    <select class="form-control select2" id="section_no" name="section_no">
                       <?php
                       while($section = mysqli_fetch_array($all_sections,MYSQLI_ASSOC)):;
                       ?>
