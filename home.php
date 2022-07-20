@@ -200,7 +200,7 @@ if(!isset($_SESSION['userlogged']) || $_SESSION['userlogged'] !=1) {
                     if(isset($_POST['year'])) {
                       echo getSelectedListYears($_POST['year']);
                     } else {
-                      echo getListYears();
+                      echo getSelectedListYears(date("Y"));
                     }
                     ?>
                   </select>
@@ -286,8 +286,11 @@ if(!isset($_SESSION['userlogged']) || $_SESSION['userlogged'] !=1) {
     </script>
 <?php } ?>
 <?php
-
-$year = $_POST['year'];
+if(isset($_POST['year'])) {
+  $year = $_POST['year'];
+} else {
+  $year = date("Y");
+}
 
 // January
 $sqljan = "SELECT count(*) AS total FROM auditsearch WHERE MONTH(search_date) = 1 AND YEAR(search_date) = '".$year."'";
