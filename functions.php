@@ -687,8 +687,8 @@ function getselectedmonths($dbh, $month)
 function getListYears()
 {
     $currentYear = date("Y");
-    $startYear = $currentYear;
-    $endYear = $currentYear + 1;
+    $startYear = $currentYear - 5;
+    $endYear = $currentYear + 5;
     for($i = $startYear; $i < $endYear; $i++)
         echo "<option value='".$i."'>".$i."</option>";
 }
@@ -696,8 +696,8 @@ function getListYears()
 function getSelectedListYears($year)
 {
     $currentYear = date("Y");
-    $startYear = $currentYear;
-    $endYear = $currentYear + 1;
+    $startYear = $currentYear - 5;
+    $endYear = $currentYear + 5;
     for($i = $startYear; $i < $endYear; $i++)
     {
         if($i == $year)

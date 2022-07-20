@@ -193,7 +193,23 @@ if(!isset($_SESSION['userlogged']) || $_SESSION['userlogged'] !=1) {
               </div>
               <div class="card-body">
                 <!-- <div id="line-chart" style="height: 300px;"></div> -->
-                <canvas id="myChart"></canvas>
+                <form action="home.php" class="form-horizontal" method="post">
+                  <div class="form-group row">
+                  <select class="form-control" style="width:10em" name="year" id="year">
+                    <?php
+                    if(isset($_POST['year'])) {
+                      echo getSelectedListYears($_POST['year']);
+                    } else {
+                      echo getListYears();
+                    }
+                    ?>
+                  </select>
+                  <input type="submit" value="Search" class="btn btn-primary" style="margin-left:10px">
+                  </div>
+                  
+                </form>
+                
+                <canvas id="myChart" style="margin-top:20px"></canvas>
 
               </div>
             </div>
@@ -271,7 +287,7 @@ if(!isset($_SESSION['userlogged']) || $_SESSION['userlogged'] !=1) {
 <?php } ?>
 <?php
 
-$year = date("Y");
+$year = $_POST['year'];
 
 // January
 $sqljan = "SELECT count(*) AS total FROM auditsearch WHERE MONTH(search_date) = 1 AND YEAR(search_date) = '".$year."'";
