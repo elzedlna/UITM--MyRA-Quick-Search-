@@ -40,7 +40,7 @@ if(isset($_POST['submit'])) {
             // echo "<script type= 'text/javascript'>alert('User already exists.');window.location='adduser.php';</script> ";
             if(checkUserDeleted($conn,$USER_ID) == TRUE) {
                 if(isset($_SESSION['id']) && $_SESSION['id'] != NULL) {
-                    $sql = "UPDATE user_assigned SET role_no = '".$role_no."', access_no = '".$access_no."', assigned_updated = '".$update."', assigned_deleted = NULL WHERE USER_ID = '".$USER_ID."'";
+                    $sql = "UPDATE user_assigned SET role_no = '".$role_no."', access_no = '".$access_no."', assigned_date = '".$update."', assigned_updated = '".$update."', assigned_deleted = NULL WHERE USER_ID = '".$USER_ID."'";
                     $result = mysqli_query($conn,$sql);
     
                     if ($result == TRUE) {
