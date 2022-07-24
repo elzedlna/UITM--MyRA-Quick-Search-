@@ -208,7 +208,7 @@ if(!isset($_SESSION['userlogged']) || $_SESSION['userlogged'] !=1) {
                   </div>
                   
                 </form>
-                
+                    
                 <canvas id="myChart" style="margin-top:20px"></canvas>
 
               </div>
