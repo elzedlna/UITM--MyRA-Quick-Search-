@@ -46,6 +46,13 @@
 <?php } ?>
 
 <li class="nav-item">
+  <a href="contact.php" class="nav-link">
+    <i class="nav-icon fas fa-solid fa-phone"></i>
+    <p>Contact</p>
+  </a>
+</li>
+
+<li class="nav-item">
   <a href="plogout.php" class="nav-link">
     <i class="nav-icon fas fa-solid fa-power-off"></i>
     <p>Log Out</p>

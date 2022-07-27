@@ -19,6 +19,9 @@ if($_SESSION['USER_ROLE'] == 2) {
   <li class="nav-item d-none d-sm-inline-block">
     <a href="index.php" class="nav-link">SEARCH</a>
   </li>
+  <li class="nav-item d-none d-sm-inline-block">
+    <a href="contact.php" class="nav-link">CONTACT</a>
+  </li>
 </ul>
 <!-- Right navbar links -->
 <ul class="navbar-nav ml-auto">
